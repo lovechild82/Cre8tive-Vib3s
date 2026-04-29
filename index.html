@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cre8ive Vib3s Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--blush:#f2c4ce;--blush2:rgba(242,196,206,0.13);--sage:#b2c9ad;--gold:#d4af6e;--gold2:rgba(212,175,110,0.12);--cream:#faf6f0;--ink:#1a1410;--ink2:#3d342e;--muted:#9a8e85;--white:#fff;--border:rgba(212,175,110,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+.hdr{height:56px;background:linear-gradient(135deg,#fdf8f3,#f5ede0);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1rem;flex-shrink:0;}
+.lotus{font-size:1.4rem;animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.bn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;}
+.bn span{color:var(--gold);}
+.bs{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;}
+.pwrd{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);}
+.pwrd b{color:var(--sage);}
+.sdot{width:6px;height:6px;background:var(--sage);border-radius:50%;display:inline-block;margin-left:4px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.srch{padding:.3rem .7rem;border:1px solid var(--border);border-radius:20px;font-size:.75rem;background:var(--white);color:var(--ink);outline:none;width:160px;font-family:'Outfit',sans-serif;}
+.app{display:flex;flex:1;overflow:hidden;}
+.sb{width:230px;min-width:230px;background:var(--white);border-right:1px solid var(--border);overflow-y:auto;padding:.6rem .5rem;display:flex;flex-direction:column;gap:.1rem;scrollbar-width:thin;}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:var(--border);}
+.slbl{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:.55rem .5rem .18rem;}
+.nv{display:flex;align-items:center;gap:.45rem;padding:.5rem .65rem;border-radius:7px;border:none;background:none;cursor:pointer;width:100%;text-align:left;color:var(--ink2);font-family:'Outfit',sans-serif;font-size:.73rem;transition:all .15s;}
+.nv:hover{background:var(--gold2);}
+.nv.active{background:linear-gradient(135deg,rgba(242,196,206,0.13),var(--gold2));color:var(--ink);font-weight:500;border:1px solid var(--border);}
+.ni{font-size:.9rem;min-width:18px;text-align:center;}
+.sd{height:1px;background:var(--border);margin:.25rem 0;}
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.panel{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.panel.active{display:flex;}
+.scrl{flex:1;overflow-y:auto;padding:1.2rem;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blush),var(--gold),var(--sage));}
+.card h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;margin-bottom:.3rem;}
+.card p{font-size:.8rem;line-height:1.6;color:var(--ink2);}
+.flbl{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;display:block;}
+.fsec{margin-bottom:1rem;}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;}
+.chip{padding:.36rem .75rem;border-radius:20px;border:1px solid var(--border);background:var(--white);font-size:.73rem;cursor:pointer;transition:all .15s;color:var(--ink2);font-family:'Outfit',sans-serif;}
+.chip:hover{border-color:var(--gold);background:var(--gold2);}
+.chip.on{background:linear-gradient(135deg,var(--blush),var(--gold));border-color:var(--gold);color:var(--ink);font-weight:500;}
+.tin{width:100%;padding:.65rem .85rem;border:1px solid var(--border);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.8rem;color:var(--ink);background:var(--white);outline:none;resize:vertical;min-height:70px;}
+.tin:focus{border-color:var(--gold);}
+.tin.big{min-height:120px;border:2px solid var(--gold);font-size:.85rem;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;}
+@media(max-width:640px){.g4{grid-template-columns:1fr 1fr;}}
+.mc{background:var(--cream);border:1px solid var(--border);border-radius:11px;padding:.9rem;cursor:pointer;transition:all .2s;text-align:center;}
+.mc:hover{border-color:var(--gold);transform:translateY(-2px);}
+.mi{font-size:1.35rem;margin-bottom:.3rem;}
+.mc h3{font-size:.75rem;font-weight:600;margin-bottom:.15rem;}
+.mc p{font-size:.65rem;color:var(--muted);}
+.gbtn{width:100%;padding:.82rem;background:linear-gradient(135deg,#c9956a,var(--gold));border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .25s;margin-top:.8rem;}
+.gbtn:hover{box-shadow:0 5px 20px rgba(212,175,110,.35);transform:translateY(-1px);}
+.gbtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.abtn{padding:.38rem .82rem;border-radius:7px;border:1px solid rgba(212,175,110,.3);background:rgba(212,175,110,.1);color:var(--gold);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block;}
+.abtn:hover{background:rgba(212,175,110,.22);}
+.abtn.g{color:var(--sage);border-color:rgba(178,201,173,.3);background:rgba(178,201,173,.1);}
+.out{background:#1a1410;border-radius:11px;padding:1.1rem;margin-top:.9rem;display:none;}
+.outlbl{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+.outtxt{font-family:'Outfit',sans-serif;font-size:.8rem;line-height:1.75;color:#e8ddd4;white-space:pre-wrap;word-break:break-word;}
+.outacts{display:flex;gap:.45rem;margin-top:.8rem;flex-wrap:wrap;}
+.ld{display:inline-flex;gap:4px;align-items:center;color:#e8ddd4;font-size:.8rem;}
+.ld span{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:bounce 1.2s ease-in-out infinite;}
+.ld span:nth-child(2){animation-delay:.2s;}
+.ld span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.upz{border:2px dashed var(--border);border-radius:11px;padding:1rem;text-align:center;cursor:pointer;background:var(--cream);position:relative;transition:all .2s;}
+.upz:hover{border-color:var(--gold);}
+.upz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.prevs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem;}
+.prevw{position:relative;width:60px;}
+.prevw img{width:60px;height:60px;border-radius:7px;object-fit:cover;border:2px solid var(--border);}
+.rmv{position:absolute;top:-5px;right:-5px;width:17px;height:17px;background:#e05c5c;color:#fff;border:none;border-radius:50%;font-size:.55rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cv-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.ctb{background:var(--white);border-bottom:1px solid var(--border);padding:.4rem .7rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;overflow-x:auto;}
+.cb{padding:.28rem .6rem;border-radius:6px;border:1px solid var(--border);background:var(--cream);font-size:.68rem;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2);white-space:nowrap;}
+.cb:hover{background:var(--gold2);border-color:var(--gold);}
+.cdiv{width:1px;height:20px;background:var(--border);margin:0 .15rem;flex-shrink:0;}
+.csel{padding:.26rem .5rem;border:1px solid var(--border);border-radius:6px;font-size:.68rem;background:var(--white);color:var(--ink);outline:none;}
+.cnum{width:52px;padding:.26rem .45rem;border:1px solid var(--border);border-radius:6px;font-size:.68rem;background:var(--white);color:var(--ink);outline:none;}
+.ccol{width:28px;height:24px;border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:2px;}
+.carea{flex:1;overflow:auto;display:flex;align-items:flex-start;padding:.8rem;background:#ede5d8;}
+.cw{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.cmsg{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.8rem;}
+.msg{display:flex;gap:.55rem;max-width:90%;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.mav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;margin-top:2px;}
+.mav.ai{background:linear-gradient(135deg,var(--blush),var(--gold));}
+.mav.usr{background:rgba(178,201,173,0.13);border:1px solid var(--sage);}
+.mbub{padding:.75rem .95rem;border-radius:11px;font-size:.8rem;line-height:1.7;}
+.msg.ai .mbub{background:var(--white);border:1px solid var(--border);color:var(--ink2);border-radius:3px 11px 11px 11px;}
+.msg.user .mbub{background:linear-gradient(135deg,rgba(242,196,206,0.13),var(--gold2));border:1px solid var(--border);color:var(--ink);border-radius:11px 3px 11px 11px;}
+.cin-w{padding:.7rem 1rem;border-top:1px solid var(--border);background:var(--white);display:flex;gap:.55rem;align-items:flex-end;}
+.cin{flex:1;padding:.6rem .85rem;border:1px solid var(--border);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.8rem;color:var(--ink);background:var(--cream);outline:none;resize:none;min-height:38px;max-height:100px;}
+.cin:focus{border-color:var(--gold);}
+.sndbtn{width:38px;height:38px;background:linear-gradient(135deg,var(--blush),var(--gold));border:none;border-radius:9px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sndbtn:disabled{opacity:.4;cursor:not-allowed;}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.55rem;padding:.2rem .55rem;border-radius:8px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.5rem;}
+.bf{background:rgba(178,201,173,.18);color:#3d5c38;border:1px solid rgba(178,201,173,.4);}
+.ba{background:rgba(212,175,110,.15);color:#7a5c1e;border:1px solid rgba(212,175,110,.35);}
+.toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--ink);color:var(--gold);font-family:'DM Mono',monospace;font-size:.68rem;padding:.55rem 1rem;border-radius:9px;border:1px solid var(--gold);z-index:9999;opacity:0;transition:opacity .28s;pointer-events:none;}
+.toast.show{opacity:1;}
+.welcome{align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;overflow-y:auto;}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:.6rem;">
+    <div class="lotus">🪷</div>
+    <div><div class="bn">Cre8ive Vib3s <span>Studio</span></div><span class="bs">AI Creative Suite · Free · Unlimited</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.6rem;">
+    <input class="srch" placeholder="Search tools..." oninput="searchTools(this.value)">
+    <div class="pwrd">Pollinations AI<div class="sdot"></div></div>
+  </div>
+</div>
+<div class="app">
+<div class="sb" id="sb">
+  <div class="slbl">Studio</div>
+  <button class="nv active" onclick="go('home')"><span class="ni">🏠</span>Home</button>
+  <button class="nv" onclick="go('chat')"><span class="ni">💬</span>AI Chat</button>
+  <button class="nv" onclick="go('canvas')"><span class="ni">✏️</span>Canvas Editor</button>
+  <div class="sd"></div>
+  <div class="slbl">Image Studio</div>
+  <button class="nv" onclick="go('imggen')"><span class="ni">🎨</span>Image Generator</button>
+  <button class="nv" onclick="go('coloring')"><span class="ni">🖍️</span>Coloring Book</button>
+  <button class="nv" onclick="go('thumbnail')"><span class="ni">🖼️</span>Thumbnail Creator</button>
+  <button class="nv" onclick="go('banner')"><span class="ni">🎌</span>Banner Creator</button>
+  <button class="nv" onclick="go('tattoo')"><span class="ni">🔱</span>Tattoo Creator</button>
+  <button class="nv" onclick="go('fashion')"><span class="ni">👗</span>Fashion Designer</button>
+  <button class="nv" onclick="go('interior')"><span class="ni">🛋️</span>Interior Design</button>
+  <button class="nv" onclick="go('product')"><span class="ni">🛍️</span>Product Photography</button>
+  <button class="nv" onclick="go('tshirt')"><span class="ni">👕</span>T-Shirt Designer</button>
+  <button class="nv" onclick="go('clipart')"><span class="ni">🎭</span>Clipart Creator</button>
+  <button class="nv" onclick="go('meme')"><span class="ni">😂</span>Meme Creator</button>
+  <button class="nv" onclick="go('magazine')"><span class="ni">📰</span>Magazine Cover</button>
+  <div class="sd"></div>
+  <div class="slbl">Video Studio</div>
+  <button class="nv" onclick="go('vidgen')"><span class="ni">🎬</span>Video Generator</button>
+  <div class="sd"></div>
+  <div class="slbl">Writing</div>
+  <button class="nv" onclick="go('social')"><span class="ni">📱</span>Social Media</button>
+  <button class="nv" onclick="go('blog')"><span class="ni">📝</span>Blog Post</button>
+  <button class="nv" onclick="go('scripts')"><span class="ni">🎙️</span>Script Creator</button>
+  <button class="nv" onclick="go('voiceover')"><span class="ni">🎤</span>Voiceover Script</button>
+  <button class="nv" onclick="go('email')"><span class="ni">📧</span>Email Templates</button>
+  <button class="nv" onclick="go('dmscripts')"><span class="ni">💌</span>DM Scripts</button>
+  <button class="nv" onclick="go('cta')"><span class="ni">🎯</span>CTA Creator</button>
+  <button class="nv" onclick="go('quote')"><span class="ni">💬</span>Quote Creator</button>
+  <button class="nv" onclick="go('proddesc')"><span class="ni">🏷️</span>Product Descriptions</button>
+  <button class="nv" onclick="go('writer')"><span class="ni">✍️</span>AI Writer</button>
+  <div class="sd"></div>
+  <div class="slbl">Documents</div>
+  <button class="nv" onclick="go('doc')"><span class="ni">📄</span>Document Creator</button>
+  <button class="nv" onclick="go('presentation')"><span class="ni">📊</span>Slide Creator</button>
+  <button class="nv" onclick="go('resume')"><span class="ni">📋</span>Resume Builder</button>
+  <button class="nv" onclick="go('landing')"><span class="ni">🌐</span>Landing Page</button>
+  <div class="sd"></div>
+  <div class="slbl">Digital Products</div>
+  <button class="nv" onclick="go('dprod')"><span class="ni">📦</span>Digital Products</button>
+  <button class="nv" onclick="go('kdp')"><span class="ni">📚</span>KDP Creator</button>
+  <button class="nv" onclick="go('storybooks')"><span class="ni">🧒</span>Storybooks</button>
+  <button class="nv" onclick="go('plrmrr')"><span class="ni">♻️</span>PLR / MRR Rights</button>
+  <div class="sd"></div>
+  <div class="slbl">Marketing</div>
+  <button class="nv" onclick="go('marketing')"><span class="ni">📈</span>Marketing Strategy</button>
+  <button class="nv" onclick="go('funnels')"><span class="ni">🔻</span>Proven Funnels</button>
+  <button class="nv" onclick="go('leadmagnet')"><span class="ni">🧲</span>Lead Magnet</button>
+  <button class="nv" onclick="go('offercheck')"><span class="ni">✅</span>Offer Checker</button>
+  <button class="nv" onclick="go('bizaudit')"><span class="ni">🔍</span>Business Audit</button>
+  <button class="nv" onclick="go('audience')"><span class="ni">🎯</span>Audience Finder</button>
+  <button class="nv" onclick="go('niche')"><span class="ni">💡</span>Niche Finder</button>
+  <button class="nv" onclick="go('keywords')"><span class="ni">🔑</span>Keywords</button>
+  <button class="nv" onclick="go('calendar')"><span class="ni">📅</span>Content Calendar</button>
+  <button class="nv" onclick="go('adcreator')"><span class="ni">📣</span>Ad Creator</button>
+  <button class="nv" onclick="go('campaign')"><span class="ni">🚀</span>Campaign Creator</button>
+  <div class="sd"></div>
+  <div class="slbl">Brand and Tools</div>
+  <button class="nv" onclick="go('avatar')"><span class="ni">🧿</span>Avatar and AI Twin</button>
+  <button class="nv" onclick="go('character')"><span class="ni">👤</span>Character Creator</button>
+  <button class="nv" onclick="go('brand')"><span class="ni">💎</span>Brand Kit</button>
+  <button class="nv" onclick="go('edu')"><span class="ni">🎓</span>Educational Tools</button>
+  <button class="nv" onclick="go('aiprompts')"><span class="ni">🤖</span>AI Prompts</button>
+  <button class="nv" onclick="go('imgedit')"><span class="ni">✨</span>Image Editing Guide</button>
+  <button class="nv" onclick="go('photoai')"><span class="ni">🧑‍🎨</span>AI Photo Transform</button>
+</div>
+<div class="main" id="mainArea">
+
+<!-- HOME -->
+
+<div class="panel active welcome" id="p-home">
+  <div style="font-size:3rem;margin-bottom:.7rem;animation:float 4s ease-in-out infinite;">🪷</div>
+  <h1 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:.4rem;">Welcome to <span style="color:var(--gold)">Cre8ive Vib3s</span></h1>
+  <p style="font-size:.8rem;color:var(--muted);max-width:360px;margin:0 auto 1.4rem;line-height:1.65;">Your unlimited AI creative studio. Images, videos, content, digital products and more. Free. No sign-in required.</p>
+  <div class="g4" style="max-width:680px;width:100%;margin:0 auto 1rem;">
+    <div class="mc" onclick="go('imggen')"><div class="mi">🎨</div><h3>Image Gen</h3><p>Real AI images</p></div>
+    <div class="mc" onclick="go('vidgen')"><div class="mi">🎬</div><h3>Video Gen</h3><p>Real AI videos</p></div>
+    <div class="mc" onclick="go('canvas')"><div class="mi">✏️</div><h3>Canvas</h3><p>Design editor</p></div>
+    <div class="mc" onclick="go('social')"><div class="mi">📱</div><h3>Social Media</h3><p>Captions and Reels</p></div>
+    <div class="mc" onclick="go('dprod')"><div class="mi">📦</div><h3>Digital Products</h3><p>Ebooks and planners</p></div>
+    <div class="mc" onclick="go('funnels')"><div class="mi">🔻</div><h3>Funnels</h3><p>Proven systems</p></div>
+    <div class="mc" onclick="go('offercheck')"><div class="mi">✅</div><h3>Offer Checker</h3><p>Validate your offer</p></div>
+    <div class="mc" onclick="go('chat')"><div class="mi">💬</div><h3>AI Chat</h3><p>Creative director</p></div>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;">Popular Tools</div>
+  <div class="g4" style="max-width:680px;width:100%;margin:0 auto;">
+    <div class="mc" onclick="go('coloring')"><div class="mi">🖍️</div><h3>Coloring Books</h3><p>KDP ready</p></div>
+    <div class="mc" onclick="go('kdp')"><div class="mi">📚</div><h3>KDP Creator</h3><p>Books to publish</p></div>
+    <div class="mc" onclick="go('fashion')"><div class="mi">👗</div><h3>Fashion</h3><p>AI outfit design</p></div>
+    <div class="mc" onclick="go('tattoo')"><div class="mi">🔱</div><h3>Tattoo Creator</h3><p>Designs and stencils</p></div>
+    <div class="mc" onclick="go('bizaudit')"><div class="mi">🔍</div><h3>Business Audit</h3><p>Fix what is broken</p></div>
+    <div class="mc" onclick="go('storybooks')"><div class="mi">🧒</div><h3>Storybooks</h3><p>Children books</p></div>
+    <div class="mc" onclick="go('tshirt')"><div class="mi">👕</div><h3>T-Shirt Design</h3><p>POD ready</p></div>
+    <div class="mc" onclick="go('quote')"><div class="mi">💬</div><h3>Quote Creator</h3><p>Quote packs and graphics</p></div>
+  </div>
+</div>
+
+<!-- CHAT -->
+
+<div class="panel" id="p-chat">
+  <div class="cw">
+    <div class="cmsg" id="chatMsgs">
+      <div class="msg ai"><div class="mav ai">🪷</div><div class="mbub">Welcome to Cre8ive Vib3s! I am your AI Creative Director. I can help you create content, build digital products, develop marketing strategies, write scripts, audit your business, and anything creative. What would you like to create today?</div></div>
+    </div>
+    <div class="cin-w">
+      <textarea class="cin" id="cin" placeholder="Ask your AI creative director anything..." rows="1" onkeydown="chatKey(event)"></textarea>
+      <button class="sndbtn" id="sndbtn" onclick="sendChat()">&#9658;</button>
+    </div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+
+<div class="panel" id="p-canvas">
+  <div class="cv-wrap">
+    <div class="ctb">
+      <button class="cb" onclick="addText('h1')">H1</button>
+      <button class="cb" onclick="addText('h2')">H2</button>
+      <button class="cb" onclick="addText('body')">T Body</button>
+      <button class="cb" onclick="addText('box')">+ Text</button>
+      <div class="cdiv"></div>
+      <select class="csel" id="ff" onchange="setProp('fontFamily',this.value)">
+        <option>Outfit</option><option>Cormorant Garamond</option><option>DM Mono</option><option>Georgia</option><option>Impact</option><option>Arial</option>
+      </select>
+      <input class="cnum" id="fs" type="number" value="24" min="6" max="300" onchange="setProp('fontSize',parseInt(this.value))">
+      <div class="cdiv"></div>
+      <button class="cb" onclick="toggleS('fontWeight','bold','normal')"><b>B</b></button>
+      <button class="cb" onclick="toggleS('fontStyle','italic','normal')"><i>I</i></button>
+      <button class="cb" onclick="toggleP('underline')"><u>U</u></button>
+      <div class="cdiv"></div>
+      <button class="cb" onclick="addFx('bubble')">Bubble</button>
+      <button class="cb" onclick="addFx('neon')">Neon</button>
+      <button class="cb" onclick="addFx('block')">Block</button>
+      <button class="cb" onclick="addFx('outline')">Outline</button>
+      <button class="cb" onclick="addFx('lift')">Lift</button>
+      <div class="cdiv"></div>
+      <input class="ccol" type="color" id="tc" value="#1a1410" onchange="setProp('fill',this.value)" title="Text Color">
+      <input class="ccol" type="color" id="bgc" value="#faf6f0" onchange="setBg()" title="BG Color">
+      <input class="ccol" type="color" id="fc" value="#d4af6e" onchange="setFill()" title="Shape Fill">
+      <div class="cdiv"></div>
+      <button class="cb" onclick="addShape('rect')">Rect</button>
+      <button class="cb" onclick="addShape('circle')">Circle</button>
+      <button class="cb" onclick="addShape('tri')">Tri</button>
+      <button class="cb" onclick="addArrow()">Arrow</button>
+      <button class="cb" onclick="addLine('solid')">Line</button>
+      <button class="cb" onclick="addLine('dash')">Dash</button>
+      <button class="cb" onclick="addLine('dot')">Dots</button>
+      <div class="cdiv"></div>
+      <button class="cb" onclick="applyE('border')">Border</button>
+      <button class="cb" onclick="applyE('shadow')">Shadow</button>
+      <button class="cb" onclick="applyE('highlight')">Highlight</button>
+      <div class="cdiv"></div>
+      <button class="cb" onclick="document.getElementById('cImgUp').click()">+ Image</button>
+      <input type="file" id="cImgUp" accept="image/*" style="display:none" onchange="addImgCV(event)">
+      <button class="cb" onclick="addWM()">Watermark</button>
+      <button class="cb" onclick="addCaption()">Caption</button>
+      <div class="cdiv"></div>
+      <select class="csel" id="cvSz" onchange="resizeCV()">
+        <option value="800,800">Square 800</option><option value="1080,1080">IG 1080</option><option value="1080,1350">Portrait 4:5</option><option value="1080,1920">Story 9:16</option><option value="1920,1080">Landscape</option><option value="1200,628">FB Banner</option><option value="2560,1440">YT Banner</option>
+      </select>
+      <select class="csel" id="tplSel" onchange="loadTpl(this.value)">
+        <option value="">Templates</option><option value="ig">Instagram</option><option value="story">Story</option><option value="banner">Banner</option><option value="bcard">Business Card</option><option value="resume">Resume</option><option value="poster">Poster</option><option value="magazine">Magazine</option>
+      </select>
+      <div class="cdiv"></div>
+      <button class="cb" onclick="alignO('left')">Left</button>
+      <button class="cb" onclick="alignO('center')">Center</button>
+      <button class="cb" onclick="alignO('right')">Right</button>
+      <button class="cb" onclick="bringFwd()">Front</button>
+      <button class="cb" onclick="sendBk()">Back</button>
+      <button class="cb" onclick="cloneO()">Clone</button>
+      <button class="cb" onclick="groupO()">Group</button>
+      <button class="cb" onclick="delO()">Delete</button>
+      <button class="cb" onclick="clearCV()">Clear</button>
+      <span style="font-size:.6rem;color:var(--muted);margin:0 .2rem;">Opacity:</span>
+      <input type="range" id="opR" min="0" max="1" step="0.05" value="1" onchange="setProp('opacity',parseFloat(this.value))" style="width:60px;accent-color:var(--gold);">
+      <div class="cdiv"></div>
+      <button class="cb" onclick="exportCV('png')">Save PNG</button>
+      <button class="cb" onclick="exportCV('pdf')">Save PDF</button>
+    </div>
+    <div class="carea"><canvas id="mainCV"></canvas></div>
+  </div>
+</div>
+
+<!-- IMAGE GENERATOR -->
+
+<div class="panel" id="p-imggen">
+<div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited · No Sign-In · Pollinations.ai</span><h2>🎨 AI Image Generator</h2><p>Generate any image — landscapes, animals, products, art, fashion, food, and more. Completely free.</p></div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Describe what you want to create</label>
+    <textarea class="tin big" id="iDesc" placeholder="Describe anything you want:&#10;&#8226; A golden lotus on a calm lake at sunset&#10;&#8226; A luxury workspace with gold accents&#10;&#8226; A cartoon dragon wearing sunglasses&#10;&#8226; An elegant fashion gown in blush and gold&#10;&#8226; Abstract watercolor swirls&#10;&#8226; A cute puppy in a flower field&#10;&#8226; Anything you can imagine!"></textarea>
+    <div style="font-size:.7rem;color:var(--muted);margin-top:.3rem;">Tip: Be as detailed or simple as you like. You can generate absolutely anything.</div>
+  </div>
+  <div class="fsec"><label class="flbl">AI Model</label>
+    <div class="chips" id="iModel">
+      <div class="chip on" onclick="pick(this,'iModel')">FLUX Best</div>
+      <div class="chip" onclick="pick(this,'iModel')">Turbo Fast</div>
+      <div class="chip" onclick="pick(this,'iModel')">FLUX Realism</div>
+      <div class="chip" onclick="pick(this,'iModel')">FLUX Anime</div>
+      <div class="chip" onclick="pick(this,'iModel')">FLUX 3D</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Size and Ratio</label>
+    <div class="chips" id="iRatio">
+      <div class="chip on" onclick="pick(this,'iRatio')">Square 1:1</div>
+      <div class="chip" onclick="pick(this,'iRatio')">Portrait 4:5</div>
+      <div class="chip" onclick="pick(this,'iRatio')">Story 9:16</div>
+      <div class="chip" onclick="pick(this,'iRatio')">Wide 16:9</div>
+      <div class="chip" onclick="pick(this,'iRatio')">Tall 2:3</div>
+      <div class="chip" onclick="pick(this,'iRatio')">Standard 4:3</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Art Style</label>
+    <div class="chips" id="iStyle">
+      <div class="chip on" onclick="pick(this,'iStyle')">None</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Photorealistic</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Digital Art</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Watercolor</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Oil Painting</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Anime</div>
+      <div class="chip" onclick="pick(this,'iStyle')">3D Render</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Cartoon</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Cinematic</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Minimalist</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Ethereal</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Surreal</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Dark Moody</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Warm Cozy</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Vintage</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Sketch</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Comic Book</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Abstract</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Ghibli</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Neon Cyberpunk</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Pop Art</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Impressionist</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Gothic Dark</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Pastel Kawaii</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Luxury Fashion</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Street Art Graffiti</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Cottagecore</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Dark Academia</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Y2K Retro</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Baroque Renaissance</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Flat Design Clean</div>
+      <div class="chip" onclick="pick(this,'iStyle')">Storybook Illustration</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Lighting</label>
+    <div class="chips" id="iLight">
+      <div class="chip on" onclick="pick(this,'iLight')">None</div>
+      <div class="chip" onclick="pick(this,'iLight')">Golden Hour</div>
+      <div class="chip" onclick="pick(this,'iLight')">Soft Natural</div>
+      <div class="chip" onclick="pick(this,'iLight')">Studio</div>
+      <div class="chip" onclick="pick(this,'iLight')">Moody</div>
+      <div class="chip" onclick="pick(this,'iLight')">Neon</div>
+      <div class="chip" onclick="pick(this,'iLight')">Cinematic</div>
+      <div class="chip" onclick="pick(this,'iLight')">Backlit</div>
+      <div class="chip" onclick="pick(this,'iLight')">Candlelight</div>
+      <div class="chip" onclick="pick(this,'iLight')">Moonlight</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Color Palette</label>
+    <div class="chips" id="iColor">
+      <div class="chip on" onclick="pick(this,'iColor')">None</div>
+      <div class="chip" onclick="pick(this,'iColor')">Blush and Gold</div>
+      <div class="chip" onclick="pick(this,'iColor')">Sage and Cream</div>
+      <div class="chip" onclick="pick(this,'iColor')">Black and White</div>
+      <div class="chip" onclick="pick(this,'iColor')">Earthy Tones</div>
+      <div class="chip" onclick="pick(this,'iColor')">Vibrant Bold</div>
+      <div class="chip" onclick="pick(this,'iColor')">Soft Pastels</div>
+      <div class="chip" onclick="pick(this,'iColor')">Neon Electric</div>
+      <div class="chip" onclick="pick(this,'iColor')">Ocean Blue</div>
+      <div class="chip" onclick="pick(this,'iColor')">Purple Lavender</div>
+      <div class="chip" onclick="pick(this,'iColor')">Sunset Orange</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Camera and Shot Type</label>
+    <div class="chips" id="iCamera">
+      <div class="chip on" onclick="pick(this,'iCamera')">None</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Close-up</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Wide Angle</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Birds Eye</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Low Angle</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Portrait Shot</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Full Body</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Bokeh</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Flat Lay</div>
+      <div class="chip" onclick="pick(this,'iCamera')">Aerial Drone</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Quality</label>
+    <div class="chips" id="iQuality">
+      <div class="chip on" onclick="pick(this,'iQuality')">High Quality</div>
+      <div class="chip" onclick="pick(this,'iQuality')">Ultra Detailed</div>
+      <div class="chip" onclick="pick(this,'iQuality')">Hyper Realistic</div>
+      <div class="chip" onclick="pick(this,'iQuality')">Sharp Focus</div>
+      <div class="chip" onclick="pick(this,'iQuality')">Professional</div>
+      <div class="chip" onclick="pick(this,'iQuality')">Award Winning</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Mood</label>
+    <div class="chips" id="iMood">
+      <div class="chip on" onclick="pick(this,'iMood')">None</div>
+      <div class="chip" onclick="pick(this,'iMood')">Calm Peaceful</div>
+      <div class="chip" onclick="pick(this,'iMood')">Luxurious</div>
+      <div class="chip" onclick="pick(this,'iMood')">Energetic</div>
+      <div class="chip" onclick="pick(this,'iMood')">Romantic</div>
+      <div class="chip" onclick="pick(this,'iMood')">Mysterious</div>
+      <div class="chip" onclick="pick(this,'iMood')">Playful</div>
+      <div class="chip" onclick="pick(this,'iMood')">Dramatic</div>
+      <div class="chip" onclick="pick(this,'iMood')">Ethereal</div>
+      <div class="chip" onclick="pick(this,'iMood')">Nostalgic</div>
+      <div class="chip" onclick="pick(this,'iMood')">Empowering</div>
+      <div class="chip" onclick="pick(this,'iMood')">Meditative</div>
+      <div class="chip" onclick="pick(this,'iMood')">Festive</div>
+      <div class="chip" onclick="pick(this,'iMood')">Whimsical</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Scene and Setting (optional)</label>
+    <div class="chips" id="iScene">
+      <div class="chip on" onclick="pick(this,'iScene')">None</div>
+      <div class="chip" onclick="pick(this,'iScene')">Tropical Beach</div>
+      <div class="chip" onclick="pick(this,'iScene')">Luxury Penthouse</div>
+      <div class="chip" onclick="pick(this,'iScene')">Cherry Blossom Forest</div>
+      <div class="chip" onclick="pick(this,'iScene')">Neon City Night</div>
+      <div class="chip" onclick="pick(this,'iScene')">Cozy Coffee Shop</div>
+      <div class="chip" onclick="pick(this,'iScene')">Desert Sunset</div>
+      <div class="chip" onclick="pick(this,'iScene')">Snowy Mountains</div>
+      <div class="chip" onclick="pick(this,'iScene')">Enchanted Forest</div>
+      <div class="chip" onclick="pick(this,'iScene')">Lavender Field</div>
+      <div class="chip" onclick="pick(this,'iScene')">Modern Studio</div>
+      <div class="chip" onclick="pick(this,'iScene')">Rooftop Garden</div>
+      <div class="chip" onclick="pick(this,'iScene')">Underwater Ocean</div>
+      <div class="chip" onclick="pick(this,'iScene')">Space Galaxy</div>
+      <div class="chip" onclick="pick(this,'iScene')">Ancient Temple</div>
+      <div class="chip" onclick="pick(this,'iScene')">Parisian Street</div>
+      <div class="chip" onclick="pick(this,'iScene')">Autumn Park</div>
+      <div class="chip" onclick="pick(this,'iScene')">Minimalist White Room</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Person Options — only if your image includes a person</label>
+    <div class="chips" id="iGender">
+      <div class="chip" onclick="pick(this,'iGender')">Female</div>
+      <div class="chip" onclick="pick(this,'iGender')">Male</div>
+      <div class="chip" onclick="pick(this,'iGender')">Faceless</div>
+      <div class="chip" onclick="pick(this,'iGender')">No Person</div>
+    </div>
+    <div style="margin-top:.4rem;"></div>
+    <div class="chips" id="iEth">
+      <div class="chip" onclick="pick(this,'iEth')">Light Skin</div>
+      <div class="chip" onclick="pick(this,'iEth')">Medium Skin</div>
+      <div class="chip" onclick="pick(this,'iEth')">Brown Skin</div>
+      <div class="chip" onclick="pick(this,'iEth')">Deep Brown</div>
+      <div class="chip" onclick="pick(this,'iEth')">Ebony</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Negative Prompt — what to avoid</label>
+    <textarea class="tin" id="iNeg" style="min-height:40px;resize:none;" placeholder="e.g. blurry, low quality, text, watermark..."></textarea>
+  </div>
+  <div class="fsec"><label class="flbl">Style Reference — describe your inspiration</label>
+    <textarea class="tin" id="iRef" style="min-height:40px;resize:none;" placeholder="Optional: describe a visual reference e.g. like a Vogue editorial, like Studio Ghibli, warm tones like sunset photography..."></textarea>
+  </div>
+  <button class="gbtn" id="iBtnGen" onclick="genImg()">🪷 Generate Image — Free and Unlimited</button>
+  <div style="font-size:.7rem;color:var(--muted);text-align:center;margin-top:.4rem;">Free · Unlimited · Powered by Pollinations.ai</div>
+  <div class="out" id="iOut"><div class="outlbl">✦ Generated Image</div><div id="iResult"></div><div class="outacts" id="iActs"></div></div>
+</div>
+</div>
+</div>
+
+<!-- VIDEO GENERATOR -->
+
+<div class="panel" id="p-vidgen">
+<div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited · No Sign-In · Pollinations.ai</span><h2>🎬 AI Video Generator</h2><p>Generate real AI videos from your description. Free and unlimited.</p></div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Describe your video scene</label>
+    <textarea class="tin big" id="vDesc" placeholder="Describe your video:&#10;&#8226; A lotus flower blooming in slow motion&#10;&#8226; A faceless woman walking through a luxury apartment&#10;&#8226; Abstract colorful shapes flowing and morphing&#10;&#8226; Ocean waves crashing at sunset&#10;&#8226; A cozy coffee shop with steam rising"></textarea>
+  </div>
+  <div class="fsec"><label class="flbl">Video Style</label>
+    <div class="chips" id="vStyle">
+      <div class="chip on" onclick="pick(this,'vStyle')">Cinematic</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Aesthetic Lifestyle</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Abstract Art</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Nature Ambient</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Fashion Editorial</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Product Showcase</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Dark Moody</div>
+      <div class="chip" onclick="pick(this,'vStyle')">Warm Cozy</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Camera Motion</label>
+    <div class="chips" id="vCam">
+      <div class="chip on" onclick="pick(this,'vCam')">Slow Zoom In</div>
+      <div class="chip" onclick="pick(this,'vCam')">Pan Left Right</div>
+      <div class="chip" onclick="pick(this,'vCam')">Aerial Drone</div>
+      <div class="chip" onclick="pick(this,'vCam')">Static</div>
+      <div class="chip" onclick="pick(this,'vCam')">Handheld Natural</div>
+      <div class="chip" onclick="pick(this,'vCam')">Orbit 360</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Mood</label>
+    <div class="chips" id="vMood">
+      <div class="chip on" onclick="pick(this,'vMood')">Calm Peaceful</div>
+      <div class="chip" onclick="pick(this,'vMood')">Luxurious</div>
+      <div class="chip" onclick="pick(this,'vMood')">Energetic</div>
+      <div class="chip" onclick="pick(this,'vMood')">Mysterious</div>
+      <div class="chip" onclick="pick(this,'vMood')">Romantic</div>
+      <div class="chip" onclick="pick(this,'vMood')">Dramatic</div>
+    </div>
+  </div>
+  <button class="gbtn" id="vBtn" onclick="genVideo()">🪷 Generate Video — Free and Unlimited</button>
+  <div style="font-size:.7rem;color:var(--muted);text-align:center;margin-top:.4rem;">Free · Unlimited · Powered by Pollinations.ai</div>
+  <div class="out" id="vOut"><div class="outlbl">✦ Generated Video</div><div id="vResult"></div><div class="outacts" id="vActs"></div></div>
+</div>
+</div>
+</div>
+<!-- SOCIAL MEDIA -->
+<div class="panel" id="p-social"><div class="scrl">
+<div class="card"><span class="badge ba">AI Content</span><h2>📱 Social Media Content</h2><p>Captions, Reels, carousels, Pinterest, Threads, TikTok, and 30-day calendars.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Content Type</label><div class="chips" id="socT"><div class="chip on" onclick="pick(this,'socT')">Instagram Caption</div><div class="chip" onclick="pick(this,'socT')">Reel Script</div><div class="chip" onclick="pick(this,'socT')">Carousel Copy</div><div class="chip" onclick="pick(this,'socT')">Pinterest Pin</div><div class="chip" onclick="pick(this,'socT')">Threads Post</div><div class="chip" onclick="pick(this,'socT')">TikTok Script</div><div class="chip" onclick="pick(this,'socT')">Story Sequence</div><div class="chip" onclick="pick(this,'socT')">30-Day Calendar</div></div></div>
+  <div class="fsec"><label class="flbl">Goal</label><div class="chips" id="socG"><div class="chip on" onclick="pick(this,'socG')">Promote Product</div><div class="chip" onclick="pick(this,'socG')">Drive Sales</div><div class="chip" onclick="pick(this,'socG')">Build Audience</div><div class="chip" onclick="pick(this,'socG')">Educate</div><div class="chip" onclick="pick(this,'socG')">Engagement</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="socD" placeholder="Topic, product, or campaign details..."></textarea></div>
+  <button class="gbtn" onclick="genAI('social')">🪷 Generate Content</button>
+  <div class="out" id="out-social"><div class="outlbl">✦ Your Content</div><div class="outtxt" id="outtxt-social"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-social')">Copy</button><button class="abtn g" onclick="genAI('social')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- MARKETING -->
+
+<div class="panel" id="p-marketing"><div class="scrl">
+<div class="card"><span class="badge ba">Marketing</span><h2>📈 Marketing Strategy</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Asset Type</label><div class="chips" id="mktT"><div class="chip on" onclick="pick(this,'mktT')">Sales Funnel</div><div class="chip" onclick="pick(this,'mktT')">Email Sequence</div><div class="chip" onclick="pick(this,'mktT')">SEO Keywords</div><div class="chip" onclick="pick(this,'mktT')">Ad Copy</div><div class="chip" onclick="pick(this,'mktT')">Landing Page</div><div class="chip" onclick="pick(this,'mktT')">Hashtag Strategy</div><div class="chip" onclick="pick(this,'mktT')">Content Repurposing</div></div></div>
+  <div class="fsec"><label class="flbl">Business Details</label><textarea class="tin" id="mktD" placeholder="Your business, offer, and audience..."></textarea></div>
+  <button class="gbtn" onclick="genAI('marketing')">🪷 Generate</button>
+  <div class="out" id="out-marketing"><div class="outlbl">✦ Your Strategy</div><div class="outtxt" id="outtxt-marketing"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-marketing')">Copy</button><button class="abtn g" onclick="genAI('marketing')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- FUNNELS -->
+
+<div class="panel" id="p-funnels"><div class="scrl">
+<div class="card"><span class="badge ba">Proven Systems</span><h2>🔻 Industry Proven Funnels</h2><p>Complete conversion-optimized sales funnels proven to work in your industry.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Funnel Type</label><div class="chips" id="funT"><div class="chip on" onclick="pick(this,'funT')">Digital Product Funnel</div><div class="chip" onclick="pick(this,'funT')">Lead Gen Funnel</div><div class="chip" onclick="pick(this,'funT')">Low Ticket Upsell</div><div class="chip" onclick="pick(this,'funT')">Course Launch</div><div class="chip" onclick="pick(this,'funT')">Affiliate Funnel</div><div class="chip" onclick="pick(this,'funT')">Webinar Funnel</div></div></div>
+  <div class="fsec"><label class="flbl">Business Details</label><textarea class="tin" id="funD" placeholder="Your offer, audience, and goals..."></textarea></div>
+  <button class="gbtn" onclick="genAI('funnels')">🪷 Build My Funnel</button>
+  <div class="out" id="out-funnels"><div class="outlbl">✦ Your Funnel</div><div class="outtxt" id="outtxt-funnels"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-funnels')">Copy</button><button class="abtn g" onclick="genAI('funnels')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- OFFER CHECKER -->
+
+<div class="panel" id="p-offercheck"><div class="scrl">
+<div class="card"><span class="badge ba">Offer Intelligence</span><h2>✅ Offer Checker and Builder</h2><p>Check if your offer is ready, validate concepts, and build complete offers with funnels.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">What Do You Need</label><div class="chips" id="offerM"><div class="chip on" onclick="pick(this,'offerM')">Check My Offer</div><div class="chip" onclick="pick(this,'offerM')">Build From Scratch</div><div class="chip" onclick="pick(this,'offerM')">Validate Concept</div></div></div>
+  <div class="fsec"><label class="flbl">Offer and Idea Details</label><textarea class="tin" id="offerD" placeholder="Describe your offer, price, audience, transformation..."></textarea></div>
+  <button class="gbtn" onclick="genAI('offercheck')">🪷 Check My Offer</button>
+  <div class="out" id="out-offercheck"><div class="outlbl">✦ Offer Analysis</div><div class="outtxt" id="outtxt-offercheck"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-offercheck')">Copy</button><button class="abtn g" onclick="genAI('offercheck')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- BUSINESS AUDIT -->
+
+<div class="panel" id="p-bizaudit"><div class="scrl">
+<div class="card"><span class="badge ba">Business Intelligence</span><h2>🔍 Business Audit</h2><p>Find what is hurting, what is working, what to cut, and what to scale.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Audit Focus</label><div class="chips" id="audT"><div class="chip on" onclick="pick(this,'audT')">Full Business Audit</div><div class="chip" onclick="pick(this,'audT')">Social Media Audit</div><div class="chip" onclick="pick(this,'audT')">Offer Audit</div><div class="chip" onclick="pick(this,'audT')">Content Audit</div><div class="chip" onclick="pick(this,'audT')">Funnel Audit</div></div></div>
+  <div class="fsec"><label class="flbl">Tell Me About Your Business</label><textarea class="tin" id="audD" placeholder="Describe your business, what is working, what is not..."></textarea></div>
+  <button class="gbtn" onclick="genAI('bizaudit')">🪷 Run Audit</button>
+  <div class="out" id="out-bizaudit"><div class="outlbl">✦ Your Audit Report</div><div class="outtxt" id="outtxt-bizaudit"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-bizaudit')">Copy</button><button class="abtn g" onclick="genAI('bizaudit')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- DIGITAL PRODUCTS -->
+
+<div class="panel" id="p-dprod"><div class="scrl">
+<div class="card"><span class="badge ba">Digital Products</span><h2>📦 Digital Product Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Product Type</label><div class="chips" id="dpT"><div class="chip on" onclick="pick(this,'dpT')">Ebook and Guide</div><div class="chip" onclick="pick(this,'dpT')">Digital Planner</div><div class="chip" onclick="pick(this,'dpT')">Mini Course</div><div class="chip" onclick="pick(this,'dpT')">Prompt Pack</div><div class="chip" onclick="pick(this,'dpT')">Template Bundle</div><div class="chip" onclick="pick(this,'dpT')">Swipe File Vault</div></div></div>
+  <div class="fsec"><label class="flbl">Price</label><div class="chips" id="dpP"><div class="chip" onclick="pick(this,'dpP')">Free Lead Magnet</div><div class="chip on" onclick="pick(this,'dpP')">$7 to $17</div><div class="chip" onclick="pick(this,'dpP')">$27 to $47</div><div class="chip" onclick="pick(this,'dpP')">$97 plus</div></div></div>
+  <div class="fsec"><label class="flbl">Topic and Audience</label><textarea class="tin" id="dpD" placeholder="Topic, audience, and transformation..."></textarea></div>
+  <button class="gbtn" onclick="genAI('dprod')">🪷 Generate Blueprint</button>
+  <div class="out" id="out-dprod"><div class="outlbl">✦ Product Blueprint</div><div class="outtxt" id="outtxt-dprod"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-dprod')">Copy</button><button class="abtn g" onclick="genAI('dprod')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- KDP -->
+
+<div class="panel" id="p-kdp"><div class="scrl">
+<div class="card"><span class="badge ba">KDP Publishing</span><h2>📚 KDP Book Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Book Type</label><div class="chips" id="kdpT"><div class="chip on" onclick="pick(this,'kdpT')">Low Content Journal</div><div class="chip" onclick="pick(this,'kdpT')">Activity Book</div><div class="chip" onclick="pick(this,'kdpT')">Coloring Book</div><div class="chip" onclick="pick(this,'kdpT')">Puzzle Book</div><div class="chip" onclick="pick(this,'kdpT')">Planner</div><div class="chip" onclick="pick(this,'kdpT')">Poetry Collection</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="kdpD" placeholder="Topic, audience, and requirements..."></textarea></div>
+  <button class="gbtn" onclick="genAI('kdp')">🪷 Create KDP Book</button>
+  <div class="out" id="out-kdp"><div class="outlbl">✦ KDP Blueprint</div><div class="outtxt" id="outtxt-kdp"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-kdp')">Copy</button><button class="abtn g" onclick="genAI('kdp')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- STORYBOOKS -->
+
+<div class="panel" id="p-storybooks"><div class="scrl">
+<div class="card"><span class="badge ba">KDP and Storybooks</span><h2>🧒 Children Storybook Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Age Range</label><div class="chips" id="sbA"><div class="chip on" onclick="pick(this,'sbA')">2 to 5 years</div><div class="chip" onclick="pick(this,'sbA')">6 to 8 years</div><div class="chip" onclick="pick(this,'sbA')">9 to 12 years</div></div></div>
+  <div class="fsec"><label class="flbl">Theme</label><div class="chips" id="sbTh"><div class="chip on" onclick="pick(this,'sbTh')">Adventure</div><div class="chip" onclick="pick(this,'sbTh')">Animals</div><div class="chip" onclick="pick(this,'sbTh')">Friendship</div><div class="chip" onclick="pick(this,'sbTh')">Diversity</div><div class="chip" onclick="pick(this,'sbTh')">Fantasy</div><div class="chip" onclick="pick(this,'sbTh')">Mindfulness</div></div></div>
+  <div class="fsec"><label class="flbl">Story Concept</label><textarea class="tin" id="sbD" placeholder="Main character, story idea, and key message..."></textarea></div>
+  <button class="gbtn" onclick="genAI('storybooks')">🪷 Create Storybook</button>
+  <div class="out" id="out-storybooks"><div class="outlbl">✦ Complete Storybook</div><div class="outtxt" id="outtxt-storybooks"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-storybooks')">Copy</button><button class="abtn g" onclick="genAI('storybooks')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- PLR MRR -->
+
+<div class="panel" id="p-plrmrr"><div class="scrl">
+<div class="card"><span class="badge ba">Licensing</span><h2>♻️ PLR and MRR Rights Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Rights Type</label><div class="chips" id="plrT"><div class="chip on" onclick="pick(this,'plrT')">PLR</div><div class="chip" onclick="pick(this,'plrT')">MRR</div><div class="chip" onclick="pick(this,'plrT')">Reseller Rights</div></div></div>
+  <div class="fsec"><label class="flbl">Product Details</label><textarea class="tin" id="plrD" placeholder="Product type, topic, and rights to include..."></textarea></div>
+  <button class="gbtn" onclick="genAI('plrmrr')">🪷 Create Package</button>
+  <div class="out" id="out-plrmrr"><div class="outlbl">✦ PLR MRR Package</div><div class="outtxt" id="outtxt-plrmrr"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-plrmrr')">Copy</button><button class="abtn g" onclick="genAI('plrmrr')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- LEAD MAGNET -->
+
+<div class="panel" id="p-leadmagnet"><div class="scrl">
+<div class="card"><span class="badge ba">Lead Magnets</span><h2>🧲 Lead Magnet Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="lmT"><div class="chip on" onclick="pick(this,'lmT')">Free Guide PDF</div><div class="chip" onclick="pick(this,'lmT')">Checklist</div><div class="chip" onclick="pick(this,'lmT')">Mini Course</div><div class="chip" onclick="pick(this,'lmT')">Swipe File</div><div class="chip" onclick="pick(this,'lmT')">Challenge</div></div></div>
+  <div class="fsec"><label class="flbl">Niche and Audience</label><textarea class="tin" id="lmD" placeholder="Niche, audience, and problem it solves..."></textarea></div>
+  <button class="gbtn" onclick="genAI('leadmagnet')">🪷 Create Lead Magnet</button>
+  <div class="out" id="out-leadmagnet"><div class="outlbl">✦ Your Lead Magnet</div><div class="outtxt" id="outtxt-leadmagnet"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-leadmagnet')">Copy</button><button class="abtn g" onclick="genAI('leadmagnet')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- AUDIENCE -->
+
+<div class="panel" id="p-audience"><div class="scrl">
+<div class="card"><span class="badge ba">Research</span><h2>🎯 Target Audience Finder</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Niche and Offer</label><textarea class="tin" id="audFD" placeholder="Describe your niche and what you help people with..."></textarea></div>
+  <button class="gbtn" onclick="genAI('audience')">🪷 Find My Audience</button>
+  <div class="out" id="out-audience"><div class="outlbl">✦ Your Target Audience</div><div class="outtxt" id="outtxt-audience"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-audience')">Copy</button><button class="abtn g" onclick="genAI('audience')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- NICHE -->
+
+<div class="panel" id="p-niche"><div class="scrl">
+<div class="card"><span class="badge ba">Niche Research</span><h2>💡 Passive Niche Finder</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Your Interests and Skills</label><textarea class="tin" id="nicheD" placeholder="Interests, skills, and type of income you want..."></textarea></div>
+  <button class="gbtn" onclick="genAI('niche')">🪷 Find My Niche</button>
+  <div class="out" id="out-niche"><div class="outlbl">✦ Niche Report</div><div class="outtxt" id="outtxt-niche"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-niche')">Copy</button><button class="abtn g" onclick="genAI('niche')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- KEYWORDS -->
+
+<div class="panel" id="p-keywords"><div class="scrl">
+<div class="card"><span class="badge ba">SEO Research</span><h2>🔑 Keyword Research</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label><div class="chips" id="kwP"><div class="chip on" onclick="pick(this,'kwP')">Pinterest</div><div class="chip" onclick="pick(this,'kwP')">Google</div><div class="chip" onclick="pick(this,'kwP')">YouTube</div><div class="chip" onclick="pick(this,'kwP')">Etsy</div><div class="chip" onclick="pick(this,'kwP')">All</div></div></div>
+  <div class="fsec"><label class="flbl">Niche and Topic</label><textarea class="tin" id="kwD" placeholder="Your niche or topic..." style="min-height:50px;"></textarea></div>
+  <button class="gbtn" onclick="genAI('keywords')">🪷 Find Keywords</button>
+  <div class="out" id="out-keywords"><div class="outlbl">✦ Your Keywords</div><div class="outtxt" id="outtxt-keywords"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-keywords')">Copy</button><button class="abtn g" onclick="genAI('keywords')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- CALENDAR -->
+
+<div class="panel" id="p-calendar"><div class="scrl">
+<div class="card"><span class="badge ba">Content Planning</span><h2>📅 Content Calendar</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label><div class="chips" id="calP"><div class="chip on" onclick="pick(this,'calP')">Instagram</div><div class="chip" onclick="pick(this,'calP')">Pinterest</div><div class="chip" onclick="pick(this,'calP')">TikTok</div><div class="chip" onclick="pick(this,'calP')">All</div></div></div>
+  <div class="fsec"><label class="flbl">Period</label><div class="chips" id="calT"><div class="chip" onclick="pick(this,'calT')">1 Week</div><div class="chip on" onclick="pick(this,'calT')">30 Days</div><div class="chip" onclick="pick(this,'calT')">90 Days</div></div></div>
+  <div class="fsec"><label class="flbl">Niche and Goals</label><textarea class="tin" id="calD" placeholder="Niche, content pillars, and goals..."></textarea></div>
+  <button class="gbtn" onclick="genAI('calendar')">🪷 Create Calendar</button>
+  <div class="out" id="out-calendar"><div class="outlbl">✦ Your Calendar</div><div class="outtxt" id="outtxt-calendar"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-calendar')">Copy</button><button class="abtn g" onclick="genAI('calendar')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- AD CREATOR -->
+
+<div class="panel" id="p-adcreator"><div class="scrl">
+<div class="card"><span class="badge ba">Advertising</span><h2>📣 Ad Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label><div class="chips" id="adP"><div class="chip on" onclick="pick(this,'adP')">Meta</div><div class="chip" onclick="pick(this,'adP')">TikTok</div><div class="chip" onclick="pick(this,'adP')">Pinterest</div><div class="chip" onclick="pick(this,'adP')">Google</div><div class="chip" onclick="pick(this,'adP')">YouTube</div></div></div>
+  <div class="fsec"><label class="flbl">Ad Type</label><div class="chips" id="adT"><div class="chip on" onclick="pick(this,'adT')">Image Ad</div><div class="chip" onclick="pick(this,'adT')">Video Script</div><div class="chip" onclick="pick(this,'adT')">Carousel</div><div class="chip" onclick="pick(this,'adT')">Retargeting</div></div></div>
+  <div class="fsec"><label class="flbl">Product Details</label><textarea class="tin" id="adD" placeholder="Product, audience, and key benefits..."></textarea></div>
+  <button class="gbtn" onclick="genAI('adcreator')">🪷 Create Ad</button>
+  <div class="out" id="out-adcreator"><div class="outlbl">✦ Your Ad</div><div class="outtxt" id="outtxt-adcreator"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-adcreator')">Copy</button><button class="abtn g" onclick="genAI('adcreator')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- CAMPAIGN -->
+
+<div class="panel" id="p-campaign"><div class="scrl">
+<div class="card"><span class="badge ba">Campaigns</span><h2>🚀 Campaign Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="campT"><div class="chip on" onclick="pick(this,'campT')">Product Launch</div><div class="chip" onclick="pick(this,'campT')">Flash Sale</div><div class="chip" onclick="pick(this,'campT')">Brand Awareness</div><div class="chip" onclick="pick(this,'campT')">List Building</div><div class="chip" onclick="pick(this,'campT')">Holiday</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="campD" placeholder="Product, goal, timeline, audience..."></textarea></div>
+  <button class="gbtn" onclick="genAI('campaign')">🪷 Create Campaign</button>
+  <div class="out" id="out-campaign"><div class="outlbl">✦ Your Campaign</div><div class="outtxt" id="outtxt-campaign"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-campaign')">Copy</button><button class="abtn g" onclick="genAI('campaign')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- AVATAR -->
+
+<div class="panel" id="p-avatar"><div class="scrl">
+<div class="card"><span class="badge ba">Avatar and Branding</span><h2>🧿 Avatar and AI Twin Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="avT"><div class="chip on" onclick="pick(this,'avT')">Faceless Brand Avatar</div><div class="chip" onclick="pick(this,'avT')">AI Twin</div><div class="chip" onclick="pick(this,'avT')">Cartoon</div><div class="chip" onclick="pick(this,'avT')">Brand Mascot</div></div></div>
+  <div class="fsec"><label class="flbl">Skin Tone</label><div class="chips" id="avS"><div class="chip" onclick="pick(this,'avS')">Light</div><div class="chip" onclick="pick(this,'avS')">Medium</div><div class="chip" onclick="pick(this,'avS')">Brown</div><div class="chip" onclick="pick(this,'avS')">Deep Brown</div><div class="chip" onclick="pick(this,'avS')">Ebony</div></div></div>
+  <div class="fsec"><label class="flbl">Hair Style</label><div class="chips" id="avH"><div class="chip" onclick="pick(this,'avH')">Long Straight</div><div class="chip" onclick="pick(this,'avH')">Curly Wavy</div><div class="chip" onclick="pick(this,'avH')">Natural Coils</div><div class="chip" onclick="pick(this,'avH')">Braids Locs</div><div class="chip" onclick="pick(this,'avH')">Bob Short</div><div class="chip" onclick="pick(this,'avH')">Updo</div></div></div>
+  <div class="fsec"><label class="flbl">Brand Vibe</label><textarea class="tin" id="avD" placeholder="Brand personality and aesthetic..."></textarea></div>
+  <button class="gbtn" onclick="genAI('avatar')">🪷 Generate Avatar</button>
+  <div class="out" id="out-avatar"><div class="outlbl">✦ Avatar Description and Prompts</div><div class="outtxt" id="outtxt-avatar"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-avatar')">Copy</button><button class="abtn g" onclick="genAI('avatar')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- CHARACTER -->
+
+<div class="panel" id="p-character"><div class="scrl">
+<div class="card"><span class="badge ba">Characters</span><h2>👤 Character Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Count</label><div class="chips" id="chrN"><div class="chip on" onclick="pick(this,'chrN')">1 Character</div><div class="chip" onclick="pick(this,'chrN')">2 Characters</div><div class="chip" onclick="pick(this,'chrN')">3 or More</div></div></div>
+  <div class="fsec"><label class="flbl">Role</label><div class="chips" id="chrR"><div class="chip on" onclick="pick(this,'chrR')">Brand Avatar</div><div class="chip" onclick="pick(this,'chrR')">Storybook</div><div class="chip" onclick="pick(this,'chrR')">Comic Book</div><div class="chip" onclick="pick(this,'chrR')">Game Character</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="chrD" placeholder="Appearance, personality, and role..."></textarea></div>
+  <button class="gbtn" onclick="genAI('character')">🪷 Generate Character</button>
+  <div class="out" id="out-character"><div class="outlbl">✦ Character Sheet</div><div class="outtxt" id="outtxt-character"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-character')">Copy</button><button class="abtn g" onclick="genAI('character')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- BRAND KIT -->
+
+<div class="panel" id="p-brand"><div class="scrl">
+<div class="card"><span class="badge ba">Brand Identity</span><h2>💎 Brand Kit Builder</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Vibe</label><div class="chips" id="bV"><div class="chip on" onclick="pick(this,'bV')">Luxury Elegant</div><div class="chip" onclick="pick(this,'bV')">Calm Mindful</div><div class="chip" onclick="pick(this,'bV')">Bold</div><div class="chip" onclick="pick(this,'bV')">Playful</div><div class="chip" onclick="pick(this,'bV')">Earthy</div></div></div>
+  <div class="fsec"><label class="flbl">Business Details</label><textarea class="tin" id="bD" placeholder="Brand name, niche, audience, mission..."></textarea></div>
+  <button class="gbtn" onclick="genAI('brand')">🪷 Generate Brand Kit</button>
+  <div class="out" id="out-brand"><div class="outlbl">✦ Your Brand Kit</div><div class="outtxt" id="outtxt-brand"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-brand')">Copy</button><button class="abtn g" onclick="genAI('brand')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- WRITER -->
+
+<div class="panel" id="p-writer"><div class="scrl">
+<div class="card"><span class="badge ba">AI Writer</span><h2>✍️ AI Writer</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="wrT"><div class="chip on" onclick="pick(this,'wrT')">Essay</div><div class="chip" onclick="pick(this,'wrT')">Short Story</div><div class="chip" onclick="pick(this,'wrT')">Creative Writing</div><div class="chip" onclick="pick(this,'wrT')">Research Summary</div></div></div>
+  <div class="fsec"><label class="flbl">Topic</label><textarea class="tin" id="wrD" placeholder="Topic, tone, and requirements..."></textarea></div>
+  <button class="gbtn" onclick="genAI('writer')">🪷 Write It</button>
+  <div class="out" id="out-writer"><div class="outlbl">✦ Your Content</div><div class="outtxt" id="outtxt-writer"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-writer')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-writer')">PDF</button><button class="abtn g" onclick="genAI('writer')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- BLOG -->
+
+<div class="panel" id="p-blog"><div class="scrl">
+<div class="card"><span class="badge ba">Content</span><h2>📝 Blog Post Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Tone</label><div class="chips" id="blogT"><div class="chip on" onclick="pick(this,'blogT')">Informative</div><div class="chip" onclick="pick(this,'blogT')">Conversational</div><div class="chip" onclick="pick(this,'blogT')">Business Sheek</div><div class="chip" onclick="pick(this,'blogT')">Story-Based</div></div></div>
+  <div class="fsec"><label class="flbl">Word Count</label><div class="chips" id="blogW"><div class="chip" onclick="pick(this,'blogW')">500 words</div><div class="chip on" onclick="pick(this,'blogW')">800 words</div><div class="chip" onclick="pick(this,'blogW')">1200 words</div><div class="chip" onclick="pick(this,'blogW')">2000 words</div></div></div>
+  <div class="fsec"><label class="flbl">Topic</label><textarea class="tin" id="blogD" placeholder="Blog post topic..." style="min-height:50px;"></textarea></div>
+  <button class="gbtn" onclick="genAI('blog')">🪷 Write Blog Post</button>
+  <div class="out" id="out-blog"><div class="outlbl">✦ Your Blog Post</div><div class="outtxt" id="outtxt-blog"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-blog')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-blog')">PDF</button><button class="abtn g" onclick="genAI('blog')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- SCRIPTS -->
+
+<div class="panel" id="p-scripts"><div class="scrl">
+<div class="card"><span class="badge ba">Scripts</span><h2>🎙️ Script Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="scrT"><div class="chip on" onclick="pick(this,'scrT')">Reel Script</div><div class="chip" onclick="pick(this,'scrT')">YouTube Video</div><div class="chip" onclick="pick(this,'scrT')">TikTok</div><div class="chip" onclick="pick(this,'scrT')">Ad Script</div><div class="chip" onclick="pick(this,'scrT')">Sales Script</div><div class="chip" onclick="pick(this,'scrT')">UGC Script</div></div></div>
+  <div class="fsec"><label class="flbl">Topic</label><textarea class="tin" id="scrD" placeholder="Topic, product, or message..."></textarea></div>
+  <button class="gbtn" onclick="genAI('scripts')">🪷 Generate Script</button>
+  <div class="out" id="out-scripts"><div class="outlbl">✦ Your Script</div><div class="outtxt" id="outtxt-scripts"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-scripts')">Copy</button><button class="abtn g" onclick="genAI('scripts')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- VOICEOVER -->
+
+<div class="panel" id="p-voiceover"><div class="scrl">
+<div class="card"><span class="badge ba">Voiceover</span><h2>🎤 Voiceover Script</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="voT"><div class="chip on" onclick="pick(this,'voT')">Reel</div><div class="chip" onclick="pick(this,'voT')">Ad</div><div class="chip" onclick="pick(this,'voT')">Podcast Intro</div><div class="chip" onclick="pick(this,'voT')">Presentation</div></div></div>
+  <div class="fsec"><label class="flbl">Topic</label><textarea class="tin" id="voD" placeholder="Voiceover topic and message..."></textarea></div>
+  <button class="gbtn" onclick="genAI('voiceover')">🪷 Generate Script</button>
+  <div class="out" id="out-voiceover"><div class="outlbl">✦ Your Script</div><div class="outtxt" id="outtxt-voiceover"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-voiceover')">Copy</button><button class="abtn g" onclick="genAI('voiceover')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- EMAIL -->
+
+<div class="panel" id="p-email"><div class="scrl">
+<div class="card"><span class="badge ba">Email</span><h2>📧 DFY Email Templates</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="emlT"><div class="chip on" onclick="pick(this,'emlT')">Welcome Sequence</div><div class="chip" onclick="pick(this,'emlT')">Launch Sequence</div><div class="chip" onclick="pick(this,'emlT')">Nurture</div><div class="chip" onclick="pick(this,'emlT')">Re-engagement</div><div class="chip" onclick="pick(this,'emlT')">Sales Email</div><div class="chip" onclick="pick(this,'emlT')">Newsletter</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="emlD" placeholder="Brand, offer, and audience..."></textarea></div>
+  <button class="gbtn" onclick="genAI('email')">🪷 Generate Emails</button>
+  <div class="out" id="out-email"><div class="outlbl">✦ Your Emails</div><div class="outtxt" id="outtxt-email"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-email')">Copy</button><button class="abtn g" onclick="genAI('email')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- DM SCRIPTS -->
+
+<div class="panel" id="p-dmscripts"><div class="scrl">
+<div class="card"><span class="badge ba">DM Scripts</span><h2>💌 DFY DM Scripts</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Goal</label><div class="chips" id="dmT"><div class="chip on" onclick="pick(this,'dmT')">Cold Outreach</div><div class="chip" onclick="pick(this,'dmT')">Follow-Up</div><div class="chip" onclick="pick(this,'dmT')">Sales Close</div><div class="chip" onclick="pick(this,'dmT')">Collaboration</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="dmD" placeholder="Who you are DMing and what you are offering..."></textarea></div>
+  <button class="gbtn" onclick="genAI('dmscripts')">🪷 Generate DM Scripts</button>
+  <div class="out" id="out-dmscripts"><div class="outlbl">✦ Your DM Scripts</div><div class="outtxt" id="outtxt-dmscripts"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-dmscripts')">Copy</button><button class="abtn g" onclick="genAI('dmscripts')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- CTA -->
+
+<div class="panel" id="p-cta"><div class="scrl">
+<div class="card"><span class="badge ba">CTAs</span><h2>🎯 CTA Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="ctaT"><div class="chip on" onclick="pick(this,'ctaT')">Button CTA</div><div class="chip" onclick="pick(this,'ctaT')">Caption CTA</div><div class="chip" onclick="pick(this,'ctaT')">Email CTA</div><div class="chip" onclick="pick(this,'ctaT')">Story CTA</div></div></div>
+  <div class="fsec"><label class="flbl">Goal and Offer</label><textarea class="tin" id="ctaD" placeholder="What action should audience take..."></textarea></div>
+  <button class="gbtn" onclick="genAI('cta')">🪷 Generate CTAs</button>
+  <div class="out" id="out-cta"><div class="outlbl">✦ Your CTAs</div><div class="outtxt" id="outtxt-cta"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-cta')">Copy</button><button class="abtn g" onclick="genAI('cta')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- QUOTE CREATOR -->
+
+<div class="panel" id="p-quote"><div class="scrl">
+<div class="card"><span class="badge bf">Free Image Gen plus AI Text</span><h2>💬 Quote Creator</h2><p>Generate quote packs, graphics, and calendars for your brand.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Quote Type</label><div class="chips" id="quoteT"><div class="chip on" onclick="pick(this,'quoteT')">Motivational</div><div class="chip" onclick="pick(this,'quoteT')">Business</div><div class="chip" onclick="pick(this,'quoteT')">Mindfulness</div><div class="chip" onclick="pick(this,'quoteT')">Affirmation</div><div class="chip" onclick="pick(this,'quoteT')">Funny</div><div class="chip" onclick="pick(this,'quoteT')">Brand Quote</div><div class="chip" onclick="pick(this,'quoteT')">Spiritual</div></div></div>
+  <div class="fsec"><label class="flbl">Output</label><div class="chips" id="quoteO"><div class="chip on" onclick="pick(this,'quoteO')">10 Written Quotes</div><div class="chip" onclick="pick(this,'quoteO')">30 Quote Pack</div><div class="chip" onclick="pick(this,'quoteO')">Quote Calendar</div><div class="chip" onclick="pick(this,'quoteO')">Quote Graphic Image</div></div></div>
+  <div class="fsec"><label class="flbl">Style for graphic</label><div class="chips" id="quoteS"><div class="chip on" onclick="pick(this,'quoteS')">Luxury Elegant</div><div class="chip" onclick="pick(this,'quoteS')">Minimalist</div><div class="chip" onclick="pick(this,'quoteS')">Bold Dark</div><div class="chip" onclick="pick(this,'quoteS')">Floral Soft</div><div class="chip" onclick="pick(this,'quoteS')">Neon Vibrant</div></div></div>
+  <div class="fsec"><label class="flbl">Topic and Niche</label><textarea class="tin" id="quoteD" placeholder="e.g. Quotes for calm digital entrepreneurs who value passive income..."></textarea></div>
+  <button class="gbtn" id="quoteBtnGen" onclick="genQuote()">🪷 Generate Quotes</button>
+  <div class="out" id="quoteOut"><div class="outlbl">✦ Your Quotes</div><div id="quoteResult"></div><div class="outacts" id="quoteActs"></div></div>
+</div></div></div>
+
+<!-- PRODUCT DESC -->
+
+<div class="panel" id="p-proddesc"><div class="scrl">
+<div class="card"><span class="badge ba">Copywriting</span><h2>🏷️ Product Descriptions</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label><div class="chips" id="pdP"><div class="chip on" onclick="pick(this,'pdP')">Etsy</div><div class="chip" onclick="pick(this,'pdP')">Amazon</div><div class="chip" onclick="pick(this,'pdP')">Shopify</div><div class="chip" onclick="pick(this,'pdP')">Beacons Stan</div></div></div>
+  <div class="fsec"><label class="flbl">Product Details</label><textarea class="tin" id="pdD" placeholder="Product name, features, benefits, and target buyer..."></textarea></div>
+  <button class="gbtn" onclick="genAI('proddesc')">🪷 Generate Description</button>
+  <div class="out" id="out-proddesc"><div class="outlbl">✦ Your Description</div><div class="outtxt" id="outtxt-proddesc"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-proddesc')">Copy</button><button class="abtn g" onclick="genAI('proddesc')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- DOCUMENT -->
+
+<div class="panel" id="p-doc"><div class="scrl">
+<div class="card"><span class="badge ba">Documents</span><h2>📄 Document Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="docT"><div class="chip on" onclick="pick(this,'docT')">Business Report</div><div class="chip" onclick="pick(this,'docT')">Brand Guide</div><div class="chip" onclick="pick(this,'docT')">SOP</div><div class="chip" onclick="pick(this,'docT')">Proposal</div><div class="chip" onclick="pick(this,'docT')">Newsletter</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="docD" placeholder="Document topic and requirements..."></textarea></div>
+  <button class="gbtn" onclick="genAI('doc')">🪷 Create Document</button>
+  <div class="out" id="out-doc"><div class="outlbl">✦ Your Document</div><div class="outtxt" id="outtxt-doc"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-doc')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-doc')">PDF</button><button class="abtn g" onclick="genAI('doc')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- PRESENTATION -->
+
+<div class="panel" id="p-presentation"><div class="scrl">
+<div class="card"><span class="badge ba">Slides</span><h2>📊 Slide Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="presT"><div class="chip on" onclick="pick(this,'presT')">Pitch Deck</div><div class="chip" onclick="pick(this,'presT')">Course Slides</div><div class="chip" onclick="pick(this,'presT')">Workshop</div><div class="chip" onclick="pick(this,'presT')">Brand Presentation</div></div></div>
+  <div class="fsec"><label class="flbl">Topic</label><textarea class="tin" id="presD" placeholder="Presentation topic and audience..."></textarea></div>
+  <button class="gbtn" onclick="genAI('presentation')">🪷 Create Slides</button>
+  <div class="out" id="out-presentation"><div class="outlbl">✦ Slide Outline</div><div class="outtxt" id="outtxt-presentation"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-presentation')">Copy</button><button class="abtn g" onclick="genAI('presentation')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- RESUME -->
+
+<div class="panel" id="p-resume"><div class="scrl">
+<div class="card"><span class="badge ba">Career</span><h2>📋 Resume Builder</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Style</label><div class="chips" id="resT"><div class="chip on" onclick="pick(this,'resT')">Modern</div><div class="chip" onclick="pick(this,'resT')">Creative</div><div class="chip" onclick="pick(this,'resT')">Corporate</div></div></div>
+  <div class="fsec"><label class="flbl">Your Information</label><textarea class="tin" id="resD" placeholder="Name, title, skills, experience, education..."></textarea></div>
+  <button class="gbtn" onclick="genAI('resume')">🪷 Build Resume</button>
+  <div class="out" id="out-resume"><div class="outlbl">✦ Your Resume</div><div class="outtxt" id="outtxt-resume"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-resume')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-resume')">PDF</button><button class="abtn g" onclick="genAI('resume')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- LANDING PAGE -->
+
+<div class="panel" id="p-landing"><div class="scrl">
+<div class="card"><span class="badge ba">Copywriting</span><h2>🌐 Landing Page Builder</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="landT"><div class="chip on" onclick="pick(this,'landT')">Sales Page</div><div class="chip" onclick="pick(this,'landT')">Lead Magnet</div><div class="chip" onclick="pick(this,'landT')">Opt-In Page</div><div class="chip" onclick="pick(this,'landT')">Product Launch</div><div class="chip" onclick="pick(this,'landT')">About Page</div></div></div>
+  <div class="fsec"><label class="flbl">Offer Details</label><textarea class="tin" id="landD" placeholder="Product, price, audience, benefits..."></textarea></div>
+  <button class="gbtn" onclick="genAI('landing')">🪷 Build Landing Page</button>
+  <div class="out" id="out-landing"><div class="outlbl">✦ Landing Page Copy</div><div class="outtxt" id="outtxt-landing"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-landing')">Copy</button><button class="abtn g" onclick="genAI('landing')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- EDU -->
+
+<div class="panel" id="p-edu"><div class="scrl">
+<div class="card"><span class="badge ba">Education</span><h2>🎓 Educational Tools</h2><p>Answer questions for any subject from grade school through high school.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Grade Level</label><div class="chips" id="eduL"><div class="chip" onclick="pick(this,'eduL')">Elementary K-5</div><div class="chip on" onclick="pick(this,'eduL')">Middle School 6-8</div><div class="chip" onclick="pick(this,'eduL')">High School 9-12</div></div></div>
+  <div class="fsec"><label class="flbl">Subject</label><div class="chips" id="eduS"><div class="chip on" onclick="pick(this,'eduS')">Math</div><div class="chip" onclick="pick(this,'eduS')">Science</div><div class="chip" onclick="pick(this,'eduS')">English</div><div class="chip" onclick="pick(this,'eduS')">History</div><div class="chip" onclick="pick(this,'eduS')">Biology</div><div class="chip" onclick="pick(this,'eduS')">Chemistry</div><div class="chip" onclick="pick(this,'eduS')">Physics</div><div class="chip" onclick="pick(this,'eduS')">Computer Science</div></div></div>
+  <div class="fsec"><label class="flbl">Your Question</label><textarea class="tin" id="eduQ" placeholder="Ask any question or describe what you need to learn..."></textarea></div>
+  <button class="gbtn" onclick="genAI('edu')">🪷 Get Answer</button>
+  <div class="out" id="out-edu"><div class="outlbl">✦ Your Answer</div><div class="outtxt" id="outtxt-edu"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-edu')">Copy</button><button class="abtn g" onclick="genAI('edu')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- AI PROMPTS -->
+
+<div class="panel" id="p-aiprompts"><div class="scrl">
+<div class="card"><span class="badge ba">AI Prompts</span><h2>🤖 AI Platform Prompts</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label><div class="chips" id="aiP"><div class="chip on" onclick="pick(this,'aiP')">ChatGPT</div><div class="chip" onclick="pick(this,'aiP')">Claude</div><div class="chip" onclick="pick(this,'aiP')">Gemini</div><div class="chip" onclick="pick(this,'aiP')">Perplexity</div><div class="chip" onclick="pick(this,'aiP')">Copilot</div><div class="chip" onclick="pick(this,'aiP')">Bing</div></div></div>
+  <div class="fsec"><label class="flbl">Category</label><div class="chips" id="aiC"><div class="chip on" onclick="pick(this,'aiC')">Content Creation</div><div class="chip" onclick="pick(this,'aiC')">Image Generation</div><div class="chip" onclick="pick(this,'aiC')">Business Strategy</div><div class="chip" onclick="pick(this,'aiC')">Marketing</div><div class="chip" onclick="pick(this,'aiC')">SEO</div></div></div>
+  <div class="fsec"><label class="flbl">Goal</label><textarea class="tin" id="aiD" placeholder="What do you want to accomplish..."></textarea></div>
+  <button class="gbtn" onclick="genAI('aiprompts')">🪷 Generate Prompt</button>
+  <div class="out" id="out-aiprompts"><div class="outlbl">✦ Your Prompt</div><div class="outtxt" id="outtxt-aiprompts"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-aiprompts')">Copy</button><button class="abtn g" onclick="genAI('aiprompts')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- IMAGE EDITING GUIDE -->
+
+<div class="panel" id="p-imgedit"><div class="scrl">
+<div class="card"><span class="badge ba">AI Guided</span><h2>✨ Image Editing Guide</h2><p>Step-by-step guides for face swap, cartoon, sketch, and 50 plus effects.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Effect</label><div class="chips" id="editFx"><div class="chip on" onclick="pick(this,'editFx')">Face Swap</div><div class="chip" onclick="pick(this,'editFx')">Eye Color Change</div><div class="chip" onclick="pick(this,'editFx')">Outfit Switch</div><div class="chip" onclick="pick(this,'editFx')">Background Remove</div><div class="chip" onclick="pick(this,'editFx')">Color Grading</div><div class="chip" onclick="pick(this,'editFx')">Cartoon Creator</div><div class="chip" onclick="pick(this,'editFx')">Photo to Sketch</div><div class="chip" onclick="pick(this,'editFx')">Photo to Coloring Page</div><div class="chip" onclick="pick(this,'editFx')">Oil Painting</div><div class="chip" onclick="pick(this,'editFx')">Watercolor Effect</div><div class="chip" onclick="pick(this,'editFx')">Anime Style</div><div class="chip" onclick="pick(this,'editFx')">Ghibli Style</div><div class="chip" onclick="pick(this,'editFx')">Double Exposure</div><div class="chip" onclick="pick(this,'editFx')">Pop Out Effect</div><div class="chip" onclick="pick(this,'editFx')">Blur Unblur</div><div class="chip" onclick="pick(this,'editFx')">Object Removal</div><div class="chip" onclick="pick(this,'editFx')">Upscale Image</div><div class="chip" onclick="pick(this,'editFx')">Restore Old Photo</div><div class="chip" onclick="pick(this,'editFx')">Colorize Black and White</div></div></div>
+  <div class="fsec"><label class="flbl">Goal</label><textarea class="tin" id="editD" placeholder="Describe what you want to achieve..."></textarea></div>
+  <button class="gbtn" onclick="genAI('imgedit')">🪷 Get Guide</button>
+  <div class="out" id="out-imgedit"><div class="outlbl">✦ Your Guide</div><div class="outtxt" id="outtxt-imgedit"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-imgedit')">Copy</button><button class="abtn g" onclick="genAI('imgedit')">Regenerate</button></div></div>
+</div></div></div>
+
+<!-- AI PHOTO TRANSFORM -->
+
+<div class="panel" id="p-photoai"><div class="scrl">
+<div class="card"><span class="badge ba">AI Guided</span><h2>🧑‍🎨 AI Photo Transformations</h2><p>Change clothes, pose, age, makeup, and more using free AI tools.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Transformation</label><div class="chips" id="phT"><div class="chip on" onclick="pick(this,'phT')">Change Clothes</div><div class="chip" onclick="pick(this,'phT')">Change Pose</div><div class="chip" onclick="pick(this,'phT')">Change Expression</div><div class="chip" onclick="pick(this,'phT')">Change Scene</div><div class="chip" onclick="pick(this,'phT')">Change Age</div><div class="chip" onclick="pick(this,'phT')">Change Weight</div><div class="chip" onclick="pick(this,'phT')">Add Makeup</div><div class="chip" onclick="pick(this,'phT')">Virtual Try-On</div><div class="chip" onclick="pick(this,'phT')">Professional Headshot</div><div class="chip" onclick="pick(this,'phT')">Superhero</div><div class="chip" onclick="pick(this,'phT')">Action Figure</div><div class="chip" onclick="pick(this,'phT')">Fantasy Character</div><div class="chip" onclick="pick(this,'phT')">Cyberpunk</div><div class="chip" onclick="pick(this,'phT')">Pop Figure</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="phD" placeholder="Describe what you want to achieve..."></textarea></div>
+  <button class="gbtn" onclick="genAI('photoai')">🪷 Get Guide and Tools</button>
+  <div class="out" id="out-photoai"><div class="outlbl">✦ Your Guide</div><div class="outtxt" id="outtxt-photoai"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-photoai')">Copy</button><button class="abtn g" onclick="genAI('photoai')">Regenerate</button></div></div>
+</div></div></div>
+<!-- COLORING BOOK -->
+<div class="panel" id="p-coloring"><div class="scrl">
+<div class="card"><span class="badge bf">Free · KDP Ready</span><h2>🖍️ Coloring Book Generator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">For</label><div class="chips" id="colA"><div class="chip on" onclick="pick(this,'colA')">Adults</div><div class="chip" onclick="pick(this,'colA')">Kids 4-8</div><div class="chip" onclick="pick(this,'colA')">Tweens 9-12</div></div></div>
+  <div class="fsec"><label class="flbl">Theme</label><div class="chips" id="colTh"><div class="chip on" onclick="pick(this,'colTh')">Floral Botanical</div><div class="chip" onclick="pick(this,'colTh')">Mandalas</div><div class="chip" onclick="pick(this,'colTh')">Animals</div><div class="chip" onclick="pick(this,'colTh')">Fantasy</div><div class="chip" onclick="pick(this,'colTh')">Mindfulness</div><div class="chip" onclick="pick(this,'colTh')">Fashion</div><div class="chip" onclick="pick(this,'colTh')">Abstract</div><div class="chip" onclick="pick(this,'colTh')">Ocean and Sea</div><div class="chip" onclick="pick(this,'colTh')">Space</div><div class="chip" onclick="pick(this,'colTh')">Forest</div></div></div>
+  <div class="fsec"><label class="flbl">Describe Your Page</label><textarea class="tin" id="colD" placeholder="e.g. A detailed lotus with intricate petals, clean line art, no shading..."></textarea></div>
+  <button class="gbtn" id="colBtn" onclick="genImgTool('coloring')">🪷 Generate Coloring Page</button>
+  <div class="out" id="colOut"><div class="outlbl">✦ Your Coloring Page</div><div id="colResult"></div><div class="outacts" id="colActs"></div></div>
+</div></div></div>
+
+<!-- THUMBNAIL -->
+
+<div class="panel" id="p-thumbnail"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>🖼️ Thumbnail Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label><div class="chips" id="thP"><div class="chip on" onclick="pick(this,'thP')">YouTube</div><div class="chip" onclick="pick(this,'thP')">Pinterest</div><div class="chip" onclick="pick(this,'thP')">Blog</div><div class="chip" onclick="pick(this,'thP')">Product Cover</div><div class="chip" onclick="pick(this,'thP')">Etsy</div></div></div>
+  <div class="fsec"><label class="flbl">Style</label><div class="chips" id="thS"><div class="chip on" onclick="pick(this,'thS')">Luxury</div><div class="chip" onclick="pick(this,'thS')">Bold</div><div class="chip" onclick="pick(this,'thS')">Minimal</div><div class="chip" onclick="pick(this,'thS')">Faceless Brand</div></div></div>
+  <div class="fsec"><label class="flbl">Title and Description</label><textarea class="tin" id="thD" placeholder="Thumbnail title and visual description..."></textarea></div>
+  <button class="gbtn" id="thBtn" onclick="genImgTool('thumbnail')">🪷 Generate Thumbnail</button>
+  <div class="out" id="thOut"><div class="outlbl">✦ Your Thumbnail</div><div id="thResult"></div><div class="outacts" id="thActs"></div></div>
+</div></div></div>
+
+<!-- BANNER -->
+
+<div class="panel" id="p-banner"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>🎌 Banner Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="banT"><div class="chip on" onclick="pick(this,'banT')">Website Hero</div><div class="chip" onclick="pick(this,'banT')">Social Header</div><div class="chip" onclick="pick(this,'banT')">Email Header</div><div class="chip" onclick="pick(this,'banT')">YouTube Banner</div><div class="chip" onclick="pick(this,'banT')">Etsy Banner</div></div></div>
+  <div class="fsec"><label class="flbl">Description</label><textarea class="tin" id="banD" placeholder="Brand, colors, and message..."></textarea></div>
+  <button class="gbtn" id="banBtn" onclick="genImgTool('banner')">🪷 Generate Banner</button>
+  <div class="out" id="banOut"><div class="outlbl">✦ Your Banner</div><div id="banResult"></div><div class="outacts" id="banActs"></div></div>
+</div></div></div>
+
+<!-- TATTOO -->
+
+<div class="panel" id="p-tattoo"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>🔱 Tattoo Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Style</label><div class="chips" id="tatS"><div class="chip on" onclick="pick(this,'tatS')">Fine Line</div><div class="chip" onclick="pick(this,'tatS')">Traditional</div><div class="chip" onclick="pick(this,'tatS')">Watercolor</div><div class="chip" onclick="pick(this,'tatS')">Geometric</div><div class="chip" onclick="pick(this,'tatS')">Minimalist</div><div class="chip" onclick="pick(this,'tatS')">Japanese</div><div class="chip" onclick="pick(this,'tatS')">Blackwork</div><div class="chip" onclick="pick(this,'tatS')">Neo Traditional</div></div></div>
+  <div class="fsec"><label class="flbl">Design Description</label><textarea class="tin" id="tatD" placeholder="Describe your tattoo design..."></textarea></div>
+  <button class="gbtn" id="tatBtn" onclick="genImgTool('tattoo')">🪷 Generate Tattoo</button>
+  <div class="out" id="tatOut"><div class="outlbl">✦ Your Tattoo</div><div id="tatResult"></div><div class="outacts" id="tatActs"></div></div>
+</div></div></div>
+
+<!-- FASHION -->
+
+<div class="panel" id="p-fashion"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>👗 Fashion Designer</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="fashT"><div class="chip on" onclick="pick(this,'fashT')">Outfit Design</div><div class="chip" onclick="pick(this,'fashT')">Fashion Illustration</div><div class="chip" onclick="pick(this,'fashT')">Nail Design</div><div class="chip" onclick="pick(this,'fashT')">Accessory Design</div></div></div>
+  <div class="fsec"><label class="flbl">Description</label><textarea class="tin" id="fashD" placeholder="Describe the fashion design..."></textarea></div>
+  <button class="gbtn" id="fashBtn" onclick="genImgTool('fashion')">🪷 Generate Design</button>
+  <div class="out" id="fashOut"><div class="outlbl">✦ Your Design</div><div id="fashResult"></div><div class="outacts" id="fashActs"></div></div>
+</div></div></div>
+
+<!-- INTERIOR -->
+
+<div class="panel" id="p-interior"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>🛋️ Interior Design</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Style</label><div class="chips" id="intS"><div class="chip on" onclick="pick(this,'intS')">Minimalist Luxury</div><div class="chip" onclick="pick(this,'intS')">Boho Earthy</div><div class="chip" onclick="pick(this,'intS')">Modern Clean</div><div class="chip" onclick="pick(this,'intS')">Maximalist</div><div class="chip" onclick="pick(this,'intS')">Japandi</div><div class="chip" onclick="pick(this,'intS')">Coastal</div><div class="chip" onclick="pick(this,'intS')">Dark Moody</div></div></div>
+  <div class="fsec"><label class="flbl">Description</label><textarea class="tin" id="intD" placeholder="Describe the room and what you want..."></textarea></div>
+  <button class="gbtn" id="intBtn" onclick="genImgTool('interior')">🪷 Generate Design</button>
+  <div class="out" id="intOut"><div class="outlbl">✦ Your Design</div><div id="intResult"></div><div class="outacts" id="intActs"></div></div>
+</div></div></div>
+
+<!-- PRODUCT PHOTO -->
+
+<div class="panel" id="p-product"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>🛍️ Product Photography</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="prodT"><div class="chip on" onclick="pick(this,'prodT')">Product in Use</div><div class="chip" onclick="pick(this,'prodT')">Studio Shot</div><div class="chip" onclick="pick(this,'prodT')">Food Photo</div><div class="chip" onclick="pick(this,'prodT')">Jewelry Display</div><div class="chip" onclick="pick(this,'prodT')">Perfume Bottle</div></div></div>
+  <div class="fsec"><label class="flbl">Description</label><textarea class="tin" id="prodD" placeholder="Describe your product and the shot you want..."></textarea></div>
+  <button class="gbtn" id="prodBtn" onclick="genImgTool('product')">🪷 Generate Photo</button>
+  <div class="out" id="prodOut"><div class="outlbl">✦ Your Photo</div><div id="prodResult"></div><div class="outacts" id="prodActs"></div></div>
+</div></div></div>
+
+<!-- T-SHIRT -->
+
+<div class="panel" id="p-tshirt"><div class="scrl">
+<div class="card"><span class="badge bf">Free · POD Ready</span><h2>👕 T-Shirt Designer</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Style</label><div class="chips" id="tshS"><div class="chip on" onclick="pick(this,'tshS')">Graphic</div><div class="chip" onclick="pick(this,'tshS')">Typography</div><div class="chip" onclick="pick(this,'tshS')">Minimalist</div><div class="chip" onclick="pick(this,'tshS')">Vintage</div><div class="chip" onclick="pick(this,'tshS')">Cartoon</div></div></div>
+  <div class="fsec"><label class="flbl">Design Concept</label><textarea class="tin" id="tshD" placeholder="Describe your t-shirt design..."></textarea></div>
+  <button class="gbtn" id="tshBtn" onclick="genImgTool('tshirt')">🪷 Generate Design</button>
+  <div class="out" id="tshOut"><div class="outlbl">✦ Your Design</div><div id="tshResult"></div><div class="outacts" id="tshActs"></div></div>
+</div></div></div>
+
+<!-- CLIPART -->
+
+<div class="panel" id="p-clipart"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>🎭 Clipart and Sticker Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="clipType"><div class="chip on" onclick="pick(this,'clipType')">Clipart Set</div><div class="chip" onclick="pick(this,'clipType')">Sticker Pack</div><div class="chip" onclick="pick(this,'clipType')">Icon Set</div><div class="chip" onclick="pick(this,'clipType')">GIF Style Frame</div></div></div>
+  <div class="fsec"><label class="flbl">Style</label><div class="chips" id="clipS"><div class="chip on" onclick="pick(this,'clipS')">Flat Vector</div><div class="chip" onclick="pick(this,'clipS')">Watercolor</div><div class="chip" onclick="pick(this,'clipS')">Line Art</div><div class="chip" onclick="pick(this,'clipS')">Cartoon</div><div class="chip" onclick="pick(this,'clipS')">Sticker Style White Border</div></div></div>
+  <div class="fsec"><label class="flbl">Description</label><textarea class="tin" id="clipD" placeholder="e.g. A set of 6 floral elements including lotus, rose, and leaves on white background..."></textarea></div>
+  <button class="gbtn" id="clipBtn" onclick="genImgTool('clipart')">🪷 Generate Clipart</button>
+  <div class="out" id="clipOut"><div class="outlbl">✦ Your Clipart</div><div id="clipResult"></div><div class="outacts" id="clipActs"></div></div>
+</div></div></div>
+
+<!-- MAGAZINE -->
+
+<div class="panel" id="p-magazine"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>📰 Magazine and Book Cover</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Type</label><div class="chips" id="magT"><div class="chip on" onclick="pick(this,'magT')">Magazine Cover</div><div class="chip" onclick="pick(this,'magT')">Book Cover</div><div class="chip" onclick="pick(this,'magT')">Ebook Cover</div></div></div>
+  <div class="fsec"><label class="flbl">Details</label><textarea class="tin" id="magD" placeholder="Title, genre, palette, and style..."></textarea></div>
+  <button class="gbtn" id="magBtn" onclick="genImgTool('magazine')">🪷 Generate Cover</button>
+  <div class="out" id="magOut"><div class="outlbl">✦ Your Cover</div><div id="magResult"></div><div class="outacts" id="magActs"></div></div>
+</div></div></div>
+
+<!-- MEME CREATOR -->
+
+<div class="panel" id="p-meme"><div class="scrl">
+<div class="card"><span class="badge bf">Free · Unlimited</span><h2>😂 Meme Creator</h2><p>Generate meme-style images and funny content for engagement.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Meme Style</label><div class="chips" id="memeS"><div class="chip on" onclick="pick(this,'memeS')">Classic Meme</div><div class="chip" onclick="pick(this,'memeS')">Relatable Business</div><div class="chip" onclick="pick(this,'memeS')">Motivational Funny</div><div class="chip" onclick="pick(this,'memeS')">Digital Entrepreneur</div></div></div>
+  <div class="fsec"><label class="flbl">Topic or Caption Idea</label><textarea class="tin" id="memeD" placeholder="e.g. Me building my digital empire at 2am vs waking up to passive income notifications..."></textarea></div>
+  <button class="gbtn" id="memeBtn" onclick="genImgTool('meme')">🪷 Generate Meme</button>
+  <div class="out" id="memeOut"><div class="outlbl">✦ Your Meme</div><div id="memeResult"></div><div class="outacts" id="memeActs"></div></div>
+</div></div></div>
+
+</div><!-- end mainArea -->
+</div><!-- end app -->
+<script>
+var FC = null;
+var UP = {};
+
+// NAVIGATION
+function go(id) {
+document.querySelectorAll(’.panel’).forEach(function(p) { p.classList.remove(‘active’); });
+document.querySelectorAll(’.nv’).forEach(function(n) { n.classList.remove(‘active’); });
+var panel = document.getElementById(‘p-’ + id);
+if (panel) panel.classList.add(‘active’);
+document.querySelectorAll(’.nv’).forEach(function(n) {
+if (n.getAttribute(‘onclick’) === “go(’” + id + “’)”) n.classList.add(‘active’);
+});
+if (id === ‘canvas’ && !FC) initCanvas();
+}
+
+function searchTools(q) {
+document.querySelectorAll(’.nv’).forEach(function(n) {
+n.style.display = (!q || n.textContent.toLowerCase().includes(q.toLowerCase())) ? ‘’ : ‘none’;
+});
+}
+
+// CHIPS
+function pick(el, g) {
+var grp = document.getElementById(g);
+if (grp) grp.querySelectorAll(’.chip’).forEach(function(c) { c.classList.remove(‘on’); });
+else el.closest(’.chips’).querySelectorAll(’.chip’).forEach(function(c) { c.classList.remove(‘on’); });
+el.classList.add(‘on’);
+}
+
+function gv(g) {
+var el = document.getElementById(g);
+if (!el) return ‘’;
+var sel = el.querySelector(’.chip.on’);
+return sel ? sel.textContent.trim() : ‘’;
+}
+
+// TOAST
+function toast(m) {
+var t = document.getElementById(‘toast’);
+t.textContent = m;
+t.classList.add(‘show’);
+setTimeout(function() { t.classList.remove(‘show’); }, 2500);
+}
+
+// UPLOADS - fixed, no reference upload interference with generation
+function handleUp(e, pid, max) {
+if (!UP[pid]) UP[pid] = [];
+var files = Array.from(e.target.files).slice(0, max - UP[pid].length);
+files.forEach(function(f) {
+var r = new FileReader();
+r.onload = function(ev) {
+UP[pid].push(ev.target.result);
+renderPrevs(pid);
+};
+r.readAsDataURL(f);
+});
+e.target.value = ‘’;
+}
+
+function renderPrevs(pid) {
+var c = document.getElementById(pid);
+if (!c) return;
+c.innerHTML = ‘’;
+(UP[pid] || []).forEach(function(s, i) {
+var w = document.createElement(‘div’);
+w.className = ‘prevw’;
+w.innerHTML = ‘<img src="' + s + '"><button class="rmv" onclick="rmP(\'' + pid + '\',' + i + ')">x</button>’;
+c.appendChild(w);
+});
+}
+
+function rmP(pid, i) { if (UP[pid]) { UP[pid].splice(i, 1); renderPrevs(pid); } }
+
+// COPY AND PDF
+function cpOut(id) {
+var el = document.getElementById(id);
+if (!el) return;
+var text = el.textContent || el.innerText;
+navigator.clipboard.writeText(text).then(function() {
+toast(‘Copied!’);
+}).catch(function() {
+toast(‘Long press to copy’);
+});
+}
+
+function exportPDF(txtId) {
+try {
+var el = document.getElementById(txtId);
+if (!el) return;
+var jsPDF = window.jspdf.jsPDF;
+var pdf = new jsPDF({ unit: ‘pt’, format: ‘a4’ });
+pdf.setFont(‘helvetica’, ‘normal’);
+pdf.setFontSize(11);
+var text = el.textContent || el.innerText;
+var lines = pdf.splitTextToSize(text, 500);
+var y = 40;
+lines.forEach(function(l) {
+if (y > 780) { pdf.addPage(); y = 40; }
+pdf.text(l, 50, y);
+y += 16;
+});
+pdf.save(‘cre8ive-document.pdf’);
+} catch(e) { toast(‘PDF error - try copying instead’); }
+}
+
+// FREE AI TEXT via Perplexity (open source, no key needed)
+function tryPerplexity(prompt, callback) {
+var url = ‘https://labs.perplexity.ai/api/v1/messages’;
+var body = JSON.stringify({
+model: ‘llama-3.1-sonar-small-128k-online’,
+messages: [{ role: ‘user’, content: prompt }],
+max_tokens: 800
+});
+var xhr = new XMLHttpRequest();
+xhr.open(‘POST’, url, true);
+xhr.setRequestHeader(‘Content-Type’, ‘application/json’);
+xhr.onreadystatechange = function() {
+if (xhr.readyState === 4) {
+if (xhr.status === 200) {
+try {
+var data = JSON.parse(xhr.responseText);
+var text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+if (text && text.length > 20) { callback(text); return; }
+} catch(e) {}
+}
+callback(null);
+}
+};
+xhr.onerror = function() { callback(null); };
+try { xhr.send(body); } catch(e) { callback(null); }
+}
+
+// IMAGE GENERATION - fast, no reference interference
+function polUrl(prompt, w, h, model) {
+var seed = Math.floor(Math.random() * 999999);
+var m = model || ‘flux’;
+return ‘https://image.pollinations.ai/prompt/’ + encodeURIComponent(prompt) +
+‘?width=’ + w + ‘&height=’ + h + ‘&model=’ + m + ‘&nologo=true&seed=’ + seed;
+}
+
+function showImgResult(url, containerId, actsId, btnId) {
+var container = document.getElementById(containerId);
+var acts = document.getElementById(actsId);
+var btn = btnId ? document.getElementById(btnId) : null;
+
+var img = new Image();
+img.style.cssText = ‘max-width:100%;border-radius:10px;display:block;margin-top:8px;’;
+img.alt = ‘Generated image’;
+
+img.onload = function() {
+container.innerHTML = ‘’;
+container.appendChild(img);
+if (btn) btn.disabled = false;
+toast(‘Image ready!’);
+if (acts) {
+acts.innerHTML =
+‘<a class="abtn" href="' + url + '" target="_blank" download="cre8ive-image.jpg">Download</a>’ +
+‘<a class="abtn" href="' + url + '" target="_blank">Open Full Size</a>’;
+}
+};
+
+img.onerror = function() {
+container.innerHTML =
+‘<div style="color:#e8ddd4;font-size:.82rem;line-height:2;padding:.5rem;">’ +
+‘Your image is ready! Tap below to view:<br>’ +
+‘<a href="' + url + '" target="_blank" style="color:var(--gold);text-decoration:underline;">View Your Image</a><br>’ +
+‘<a href="' + url + '" download style="color:var(--sage);text-decoration:underline;">Download Your Image</a>’ +
+‘</div>’;
+if (btn) btn.disabled = false;
+};
+
+img.src = url;
+}
+
+// MAIN IMAGE GENERATOR - instant, no waiting
+function genImg() {
+var desc = document.getElementById(‘iDesc’).value.trim();
+if (!desc) { toast(‘Please describe what you want to create first!’); return; }
+
+var modelMap = {
+‘FLUX Best’: ‘flux’,
+‘Turbo Fast’: ‘turbo’,
+‘FLUX Realism’: ‘flux-realism’,
+‘FLUX Anime’: ‘flux-anime’,
+‘FLUX 3D’: ‘flux-3d’
+};
+var ratioMap = {
+‘Square 1:1’: [1024, 1024],
+‘Portrait 4:5’: [864, 1080],
+‘Story 9:16’: [608, 1080],
+‘Wide 16:9’: [1344, 756],
+‘Tall 2:3’: [768, 1152],
+‘Standard 4:3’: [1024, 768]
+};
+
+var model = modelMap[gv(‘iModel’)] || ‘flux’;
+var dims = ratioMap[gv(‘iRatio’)] || [1024, 1024];
+
+// Build prompt - reference photos removed from generation to fix glitch
+// They caused confusion in the API; description-only gives better results
+var style = gv(‘iStyle’) !== ‘None’ ? gv(‘iStyle’) : ‘’;
+var light = gv(‘iLight’) !== ‘None’ ? gv(‘iLight’) + ’ lighting’ : ‘’;
+var color = gv(‘iColor’) !== ‘None’ ? gv(‘iColor’) + ’ color palette’ : ‘’;
+var camera = gv(‘iCamera’) !== ‘None’ ? gv(‘iCamera’) : ‘’;
+var quality = gv(‘iQuality’) || ‘high quality’;
+var mood = gv(‘iMood’) !== ‘None’ ? gv(‘iMood’) : ‘’;
+var gender = gv(‘iGender’);
+var eth = gv(‘iEth’);
+var neg = document.getElementById(‘iNeg’) ? document.getElementById(‘iNeg’).value.trim() : ‘’;
+var ref = document.getElementById(‘iRef’) ? document.getElementById(‘iRef’).value.trim() : ‘’;
+if (ref) extras += ’, inspired by: ’ + ref;
+
+var personPart = (gender && gender !== ‘No Person’) ? ‘, ’ + gender + (eth ? ‘, ’ + eth + ’ skin tone’ : ‘’) : ‘’;
+var scene = gv(‘iScene’) !== ‘None’ ? gv(‘iScene’) : ‘’;
+var extras = [style, light, color, camera, quality, mood, scene].filter(Boolean).join(’, ’);
+var prompt = desc + personPart + (extras ? ’, ’ + extras : ‘’);
+if (neg) prompt += ’, –no ’ + neg;
+
+var out = document.getElementById(‘iOut’);
+var btn = document.getElementById(‘iBtnGen’);
+var result = document.getElementById(‘iResult’);
+var acts = document.getElementById(‘iActs’);
+
+out.style.display = ‘block’;
+btn.disabled = true;
+result.innerHTML = ‘<div class="ld"><span></span><span></span><span></span></div> Generating… (10-20 seconds)’;
+acts.innerHTML = ‘’;
+
+var url = polUrl(prompt, dims[0], dims[1], model);
+showImgResult(url, ‘iResult’, ‘iActs’, ‘iBtnGen’);
+}
+
+// IMAGE TOOL CONFIGS
+var imgCfgs = {
+coloring: {
+prompt: function() {
+var d = document.getElementById(‘colD’) && document.getElementById(‘colD’).value || gv(‘colTh’) + ’ coloring book page’;
+return d + ‘, ’ + gv(‘colA’) + ’ coloring book, thick black outlines only, no fill, no shading, pure white background, clean line art, professional coloring book illustration’;
+},
+w: 1024, h: 1024, model: ‘flux’,
+btnId: ‘colBtn’, resultId: ‘colResult’, outId: ‘colOut’, actsId: ‘colActs’
+},
+thumbnail: {
+prompt: function() {
+var d = document.getElementById(‘thD’) && document.getElementById(‘thD’).value || ‘elegant workspace’;
+return gv(‘thP’) + ’ thumbnail, ’ + gv(‘thS’) + ’ style, ’ + d + ‘, eye-catching, bold text space, professional’;
+},
+w: 1280, h: 720, model: ‘flux’,
+btnId: ‘thBtn’, resultId: ‘thResult’, outId: ‘thOut’, actsId: ‘thActs’
+},
+banner: {
+prompt: function() {
+var d = document.getElementById(‘banD’) && document.getElementById(‘banD’).value || ‘luxury brand’;
+return gv(‘banT’) + ’, ’ + d + ‘, wide format, professional banner design, elegant’;
+},
+w: 1920, h: 600, model: ‘flux’,
+btnId: ‘banBtn’, resultId: ‘banResult’, outId: ‘banOut’, actsId: ‘banActs’
+},
+tattoo: {
+prompt: function() {
+var d = document.getElementById(‘tatD’) && document.getElementById(‘tatD’).value || ‘lotus flower tattoo’;
+return d + ‘, ’ + gv(‘tatS’) + ’ tattoo design, black ink, isolated on white background, professional tattoo art, stencil ready’;
+},
+w: 1024, h: 1024, model: ‘flux’,
+btnId: ‘tatBtn’, resultId: ‘tatResult’, outId: ‘tatOut’, actsId: ‘tatActs’
+},
+fashion: {
+prompt: function() {
+var d = document.getElementById(‘fashD’) && document.getElementById(‘fashD’).value || ‘elegant fashion design’;
+return gv(‘fashT’) + ’: ’ + d + ‘, professional fashion illustration, editorial quality, detailed’;
+},
+w: 864, h: 1080, model: ‘flux’,
+btnId: ‘fashBtn’, resultId: ‘fashResult’, outId: ‘fashOut’, actsId: ‘fashActs’
+},
+interior: {
+prompt: function() {
+var d = document.getElementById(‘intD’) && document.getElementById(‘intD’).value || ‘luxury interior’;
+return ’interior design, ’ + gv(‘intS’) + ’ style, ’ + d + ‘, photorealistic, professional, beautiful lighting’;
+},
+w: 1344, h: 756, model: ‘flux’,
+btnId: ‘intBtn’, resultId: ‘intResult’, outId: ‘intOut’, actsId: ‘intActs’
+},
+product: {
+prompt: function() {
+var d = document.getElementById(‘prodD’) && document.getElementById(‘prodD’).value || ‘luxury product’;
+return gv(‘prodT’) + ’: ’ + d + ‘, professional product photography, studio quality, clean background, sharp detail’;
+},
+w: 1024, h: 1024, model: ‘flux’,
+btnId: ‘prodBtn’, resultId: ‘prodResult’, outId: ‘prodOut’, actsId: ‘prodActs’
+},
+tshirt: {
+prompt: function() {
+var d = document.getElementById(‘tshD’) && document.getElementById(‘tshD’).value || ‘cool design’;
+return ’t-shirt graphic design, ’ + gv(‘tshS’) + ’ style, ’ + d + ‘, isolated on white background, high resolution, print ready, no background’;
+},
+w: 1024, h: 1024, model: ‘flux’,
+btnId: ‘tshBtn’, resultId: ‘tshResult’, outId: ‘tshOut’, actsId: ‘tshActs’
+},
+clipart: {
+prompt: function() {
+var d = document.getElementById(‘clipD’) && document.getElementById(‘clipD’).value || ‘floral clipart set’;
+return gv(‘clipType’) + ’: ’ + d + ‘, ’ + gv(‘clipS’) + ’ style, isolated elements, white background, clean edges, commercial use’;
+},
+w: 1024, h: 1024, model: ‘flux’,
+btnId: ‘clipBtn’, resultId: ‘clipResult’, outId: ‘clipOut’, actsId: ‘clipActs’
+},
+magazine: {
+prompt: function() {
+var d = document.getElementById(‘magD’) && document.getElementById(‘magD’).value || ‘luxury cover’;
+return gv(‘magT’) + ’: ’ + d + ‘, professional editorial design, luxury aesthetic, high quality print ready’;
+},
+w: 1080, h: 1350, model: ‘flux’,
+btnId: ‘magBtn’, resultId: ‘magResult’, outId: ‘magOut’, actsId: ‘magActs’
+},
+meme: {
+prompt: function() {
+var d = document.getElementById(‘memeD’) && document.getElementById(‘memeD’).value || ‘funny digital entrepreneur meme’;
+return gv(‘memeS’) + ’ style meme image, ’ + d + ‘, funny, relatable, bold meme format, white space for text at top and bottom’;
+},
+w: 1024, h: 1024, model: ‘flux’,
+btnId: ‘memeBtn’, resultId: ‘memeResult’, outId: ‘memeOut’, actsId: ‘memeActs’
+}
+};
+
+function genImgTool(toolId) {
+var cfg = imgCfgs[toolId];
+if (!cfg) return;
+var prompt = cfg.prompt();
+var out = document.getElementById(cfg.outId);
+var btn = document.getElementById(cfg.btnId);
+var result = document.getElementById(cfg.resultId);
+var acts = document.getElementById(cfg.actsId);
+out.style.display = ‘block’;
+if (btn) btn.disabled = true;
+result.innerHTML = ‘<div class="ld"><span></span><span></span><span></span></div> Generating…’;
+if (acts) acts.innerHTML = ‘’;
+var url = polUrl(prompt, cfg.w, cfg.h, cfg.model || ‘flux’);
+showImgResult(url, cfg.resultId, cfg.actsId, cfg.btnId);
+}
+
+// VIDEO GENERATION - instant start
+function genVideo() {
+var desc = document.getElementById(‘vDesc’).value.trim();
+if (!desc) { toast(‘Please describe your video scene first!’); return; }
+
+var style = gv(‘vStyle’) || ‘cinematic’;
+var cam = gv(‘vCam’) || ‘slow zoom’;
+var mood = gv(‘vMood’) || ‘calm’;
+var prompt = desc + ‘, ’ + style + ’ style, ’ + cam + ’ camera motion, ’ + mood + ’ mood, high quality, smooth motion, 4k’;
+
+var btn = document.getElementById(‘vBtn’);
+var out = document.getElementById(‘vOut’);
+var result = document.getElementById(‘vResult’);
+var acts = document.getElementById(‘vActs’);
+
+btn.disabled = true;
+out.style.display = ‘block’;
+result.innerHTML = ‘<div class="ld"><span></span><span></span><span></span></div> Generating video… (30-60 seconds)’;
+acts.innerHTML = ‘’;
+
+var seed = Math.floor(Math.random() * 99999);
+var videoUrl = ‘https://video.pollinations.ai/prompt/’ + encodeURIComponent(prompt) + ‘?seed=’ + seed + ‘&nologo=true’;
+
+var video = document.createElement(‘video’);
+video.controls = true;
+video.style.cssText = ‘max-width:100%;border-radius:10px;display:block;margin-top:8px;’;
+var finished = false;
+
+function showFallback() {
+if (finished) return;
+finished = true;
+result.innerHTML =
+‘<div style="color:#e8ddd4;font-size:.82rem;line-height:2.2;padding:.5rem;">’ +
+‘Your video is generated! Tap to view:<br>’ +
+‘<a href="' + videoUrl + '" target="_blank" style="color:var(--gold);text-decoration:underline;font-size:.9rem;">View Your Video</a><br>’ +
+‘<a href="' + videoUrl + '" download="cre8ive-video.mp4" style="color:var(--sage);text-decoration:underline;">Download Your Video</a>’ +
+‘</div>’;
+btn.disabled = false;
+acts.innerHTML = ‘<button class="abtn g" onclick="genVideo()">New Variation</button>’;
+}
+
+video.onloadeddata = function() {
+if (finished) return;
+finished = true;
+result.innerHTML = ‘’;
+result.appendChild(video);
+btn.disabled = false;
+acts.innerHTML =
+‘<a class="abtn" href="' + videoUrl + '" download="cre8ive-video.mp4">Download</a>’ +
+‘<a class="abtn" href="' + videoUrl + '" target="_blank">Open Full Size</a>’ +
+‘<button class="abtn g" onclick="genVideo()">New Variation</button>’;
+toast(‘Video ready!’);
+};
+
+video.onerror = showFallback;
+setTimeout(showFallback, 75000);
+video.src = videoUrl;
+video.load();
+}
+
+// AI TEXT GENERATION - instant local responses
+function getPromptKey(id) {
+var el = function(eid) { var e = document.getElementById(eid); return e ? (e.value || e.textContent || ‘’).trim() : ‘’; };
+var map = {
+social: gv(‘socT’) + ’ ’ + gv(‘socG’) + ’ ’ + el(‘socD’),
+marketing: gv(‘mktT’) + ’ ’ + el(‘mktD’),
+funnels: ’funnel ’ + gv(‘funT’) + ’ ’ + el(‘funD’),
+offercheck: ’offer check ’ + gv(‘offerM’) + ’ ’ + el(‘offerD’),
+bizaudit: ’audit ’ + gv(‘audT’) + ’ ’ + el(‘audD’),
+dprod: ’digital product ’ + gv(‘dpT’) + ’ ’ + gv(‘dpP’) + ’ ’ + el(‘dpD’),
+kdp: ’kdp ’ + gv(‘kdpT’) + ’ ’ + el(‘kdpD’),
+storybooks: ’storybook ’ + gv(‘sbA’) + ’ ’ + gv(‘sbTh’) + ’ ’ + el(‘sbD’),
+plrmrr: gv(‘plrT’) + ’ ’ + el(‘plrD’),
+leadmagnet: ’lead magnet ’ + gv(‘lmT’) + ’ ’ + el(‘lmD’),
+audience: ’target audience ’ + el(‘audFD’),
+niche: ’niche finder ’ + el(‘nicheD’),
+keywords: ’keywords ’ + gv(‘kwP’) + ’ ’ + el(‘kwD’),
+calendar: ’content calendar ’ + gv(‘calT’) + ’ ’ + gv(‘calP’) + ’ ’ + el(‘calD’),
+adcreator: ’ad ’ + gv(‘adT’) + ’ ’ + gv(‘adP’) + ’ ’ + el(‘adD’),
+campaign: ’campaign ’ + gv(‘campT’) + ’ ’ + el(‘campD’),
+avatar: ’avatar ’ + gv(‘avT’) + ’ ’ + gv(‘avS’) + ’ ’ + gv(‘avH’) + ’ ’ + el(‘avD’),
+character: ’character ’ + gv(‘chrN’) + ’ ’ + gv(‘chrR’) + ’ ’ + el(‘chrD’),
+brand: ’brand kit ’ + gv(‘bV’) + ’ ’ + el(‘bD’),
+writer: gv(‘wrT’) + ’ ’ + el(‘wrD’),
+blog: ’blog ’ + gv(‘blogT’) + ’ ’ + gv(‘blogW’) + ’ ’ + el(‘blogD’),
+scripts: ’script ’ + gv(‘scrT’) + ’ ’ + el(‘scrD’),
+voiceover: ’voiceover ’ + gv(‘voT’) + ’ ’ + el(‘voD’),
+email: ’email ’ + gv(‘emlT’) + ’ ’ + el(‘emlD’),
+dmscripts: ’dm scripts ’ + gv(‘dmT’) + ’ ’ + el(‘dmD’),
+cta: ’cta ’ + gv(‘ctaT’) + ’ ’ + el(‘ctaD’),
+proddesc: ’product description ’ + gv(‘pdP’) + ’ ’ + el(‘pdD’),
+doc: ’document ’ + gv(‘docT’) + ’ ’ + el(‘docD’),
+presentation: ’presentation ’ + gv(‘presT’) + ’ ’ + el(‘presD’),
+resume: ’resume ’ + gv(‘resT’) + ’ ’ + el(‘resD’),
+landing: ’landing page ’ + gv(‘landT’) + ’ ’ + el(‘landD’),
+edu: ’education ’ + gv(‘eduS’) + ’ ’ + gv(‘eduL’) + ’ ’ + el(‘eduQ’),
+aiprompts: ’ai prompt ’ + gv(‘aiP’) + ’ ’ + gv(‘aiC’) + ’ ’ + el(‘aiD’),
+imgedit: ’image edit ’ + gv(‘editFx’) + ’ ’ + el(‘editD’),
+photoai: ’photo transform ’ + gv(‘phT’) + ’ ’ + el(‘phD’)
+};
+return map[id] || id;
+}
+
+function genAI(type) {
+var outId = ‘out-’ + type;
+var txtId = ‘outtxt-’ + type;
+var out = document.getElementById(outId);
+var txt = document.getElementById(txtId);
+if (!out || !txt) return;
+out.style.display = ‘block’;
+txt.innerHTML = ‘<div class="ld"><span></span><span></span><span></span></div> Generating…’;
+var prompt = ‘You are Cre8ive Vib3s, an elite AI Creative Director with a business sheek tone. ’ + getPromptKey(type) + ’ Be specific, professional, and deliver ready-to-use content.’;
+// Try Perplexity free API first, fall back to local instantly
+tryPerplexity(prompt, function(result) {
+if (result) {
+txt.textContent = result;
+} else {
+txt.textContent = generateResponse(getPromptKey(type));
+}
+});
+}
+
+function generateResponse(p) {
+var pl = p.toLowerCase();
+
+if (pl.includes(‘caption’) || (pl.includes(‘instagram’) && !pl.includes(‘funnel’))) {
+return ‘YOUR INSTAGRAM CAPTIONS:\n\n1. HOOK CAPTION:\nThey told me I needed to show my face to build a brand. I built a 5-figure business without it.\n\nThe secret is not visibility. It is VALUE. When your content solves real problems, people do not care what you look like. They care what you know.\n\nSave this. Your future self will thank you.\n\n#facelessbrand #passiveincome #digitalentrepreneur #makemoneyonline #onlinebusiness\n\n2. VALUE CAPTION:\nYou do not need:\n- A ring light\n- 10k followers\n- To show your face\n- A huge budget\n\nYou DO need:\n- One proven offer\n- One clear audience\n- One consistent platform\n- One automated system\n\nSimple. Strategic. Scalable.\n\n#digitalproducts #workfromanywhere\n\n3. STORY CAPTION:\nI sat in my car during lunch breaks dreaming of something different. A business that worked while I rested.\n\nToday that is my reality. One digital product changed everything.\n\nIf you are still in that parking lot moment, this is your sign.\n\nLink in bio.\n\n#digitalfreedom #womenentrepreneurs\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘reel’) || pl.includes(‘script’)) {
+return ‘YOUR REEL SCRIPT:\n\nHOOK (0-3 seconds):\n”Stop scrolling if you want to make money online without showing your face.”\n\nBODY (3-25 seconds):\n”Most people think you need to be an influencer. Wrong. You just need one thing - a digital product that solves a real problem. No camera. No followers. No face required. Three steps:”\n\nStep 1: Pick a niche you already know something about.\nStep 2: Create a simple PDF guide, template, or mini course.\nStep 3: Sell it on autopilot using a free storefront.\n\nCTA (Final 5 seconds):\n”Follow for daily tips. Link in bio for my free starter guide.”\n\nON-SCREEN TEXT:\n- No face required\n- Step 1, Step 2, Step 3\n- Free guide in bio\n\nBEST AUDIO: Trending calm or inspirational sound\nB-ROLL: Laptop, phone, coffee, aesthetic workspace shots\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘carousel’)) {
+return ‘YOUR CAROUSEL COPY:\n\nSLIDE 1 - COVER:\n”5 Digital Products You Can Create This Weekend”\nNo experience needed\n\nSLIDE 2:\n1. CANVA TEMPLATES\nDesign once. Sell forever.\nPrice: $7-$47\n\nSLIDE 3:\n2. PDF GUIDES AND EBOOKS\nShare your knowledge in downloadable format\nPrice: $9-$97\n\nSLIDE 4:\n3. PROMPT PACKS\nAI prompts for ChatGPT, Midjourney, Claude\nHigh demand, low competition right now\nPrice: $7-$37\n\nSLIDE 5:\n4. DIGITAL PLANNERS\nNotion or PDF planners sell year-round\nEvergreen income\nPrice: $9-$27\n\nSLIDE 6:\n5. SWIPE FILE VAULTS\nScripts, captions, templates bundled together\nHigher perceived value\nPrice: $17-$97\n\nSLIDE 7 - CTA:\n”Which will you create first? Comment below.\nFollow for daily digital product tips.”\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘30-day’) || pl.includes(‘calendar’) || (pl.includes(‘content’) && pl.includes(‘calendar’))) {
+return ‘30-DAY CONTENT CALENDAR:\n\nWEEK 1 - AWARENESS AND TRUST\nDay 1: Brand story introduction\nDay 2: Pain point your audience faces\nDay 3: Educational tip in your niche\nDay 4: Motivational quote carousel\nDay 5: Behind the brand - tools you use\nDay 6: FAQ - answer top 3 questions\nDay 7: Reshare top performer\n\nWEEK 2 - EDUCATE AND EMPOWER\nDay 8: Step-by-step tutorial\nDay 9: Myth vs reality in your niche\nDay 10: Resource recommendation\nDay 11: Transformation story\nDay 12: Quick tip Reel under 15 seconds\nDay 13: Day in the life content\nDay 14: Engagement question\n\nWEEK 3 - SELL WITHOUT SELLING\nDay 15: Soft intro to your offer\nDay 16: Problem to solution post\nDay 17: What is included in your product\nDay 18: Social proof or results\nDay 19: Objection handling\nDay 20: Urgency or limited time\nDay 21: Direct CTA post\n\nWEEK 4 - COMMUNITY AND CONNECTION\nDay 22: Share a win\nDay 23: Collaboration or shoutout\nDay 24: Journey or throwback\nDay 25: Poll or this-or-that\nDay 26: Value-packed carousel\nDay 27: Inspirational Reel\nDay 28: Community appreciation\nDay 29: Preview next month content\nDay 30: Month recap with CTA\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘funnel’)) {
+return ‘YOUR PROVEN SALES FUNNEL:\n\nSTEP 1 - ATTRACT\nPlatforms: Pinterest, Instagram, TikTok\nContent: Educational and inspirational posts\nGoal: Drive traffic to your lead magnet page\nFrequency: 1-3 posts daily\n\nSTEP 2 - CAPTURE (Lead Magnet)\nOffer: FREE guide, checklist, or template\nTitle formula: “The [Result] Blueprint for [Audience]”\nFree tools: Stan Store, Beacons, ConvertKit\n\nSTEP 3 - CONVERT (Tripwire $7-17)\nOffer immediately after opt-in\nDelivers quick tangible value\nCovers your ad costs, identifies buyers\n\nSTEP 4 - ASCEND (Core Offer $27-97)\nPresent in follow-up email sequence\nInclude 2-3 bonuses to increase value\n\nSTEP 5 - MAXIMIZE (Upsell $97-197)\nOffer to buyers only\nPremium version, vault, or coaching call\n\nSTEP 6 - RETAIN (7-Day Email Sequence)\nDay 1: Deliver freebie and welcome\nDay 2: Your story and brand mission\nDay 3: Value tip with soft mention\nDay 4: FAQ and objection handling\nDay 5: Social proof or testimonial\nDay 6: Direct offer with urgency\nDay 7: Final reminder, bonus expires\n\nTOOLS NEEDED (all free to start):\nSales: Stan Store or Beacons\nEmail: ConvertKit or MailerLite\nPayments: Stripe or PayPal\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘offer check’) || pl.includes(‘validate’) || pl.includes(‘check my offer’)) {
+return ‘OFFER CHECKER ANALYSIS:\n\nOFFER SCORECARD:\n\nTRANSFORMATION CHECK:\nStrong: “Go from overwhelmed to earning $500/month with digital products”\nWeak: “Learn about digital products”\nYour offer must promise a clear before and after result.\n\nSPECIFICITY CHECK:\nStrong: “$500 in 30 days” or “10 templates in a weekend”\nWeak: “More money” or “Better business”\nThe more specific the promise, the higher the conversion.\n\nAUDIENCE CHECK:\nStrong: “For moms 25-45 who want income without showing their face”\nWeak: “For anyone who wants to make money online”\nOne specific person with one urgent problem.\n\nPRICE CHECK:\n$7-17: Impulse buy, no friction needed\n$27-47: Considered buy, needs clear value\n$97+: Needs testimonials and strong social proof\n\nURGENCY CHECK:\nAdd: Limited bonus, price increase deadline, or enrollment close date\n\nYOUR ACTION PLAN:\n1. Rewrite headline: “[Result] for [Person] in [Timeframe] Without [Objection]”\n2. Add 2-3 bonuses to 3x perceived value\n3. Build 1-page sales page on Stan Store\n4. Add urgency element\n5. Get 3 beta testers before full launch\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘audit’)) {
+return ‘BUSINESS AUDIT REPORT:\n\nSTOP DOING IMMEDIATELY:\n- Posting content with no clear CTA\n- Being active on 5+ platforms at once\n- Creating new products before selling existing ones\n- Underpricing out of fear\n- Skipping email list building\n- Comparing your chapter 1 to someone's chapter 20\n\nKEEP AND SCALE:\n- Content getting saves and shares (create more)\n- Your highest converting offer (double down)\n- Email marketing (most valuable long-term asset)\n- Authentic storytelling that builds trust\n- Systems that run without you\n\nFIX IMMEDIATELY:\n- Add CTA to every single post\n- Create a lead magnet to grow your list\n- Raise your prices by 20-30%\n- Batch create 1 week of content at a time\n- Add 1 automation to your sales process\n\n90-DAY PLAN:\nMonth 1: Fix your offer, build email list to 100\nMonth 2: Consistent content, automate the funnel\nMonth 3: Launch to list, scale what converts\n\nGOLDEN RULE: Focus on ONE offer until it hits $1,000/month before adding anything new.\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘keyword’) || pl.includes(‘seo’)) {
+return ‘KEYWORD RESEARCH REPORT:\n\nTOP PINTEREST KEYWORDS:\n- passive income ideas for beginners\n- digital products to sell online\n- how to make money from home 2024\n- faceless digital brand\n- digital downloads to sell on etsy\n- online business ideas for women\n- make money while you sleep\n- digital planner template\n- canva templates for sale\n- kdp low content books that sell\n- print on demand passive income\n- notion template digital planner\n- instagram growth tips for beginners\n\nLONG-TAIL KEYWORDS (low competition):\n- how to start a faceless brand on instagram\n- best digital products to sell without followers\n- passive income for stay at home moms no experience\n- how to make money with canva templates beginners\n- kdp coloring book ideas that sell 2024\n- free lead magnet ideas for digital products\n- how to build email list from scratch fast\n\nPINTEREST STRATEGY:\n- Pin 5-15 times per day using Tailwind scheduler\n- 3-5 keywords per pin description\n- 5-10 boards with keyword-rich board titles\n- Fresh pins outperform repins consistently\n- Vertical 2:3 ratio images perform best\n- Add text overlay to every pin image\n- Best time to pin: evenings and weekends\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘digital product’) || pl.includes(‘blueprint’) || pl.includes(‘ebook’)) {
+return ‘DIGITAL PRODUCT BLUEPRINT:\n\nPRODUCT TITLE:\n”The Faceless Brand Starter Blueprint”\n\nSUBTITLE:\n”How to Launch a Digital Product Business Without Showing Your Face”\n\nPRICE: $27\n\nTABLE OF CONTENTS:\nIntroduction: Why Faceless Works\nChapter 1: Choosing Your Profitable Niche\nChapter 2: Your First Digital Product (done in a weekend)\nChapter 3: Setting Up Your Free Storefront\nChapter 4: The Content Strategy That Sells\nChapter 5: Your Automated Sales System\nChapter 6: Scaling to $1,000 per Month\nBONUS 1: 30-Day Launch Checklist\nBONUS 2: Caption Swipe File (30 captions)\nBONUS 3: Canva Brand Kit Template\n\nSALES DESCRIPTION:\nYou do not need a following. You do not need to show your face. You just need a system.\n\nThe Faceless Brand Starter Blueprint gives you the exact step-by-step roadmap to launch a profitable digital product business starting this weekend.\n\nLAUNCH EMAIL:\nSubject: It is here!\n\nHey [Name], the moment you have been waiting for is here.\n[Product Name] is now available at the founding price for 48 hours only.\n[GRAB YOUR COPY HERE]\n\n[Your Name]\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘lead magnet’) || pl.includes(‘freebie’)) {
+return ‘LEAD MAGNET BLUEPRINT:\n\nBEST OPTION FOR YOUR BRAND:\n”The Faceless Digital Product Starter Guide”\n\nWHAT IS INSIDE:\n- The 3 digital products that sell without followers\n- How to set up your free storefront in 30 minutes\n- The exact caption formula that converts\n- Your first week action plan checklist\n\nFORMAT: 5-8 page PDF (create free in Canva)\nDELIVERY: ConvertKit or MailerLite automation\n\nOPT-IN LANDING PAGE COPY:\nHEADLINE: “Start Your Faceless Digital Brand This Weekend”\nSUBTITLE: “Get the free starter guide. No experience, no camera, no following required.”\nBUTTON: “Send Me the Free Guide”\n\nWELCOME EMAIL (send immediately):\nSubject: Here is your free guide!\n\nHey [Name]! Welcome.\n\nYour free guide is attached. Start with Chapter 1 - most people skip it and wonder why nothing works.\n\nI will be in your inbox tomorrow with your first action step.\n\n[Your Name]\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘brand kit’) || pl.includes(‘brand identity’)) {
+return ‘YOUR COMPLETE BRAND KIT:\n\nBRAND NAME OPTIONS:\n1. ZenSereniTee Studio\n2. The Bloom Blueprint\n3. Quiet Wealth Co.\n4. Lotus and Lux Creative\n5. The Calm Creator\n\nTAGLINE OPTIONS:\n- Build wealth. Stay calm.\n- Passive income for the intentional entrepreneur.\n- Your business. Your peace. Your way.\n- Digital freedom for the quietly ambitious.\n\nCOLOR PALETTE:\nBlush Rose: #F2DDD5 (warmth, femininity)\nSage Green: #7A9E76 (calm, growth)\nPale Gold: #C9A55A (luxury, success)\nWarm Cream: #FAF6F0 (clean, minimal)\nDeep Ink: #1A1410 (authority)\n\nFONT PAIRING:\nHeadings: Cormorant Garamond Italic (elegant)\nBody: Outfit Light or DM Sans (clean)\nAccent: DM Mono (trustworthy)\n\nBRAND VOICE:\nTone: Calm, empowering, non-pushy, sophisticated\nSpeak like: A trusted mentor who has done it\nAvoid: Hype language, bro-marketing tactics\n\nCONTENT PILLARS:\n1. Education: How to build digital products\n2. Inspiration: Faceless brand success\n3. Behind the Brand: Tools and process\n4. Community: Celebrating wins\n5. Offers: Soft sells and product features\n\nBRAND SYMBOL: Lotus flower - transformation and rising above\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘avatar’) || pl.includes(‘ai twin’)) {
+return ‘AI AVATAR AND CHARACTER DESCRIPTION:\n\nCHARACTER OVERVIEW:\nNAME: Luna (brand avatar)\nROLE: Calm luxury digital entrepreneur\nVIBE: Business sheek - sophisticated, warm, empowering\n\nAPPEARANCE:\nSKIN: Warm brown or caramel tone, glowing\nHAIR: Long loose waves or sleek updo, deep brown\nSTYLE: Minimalist luxury - silk blouses, gold jewelry\nCOLORS: Always blush, cream, sage, or gold tones\n\nMIDJOURNEY PROMPT:\n/imagine: Faceless woman, warm caramel skin, long wavy dark hair, blush silk blouse, luxury minimal desk, gold accents, soft natural lighting, cream background, editorial photography, 8k, ultra detailed –ar 4:5 –style raw –v 6\n\nHEYGEN AI TWIN SETUP:\n1. Go to HeyGen.com (free tier available)\n2. Upload avatar photo or generate AI avatar\n3. Type your script in the text box\n4. Select a warm professional female voice\n5. Generate and download your talking head video\n6. Post as your brand content\n\nCONSISTENCY TIPS:\n- Save your Midjourney prompt with the same seed number\n- Always use the same 3-4 color palette\n- Keep same lighting style across all images\n- Use same background elements for brand recognition\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘resume’)) {
+return ‘YOUR PROFESSIONAL RESUME:\n\n[YOUR NAME]\nDigital Entrepreneur | Brand Strategist | Content Creator\nyouremail@gmail.com | yourwebsite.com | @yoursocial\n\nPROFESSIONAL SUMMARY:\nResults-driven digital entrepreneur specializing in faceless brand development, digital product creation, and automated income systems. Proven track record building profitable online businesses using AI tools, social media strategy, and digital marketing.\n\nCORE SKILLS:\n- Digital Product Development (ebooks, templates, courses)\n- Content Strategy and Social Media Marketing\n- AI Tools: Canva, Midjourney, ChatGPT, Claude\n- Email Marketing and List Building\n- Sales Funnel Design and Optimization\n- Brand Identity and Visual Design\n- KDP Publishing and Low Content Books\n\nEXPERIENCE:\nFounder and Creative Director | [Your Brand] | [Year]-Present\n- Built and launched digital products generating passive income\n- Grew social media presence to [X] engaged followers\n- Developed automated sales systems using Stan Store and ConvertKit\n- Created brand kits and content strategies\n\nEDUCATION:\n[Your Degree] | [School] | [Year]\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘email’) || pl.includes(‘welcome sequence’)) {
+return ‘YOUR EMAIL SEQUENCE:\n\nEMAIL 1 - WELCOME (Send immediately)\nSubject: Welcome to the family!\n\nHey [First Name],\n\nWelcome. I am so glad you are here.\n\nYou just took the first step toward building something real.\n\nYour free gift is here: [LINK]\n\nOver the next few days I will share the exact steps to [your promise]. Make sure to add this email to your contacts.\n\n[Your Name]\n\nEMAIL 2 - YOUR STORY (Day 2)\nSubject: Why I started this (the real reason)\n\nHey [First Name],\n\nI was not always doing this.\n\n[2-3 sentences about your journey and what changed]\n\nTomorrow I am sharing the exact strategy. Watch for my email.\n\n[Your Name]\n\nEMAIL 3 - VALUE (Day 3)\nSubject: The strategy that actually works\n\nHey [First Name],\n\nHere is the exact framework I use: [Share 3-5 key tips]\n\nP.S. If you want the complete system, I have something special. More on that tomorrow.\n\n[Your Name]\n\nEMAIL 4 - OFFER (Day 5)\nSubject: Ready to go deeper?\n\nHey [First Name],\n\n[Product Name] is available at $[price] until [date].\n\n[GRAB YOUR COPY HERE]\n\n[Your Name]\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘blog’) || pl.includes(‘article’)) {
+return ‘YOUR BLOG POST:\n\nHEADLINE:\nHow to Build a Profitable Faceless Digital Brand in 2024\n\nINTRODUCTION:\nWhat if you could build a thriving online business without ever showing your face, recording videos, or building a massive following? Thousands of digital entrepreneurs are doing exactly this - quietly generating life-changing passive income.\n\nThis is not a trend. It is a proven business model. And in this post I am going to show you exactly how it works.\n\nWHAT IS A FACELESS BRAND?\nA faceless brand is built around valuable content and digital products - not a personal persona. Your brand has a voice, an aesthetic, and a mission. But it does not need your face.\n\nBenefits:\n- Complete privacy and personal freedom\n- Business runs without your constant presence\n- Scale without burnout or camera anxiety\n- Separate your identity from your income\n\nSTEP 1: CHOOSE YOUR NICHE\nMost profitable faceless niches:\n- Digital marketing and business\n- Personal finance and passive income\n- Health, wellness, and mindfulness\n- Creative skills: design, writing, photography\n- Parenting and family organization\n\nSTEP 2: CREATE YOUR FIRST PRODUCT\nStart with what you already know:\n- A PDF guide answering your audience's top question\n- A Canva template bundle\n- A prompt pack or swipe file collection\n- A mini course teaching one skill\n\nSTEP 3: BUILD YOUR AUTOMATED SYSTEM\nSimple funnel: Content - Lead Magnet - Email List - Product Sales - Passive Income\n\nCONCLUSION:\nThe internet does not need your face. It needs your value. Start with one product, one platform, one clear message. The rest will follow.\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘quote’) || pl.includes(‘affirmation’) || pl.includes(‘motivational’)) {
+return ‘30 QUOTES FOR YOUR BRAND:\n\n1. “Your income should not require your constant presence. Build systems, not schedules.”\n2. “Calm is a business strategy.”\n3. “The quieter you become, the more you can build.”\n4. “Passive income is active freedom.”\n5. “You do not need millions of followers. You need the right offer for the right person.”\n6. “Build once. Earn repeatedly.”\n7. “Your knowledge is a product. Start treating it like one.”\n8. “A faceless brand is not hiding. It is choosing peace over performance.”\n9. “Done is better than perfect. Launch the thing.”\n10. “The best businesses work while you sleep.”\n11. “Stop trading hours for dollars. Start building assets.”\n12. “One focused hour beats five scattered ones.”\n13. “Your future self is watching. What are you building today?”\n14. “Consistency is the most underrated business strategy.”\n15. “Small steps forward still move you forward.”\n16. “Your niche is not too small. The right people will find you.”\n17. “An email list is the most valuable real estate online.”\n18. “Content is the rent you pay to stay visible. Products are the investment.”\n19. “Stop waiting to feel ready. Start, then get ready.”\n20. “A $27 product sold 37 times equals $999. Simple math, powerful results.”\n21. “Your expertise is worth more than you are charging for it.”\n22. “Build the business that gives you a life, not one that takes it.”\n23. “Automation is not laziness. It is wisdom.”\n24. “Every piece of content is a salesperson working 24 hours a day.”\n25. “The season of building is always worth the season of blooming.”\n26. “You are not behind. You are exactly where your journey requires.”\n27. “Rest is part of the strategy. Protect your energy like an asset.”\n28. “Your brand does not need your face. It needs your value.”\n29. “One digital product can change your financial trajectory permanently.”\n30. “Start where you are. Use what you have. Do what you can.”\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+if (pl.includes(‘edit’) || pl.includes(‘face swap’) || pl.includes(‘cartoon’) || pl.includes(‘sketch’) || pl.includes(‘transform’)) {
+return ‘STEP-BY-STEP EDITING GUIDE:\n\nFREE TOOLS (no cost, iPhone friendly):\n1. Canva - canva.com - most editing features free\n2. Remove.bg - background removal free\n3. Photopea - photopea.com - free Photoshop alternative\n4. Snapseed - iPhone app - professional photo editing free\n5. Cleanup.pictures - object removal free\n6. Krea.ai - AI image editing free tier\n7. Akool.com - face swap free tier\n8. Pixlr.com - online photo editor free\n\nSTEP-BY-STEP PROCESS:\nStep 1: Choose the right tool based on your specific effect\nStep 2: Upload your photo (highest resolution you have)\nStep 3: Apply the effect or transformation using the tool\nStep 4: Adjust settings until satisfied with the result\nStep 5: Download in highest quality available\nStep 6: Use in your designs or post directly\n\nPRO TIPS:\n- Always work with the highest resolution source image\n- Save your original before editing\n- iPhone Photos app has strong built-in editing for basic adjustments\n- For AI transforms, Krea.ai gives the best free results\n- For face editing, Facetune is excellent on iPhone\n\n🪷 Need me to expand or create the next piece?’;
+}
+
+// Default comprehensive response
+return ‘YOUR CREA8IVE VIB3S STRATEGIC RESPONSE:\n\nCORE FRAMEWORK:\nEvery successful digital business is built on three things:\n1. A specific audience with an urgent problem\n2. A product or service that solves that problem\n3. A system that sells it consistently without you\n\nACTION PLAN:\n\nWEEK 1 - FOUNDATION:\n- Define your one ideal customer (be very specific)\n- Identify their number one urgent problem\n- Choose your primary platform: Pinterest or Instagram\n- Research competitor pricing\n\nWEEK 2 - CREATION:\n- Create your free lead magnet (PDF or checklist in Canva)\n- Set up your free storefront (Stan Store or Beacons)\n- Write your 3-5 email welcome sequence\n- Design your brand aesthetic\n\nWEEK 3 - LAUNCH:\n- Create 10 pieces of content introducing your brand\n- Soft launch your first paid offer\n- Post consistently, quality over quantity\n- Engage with every comment and message\n\nWEEK 4 - OPTIMIZE:\n- Review what content performed best\n- Double down on winning content formats\n- Add testimonials or social proof\n- Automate your sales process\n\nFREE TOOLS TO START TODAY:\n- Canva: all your design needs\n- Stan Store or Beacons: sell digital products\n- ConvertKit: email marketing free up to 1000 subscribers\n- Metricool: schedule your content free\n\nBUSINESS SHEEK REMINDER:\nCalm execution beats frantic hustle. One focused hour beats five scattered ones. Build with intention. Every day.\n\n🪷 Need me to expand on any section or create the next piece?’;
+}
+
+// QUOTE CREATOR
+function genQuote() {
+var type = gv(‘quoteT’);
+var output = gv(‘quoteO’);
+var style = gv(‘quoteS’);
+var descEl = document.getElementById(‘quoteD’);
+var desc = descEl ? descEl.value.trim() : ‘’;
+if (!desc) desc = type + ’ quotes for digital entrepreneurs who value calm success’;
+
+var btn = document.getElementById(‘quoteBtnGen’);
+var out = document.getElementById(‘quoteOut’);
+var result = document.getElementById(‘quoteResult’);
+var acts = document.getElementById(‘quoteActs’);
+
+out.style.display = ‘block’;
+btn.disabled = true;
+
+if (output === ‘Quote Graphic Image’) {
+result.innerHTML = ‘<div class="ld"><span></span><span></span><span></span></div> Generating quote graphic…’;
+var prompt = ’beautiful ’ + style.toLowerCase() + ’ quote graphic design, elegant serif typography, inspirational quote text, ’ + desc + ‘, blush rose and gold color palette, soft background, Instagram square format, high quality, professional design’;
+var url = polUrl(prompt, 1080, 1080, ‘flux’);
+var img = new Image();
+img.style.cssText = ‘max-width:100%;border-radius:10px;display:block;margin-top:8px;’;
+img.onload = function() {
+result.innerHTML = ‘’;
+result.appendChild(img);
+acts.innerHTML = ‘<a class="abtn" href="' + url + '" target="_blank" download="quote-graphic.jpg">Download</a><a class="abtn" href="' + url + '" target="_blank">Open Full Size</a><button class="abtn g" onclick="genQuote()">New Variation</button>’;
+btn.disabled = false;
+};
+img.onerror = function() {
+result.innerHTML = ‘<a href="' + url + '" target="_blank" style="color:var(--gold);text-decoration:underline;">Tap to view your quote graphic</a>’;
+btn.disabled = false;
+};
+img.src = url;
+} else {
+result.innerHTML = ‘<div class="ld"><span></span><span></span><span></span></div> Writing quotes…’;
+var quoteText = generateResponse(’quote motivational ’ + type + ’ ’ + desc);
+result.innerHTML = ‘<div class="outtxt" id="quoteTxt">’ + quoteText + ‘</div>’;
+acts.innerHTML = ‘<button class="abtn" onclick="cpOut(\'quoteTxt\')">Copy All</button><button class="abtn" onclick="exportPDF(\'quoteTxt\')">PDF</button><button class="abtn g" onclick="genQuote()">Regenerate</button>’;
+btn.disabled = false;
+}
+}
+
+// CHAT
+var HIST = [];
+function sendChat() {
+var cin = document.getElementById(‘cin’);
+var msg = cin.value.trim();
+if (!msg) return;
+addMsg(msg, ‘user’);
+cin.value = ‘’;
+HIST.push(msg);
+document.getElementById(‘sndbtn’).disabled = true;
+var thinking = addMsg(’’, ‘ai’, true);
+var reply = generateResponse(msg);
+var bub = thinking.querySelector(’.mbub’);
+if (bub) bub.textContent = reply;
+document.getElementById(‘sndbtn’).disabled = false;
+}
+
+function addMsg(text, role, loading) {
+var msgs = document.getElementById(‘chatMsgs’);
+var div = document.createElement(‘div’);
+div.className = ’msg ’ + role;
+div.innerHTML = ‘<div class="mav ' + (role === 'ai' ? 'ai' : 'usr') + '">’ + (role === ‘ai’ ? ‘🪷’ : ‘?’) + ‘</div>’ +
+‘<div class="mbub">’ + (loading ? ‘<div class="ld"><span></span><span></span><span></span></div>’ : text) + ‘</div>’;
+msgs.appendChild(div);
+msgs.scrollTop = msgs.scrollHeight;
+return div;
+}
+
+function chatKey(e) {
+if (e.key === ‘Enter’ && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+// CANVAS
+function initCanvas() {
+FC = new fabric.Canvas(‘mainCV’, { width: 800, height: 800, backgroundColor: ‘#faf6f0’ });
+FC.on(‘selection:created’, syncTB);
+FC.on(‘selection:updated’, syncTB);
+}
+
+function syncTB() {
+var o = FC && FC.getActiveObject();
+if (!o) return;
+if (o.fontSize) document.getElementById(‘fs’).value = o.fontSize;
+if (o.opacity !== undefined) document.getElementById(‘opR’).value = o.opacity;
+}
+
+function addText(type) {
+if (!FC) return;
+var cfg = {
+h1: { t: ‘Heading’, fs: 52, fw: ‘bold’, ff: ‘Cormorant Garamond’ },
+h2: { t: ‘Subheading’, fs: 30, fw: ‘600’, ff: ‘Outfit’ },
+body: { t: ‘Body text here’, fs: 16, fw: ‘300’, ff: ‘Outfit’ },
+box: { t: ‘Text here’, fs: 18, ff: ‘Outfit’ }
+};
+var c = cfg[type] || cfg.body;
+var t = new fabric.IText(c.t, { left: 100, top: 100, fontSize: c.fs, fontWeight: c.fw || ‘normal’, fontFamily: c.ff, fill: ‘#1a1410’ });
+FC.add(t).setActiveObject(t);
+}
+
+function addFx(type) {
+if (!FC) return;
+var t;
+if (type === ‘bubble’) t = new fabric.IText(‘Bubble’, { left: 100, top: 150, fontSize: 42, fontFamily: ‘Impact’, fill: ‘#fff’, stroke: ‘#1a1410’, strokeWidth: 3, paintFirst: ‘stroke’ });
+else if (type === ‘neon’) t = new fabric.IText(‘NEON’, { left: 100, top: 150, fontSize: 48, fontFamily: ‘Impact’, fill: ‘#00ffee’, shadow: new fabric.Shadow({ color: ‘#00ffee’, blur: 25 }) });
+else if (type === ‘block’) t = new fabric.IText(‘BLOCK’, { left: 100, top: 150, fontSize: 52, fontFamily: ‘Impact’, fill: ‘#1a1410’, charSpacing: 100 });
+else if (type === ‘outline’) t = new fabric.IText(‘OUTLINE’, { left: 100, top: 150, fontSize: 52, fontFamily: ‘Impact’, fill: ‘transparent’, stroke: ‘#d4af6e’, strokeWidth: 2 });
+else if (type === ‘lift’) t = new fabric.IText(‘LIFTED’, { left: 100, top: 150, fontSize: 44, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#1a1410’, shadow: new fabric.Shadow({ color: ‘rgba(26,20,16,0.3)’, blur: 8, offsetX: 3, offsetY: 5 }) });
+if (t) FC.add(t).setActiveObject(t);
+}
+
+function setProp(prop, val) { var o = FC && FC.getActiveObject(); if (o) { o.set(prop, val); FC.renderAll(); } }
+function toggleS(prop, on, off) { var o = FC && FC.getActiveObject(); if (o) { o.set(prop, o[prop] === on ? off : on); FC.renderAll(); } }
+function toggleP(prop) { var o = FC && FC.getActiveObject(); if (o) { o.set(prop, !o[prop]); FC.renderAll(); } }
+function setBg() { if (FC) FC.setBackgroundColor(document.getElementById(‘bgc’).value, FC.renderAll.bind(FC)); }
+function setFill() { var o = FC && FC.getActiveObject(); if (o) { o.set(‘fill’, document.getElementById(‘fc’).value); FC.renderAll(); } }
+
+function addShape(type) {
+if (!FC) return;
+var f = document.getElementById(‘fc’).value;
+var s;
+if (type === ‘rect’) s = new fabric.Rect({ left: 100, top: 100, width: 200, height: 120, fill: f, rx: 8 });
+else if (type === ‘circle’) s = new fabric.Circle({ left: 100, top: 100, radius: 75, fill: f });
+else if (type === ‘tri’) s = new fabric.Triangle({ left: 100, top: 100, width: 150, height: 130, fill: f });
+if (s) FC.add(s).setActiveObject(s);
+}
+
+function addArrow() {
+if (!FC) return;
+var l = new fabric.Line([100, 200, 300, 200], { stroke: ‘#1a1410’, strokeWidth: 2 });
+var a = new fabric.Triangle({ left: 295, top: 192, width: 16, height: 16, fill: ‘#1a1410’, angle: 90 });
+FC.add(new fabric.Group([l, a]));
+}
+
+function addLine(s) {
+if (!FC) return;
+var opts = { stroke: ‘#1a1410’, strokeWidth: 2 };
+if (s === ‘dash’) opts.strokeDashArray = [12, 8];
+if (s === ‘dot’) opts.strokeDashArray = [3, 6];
+FC.add(new fabric.Line([80, 200, 520, 200], opts));
+}
+
+function applyE(type) {
+if (type === ‘border’) {
+if (!FC) return;
+FC.add(new fabric.Rect({ left: 20, top: 20, width: FC.width - 40, height: FC.height - 40, fill: ‘transparent’, stroke: document.getElementById(‘fc’).value, strokeWidth: 4, rx: 12 }));
+return;
+}
+var o = FC && FC.getActiveObject();
+if (!o) { toast(‘Select an object first’); return; }
+if (type === ‘outline’) o.set({ stroke: document.getElementById(‘fc’).value, strokeWidth: 3 });
+else if (type === ‘shadow’) o.set(‘shadow’, new fabric.Shadow({ color: ‘rgba(26,20,16,0.3)’, blur: 15, offsetX: 5, offsetY: 5 }));
+else if (type === ‘highlight’) {
+var b = o.getBoundingRect();
+FC.add(new fabric.Rect({ left: b.left - 4, top: b.top - 2, width: b.width + 8, height: b.height + 4, fill: ‘rgba(212,175,110,0.35)’, rx: 4 }));
+}
+FC.renderAll();
+}
+
+function addImgCV(e) {
+if (!FC) return;
+var f = e.target.files[0];
+if (!f) return;
+var r = new FileReader();
+r.onload = function(ev) {
+fabric.Image.fromURL(ev.target.result, function(img) {
+img.scaleToWidth(Math.min(400, FC.width / 2));
+img.set({ left: 80, top: 80 });
+FC.add(img).setActiveObject(img);
+});
+};
+r.readAsDataURL(f);
+}
+
+function addWM() {
+if (!FC) return;
+FC.add(new fabric.IText(‘Cre8ive Vib3s’, { left: FC.width - 220, top: FC.height - 40, fontSize: 14, fontFamily: ‘Outfit’, fill: ‘rgba(212,175,110,0.55)’ }));
+}
+
+function addCaption() {
+if (!FC) return;
+var rect = new fabric.Rect({ left: 0, top: FC.height - 80, width: FC.width, height: 80, fill: ‘rgba(26,20,16,0.7)’ });
+var cap = new fabric.IText(‘Caption here’, { left: 20, top: FC.height - 58, fontSize: 18, fontFamily: ‘Outfit’, fill: ‘#fff’ });
+FC.add(new fabric.Group([rect, cap]));
+}
+
+function delO() {
+if (!FC) return;
+var objs = FC.getActiveObjects();
+if (objs && objs.length) { objs.forEach(function(o) { FC.remove(o); }); FC.discardActiveObject(); FC.renderAll(); }
+}
+
+function clearCV() { if (FC && confirm(‘Clear canvas?’)) { FC.clear(); FC.setBackgroundColor(’#faf6f0’, FC.renderAll.bind(FC)); } }
+function bringFwd() { var o = FC && FC.getActiveObject(); if (o) { FC.bringToFront(o); FC.renderAll(); } }
+function sendBk() { var o = FC && FC.getActiveObject(); if (o) { FC.sendToBack(o); FC.renderAll(); } }
+
+function cloneO() {
+var o = FC && FC.getActiveObject();
+if (!o) return;
+o.clone(function(c) { c.set({ left: o.left + 18, top: o.top + 18 }); FC.add(c).setActiveObject(c); });
+}
+
+function groupO() {
+if (!FC) return;
+var sel = FC.getActiveObjects();
+if (sel.length < 2) { toast(‘Select 2 or more objects to group’); return; }
+FC.discardActiveObject();
+var g = new fabric.Group(sel);
+sel.forEach(function(o) { FC.remove(o); });
+FC.add(g).setActiveObject(g);
+}
+
+function alignO(dir) {
+var o = FC && FC.getActiveObject();
+if (!o) return;
+if (dir === ‘left’) o.set(‘left’, 0);
+else if (dir === ‘center’) o.set(‘left’, (FC.width - o.getScaledWidth()) / 2);
+else if (dir === ‘right’) o.set(‘left’, FC.width - o.getScaledWidth());
+FC.renderAll();
+}
+
+function resizeCV() {
+if (!FC) return;
+var v = document.getElementById(‘cvSz’).value.split(’,’);
+FC.setWidth(parseInt(v[0]));
+FC.setHeight(parseInt(v[1]));
+FC.renderAll();
+}
+
+function loadTpl(type) {
+if (!type || !FC) return;
+FC.clear();
+var t = {
+ig: function() { FC.setWidth(1080); FC.setHeight(1080); FC.setBackgroundColor(’#faf6f0’, FC.renderAll.bind(FC)); FC.add(new fabric.Rect({ left: 30, top: 30, width: 1020, height: 1020, fill: ‘transparent’, stroke: ‘#d4af6e’, strokeWidth: 3, rx: 20 })); FC.add(new fabric.IText(‘Your Brand’, { left: 100, top: 90, fontSize: 80, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#1a1410’ })); FC.add(new fabric.IText(‘🪷’, { left: 490, top: 480, fontSize: 90 })); },
+story: function() { FC.setWidth(1080); FC.setHeight(1920); FC.setBackgroundColor(’#f2c4ce’, FC.renderAll.bind(FC)); FC.add(new fabric.IText(‘Your Story’, { left: 80, top: 300, fontSize: 90, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#1a1410’ })); },
+banner: function() { FC.setWidth(1920); FC.setHeight(600); FC.setBackgroundColor(’#1a1410’, FC.renderAll.bind(FC)); FC.add(new fabric.IText(‘Your Banner Headline’, { left: 100, top: 200, fontSize: 90, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#d4af6e’ })); },
+bcard: function() { FC.setWidth(1050); FC.setHeight(600); FC.setBackgroundColor(’#faf6f0’, FC.renderAll.bind(FC)); FC.add(new fabric.IText(‘Your Name’, { left: 60, top: 80, fontSize: 52, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#1a1410’ })); FC.add(new fabric.IText(‘Creative Director’, { left: 60, top: 155, fontSize: 22, fontFamily: ‘DM Mono’, fill: ‘#9a8e85’ })); FC.add(new fabric.Line([60, 340, 990, 340], { stroke: ‘#d4af6e’, strokeWidth: 1 })); FC.add(new fabric.IText(‘hello@yourbrand.com’, { left: 60, top: 380, fontSize: 18, fontFamily: ‘DM Mono’, fill: ‘#d4af6e’ })); FC.add(new fabric.IText(‘🪷’, { left: 900, top: 60, fontSize: 70 })); },
+resume: function() { FC.setWidth(800); FC.setHeight(1100); FC.setBackgroundColor(’#fff’, FC.renderAll.bind(FC)); FC.add(new fabric.Rect({ left: 0, top: 0, width: 800, height: 160, fill: ‘#1a1410’ })); FC.add(new fabric.IText(‘Your Name’, { left: 40, top: 28, fontSize: 46, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#d4af6e’ })); FC.add(new fabric.IText(‘Title - email@email.com’, { left: 40, top: 95, fontSize: 18, fontFamily: ‘DM Mono’, fill: ‘#b2c9ad’ })); },
+poster: function() { FC.setWidth(800); FC.setHeight(1100); FC.setBackgroundColor(’#1a1410’, FC.renderAll.bind(FC)); FC.add(new fabric.IText(‘POSTER TITLE’, { left: 60, top: 80, fontSize: 70, fontFamily: ‘Impact’, fill: ‘#d4af6e’, charSpacing: 60 })); },
+magazine: function() { FC.setWidth(1080); FC.setHeight(1350); FC.setBackgroundColor(’#faf6f0’, FC.renderAll.bind(FC)); FC.add(new fabric.IText(‘MAGAZINE’, { left: 80, top: 60, fontSize: 60, fontFamily: ‘DM Mono’, fill: ‘#1a1410’, charSpacing: 20 })); FC.add(new fabric.IText(‘Cover Story Headline’, { left: 60, top: 900, fontSize: 52, fontFamily: ‘Cormorant Garamond’, fontStyle: ‘italic’, fill: ‘#1a1410’ })); }
+};
+if (t[type]) t[type]();
+document.getElementById(‘tplSel’).value = ‘’;
+toast(type + ’ template loaded’);
+}
+
+function exportCV(fmt) {
+if (!FC) return;
+try {
+var dataURL = FC.toDataURL({ format: ‘png’, quality: 1 });
+if (fmt === ‘png’) { var a = document.createElement(‘a’); a.href = dataURL; a.download = ‘cre8ive-design.png’; a.click(); }
+else if (fmt === ‘pdf’) {
+var jsPDF = window.jspdf.jsPDF;
+var pdf = new jsPDF({ orientation: FC.width > FC.height ? ‘landscape’ : ‘portrait’, unit: ‘px’, format: [FC.width, FC.height] });
+pdf.addImage(dataURL, ‘PNG’, 0, 0, FC.width, FC.height);
+pdf.save(‘cre8ive-design.pdf’);
+}
+} catch(e) { toast(‘Export error - try PNG format’); }
+}
+</script>
+
+</body>
+</html>
