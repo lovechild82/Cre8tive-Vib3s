@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products Studio — Cre8ive Vib3s</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--blush:#f2c4ce;--blush2:rgba(242,196,206,0.13);--sage:#b2c9ad;--gold:#d4af6e;--gold2:rgba(212,175,110,0.12);--cream:#faf6f0;--ink:#1a1410;--ink2:#3d342e;--muted:#9a8e85;--white:#fff;--border:rgba(212,175,110,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+.topnav{height:52px;background:linear-gradient(135deg,#fdf8f3,#f5ede0);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 .8rem;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:.5rem;}
+.lotus{font-size:1.3rem;animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.bn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;}
+.bn span{color:var(--gold);}
+.navlinks{display:flex;gap:.2rem;overflow-x:auto;}
+.navlinks::-webkit-scrollbar{display:none;}
+.nl{padding:.28rem .55rem;border-radius:6px;font-size:.68rem;color:var(--ink2);white-space:nowrap;border:1px solid transparent;}
+.nl:hover{background:var(--gold2);}
+.nl.active{background:linear-gradient(135deg,rgba(242,196,206,0.15),var(--gold2));color:var(--ink);font-weight:500;border-color:var(--border);}
+.app{display:flex;flex:1;overflow:hidden;}
+.sb{width:210px;min-width:210px;background:var(--white);border-right:1px solid var(--border);overflow-y:auto;padding:.5rem;flex-shrink:0;}
+.sb::-webkit-scrollbar{width:2px;}
+.slbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:.45rem .45rem .15rem;}
+.nv{display:flex;align-items:center;gap:.4rem;padding:.42rem .55rem;border-radius:6px;border:none;background:none;cursor:pointer;width:100%;text-align:left;color:var(--ink2);font-family:'Outfit',sans-serif;font-size:.71rem;transition:all .13s;}
+.nv:hover{background:var(--gold2);}
+.nv.active{background:linear-gradient(135deg,var(--blush2),var(--gold2));color:var(--ink);font-weight:500;border:1px solid var(--border);}
+.ni{font-size:.85rem;min-width:17px;text-align:center;}
+.sd{height:1px;background:var(--border);margin:.18rem 0;}
+.main{flex:1;overflow-y:auto;padding:1rem;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.9rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blush),var(--gold),var(--sage));}
+.card h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;margin-bottom:.25rem;}
+.card p{font-size:.78rem;line-height:1.6;color:var(--ink2);}
+.flbl{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:.38rem;display:block;}
+.fsec{margin-bottom:.85rem;}
+.chips{display:flex;flex-wrap:wrap;gap:.28rem;}
+.chip{padding:.3rem .68rem;border-radius:18px;border:1px solid var(--border);background:var(--white);font-size:.7rem;cursor:pointer;color:var(--ink2);font-family:'Outfit',sans-serif;transition:all .13s;}
+.chip:hover{border-color:var(--gold);background:var(--gold2);}
+.chip.on{background:linear-gradient(135deg,var(--blush),var(--gold));border-color:var(--gold);color:var(--ink);font-weight:500;}
+.tin{width:100%;padding:.58rem .78rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;resize:vertical;min-height:65px;}
+.tin:focus{border-color:var(--gold);}
+.tin.big{min-height:110px;border:2px solid var(--gold);}
+.sin{min-height:unset;height:36px;resize:none;}
+.inp{width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;}
+.gbtn{width:100%;padding:.75rem;background:linear-gradient(135deg,#c9956a,var(--gold));border:none;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .22s;margin-top:.7rem;}
+.gbtn:hover{box-shadow:0 4px 18px rgba(212,175,110,.32);transform:translateY(-1px);}
+.gbtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.gbtn.sage{background:linear-gradient(135deg,#3d5c38,var(--sage));}
+.abtn{padding:.32rem .72rem;border-radius:6px;border:1px solid rgba(212,175,110,.3);background:rgba(212,175,110,.1);color:var(--gold);font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .13s;text-decoration:none;display:inline-block;}
+.abtn:hover{background:rgba(212,175,110,.22);}
+.abtn.g{color:var(--sage);border-color:rgba(178,201,173,.3);background:rgba(178,201,173,.08);}
+.out{background:#1a1410;border-radius:10px;padding:1rem;margin-top:.8rem;display:none;}
+.outlbl{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.outtxt{font-family:'Outfit',sans-serif;font-size:.78rem;line-height:1.78;color:#e8ddd4;white-space:pre-wrap;word-break:break-word;}
+.outacts{display:flex;gap:.38rem;margin-top:.65rem;flex-wrap:wrap;}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.52rem;padding:.17rem .5rem;border-radius:7px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+.bf{background:rgba(178,201,173,.18);color:#3d5c38;border:1px solid rgba(178,201,173,.4);}
+.ba{background:rgba(212,175,110,.15);color:#7a5c1e;border:1px solid rgba(212,175,110,.35);}
+.toast{position:fixed;bottom:1rem;right:1rem;background:var(--ink);color:var(--gold);font-family:'DM Mono',monospace;font-size:.64rem;padding:.48rem .88rem;border-radius:8px;border:1px solid var(--gold);z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;}
+.toast.show{opacity:1;}
+/* product image grid */
+.imgout{max-width:100%;border-radius:10px;display:block;margin-top:.6rem;}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<nav class="topnav">
+  <div class="logo">
+    <a href="index.html" style="display:flex;align-items:center;gap:.5rem;">
+      <div class="lotus">🪷</div>
+      <div><div class="bn">Cre8ive Vib3s <span>Studio</span></div></div>
+    </a>
+  </div>
+  <div class="navlinks">
+    <a class="nl" href="index.html">🏠</a>
+    <a class="nl" href="image-studio.html">🎨 Images</a>
+    <a class="nl" href="video-studio.html">🎬 Video</a>
+    <a class="nl" href="writing-studio.html">✍️ Writing</a>
+    <a class="nl" href="design-studio.html">✏️ Design</a>
+    <a class="nl" href="marketing-studio.html">📈 Marketing</a>
+    <a class="nl active" href="products-studio.html">📦 Products</a>
+    <a class="nl" href="ai-studio.html">🤖 AI</a>
+    <a class="nl" href="chat.html">💬 Chat</a>
+  </div>
+</nav>
+<div class="app">
+<div class="sb">
+  <div class="slbl">Digital Products</div>
+  <button class="nv active" data-panel="blueprint" onclick="go('blueprint')"><span class="ni">📋</span>Digital Product Blueprint</button>
+  <button class="nv" data-panel="ecommerce" onclick="go('ecommerce')"><span class="ni">🛒</span>E-Commerce Setup</button>
+  <button class="nv" data-panel="plrmrr" onclick="go('plrmrr')"><span class="ni">📄</span>PLR / MRR Rights</button>
+  <div class="sd"></div>
+  <div class="slbl">KDP Publishing</div>
+  <button class="nv" data-panel="kdp" onclick="go('kdp')"><span class="ni">📚</span>KDP Coloring Book Creator</button>
+  <button class="nv" data-panel="kdpadult" onclick="go('kdpadult')"><span class="ni">🌺</span>Adult Coloring Book</button>
+  <button class="nv" data-panel="kdpkids" onclick="go('kdpkids')"><span class="ni">🦄</span>Kids Coloring Book</button>
+  <button class="nv" data-panel="activitypack" onclick="go('activitypack')"><span class="ni">🎯</span>Viral Kids Activity Pack</button>
+  <button class="nv" data-panel="kdppaperback" onclick="go('kdppaperback')"><span class="ni">📗</span>Amazon KDP Paperback</button>
+  <div class="sd"></div>
+  <div class="slbl">Storybooks</div>
+  <button class="nv" data-panel="storybook" onclick="go('storybook')"><span class="ni">📖</span>Children's Storybook</button>
+  <button class="nv" data-panel="herebook" onclick="go('herebook')"><span class="ni">🦸‍♀️</span>Personalized Hero Storybook</button>
+  <button class="nv" data-panel="multilingual" onclick="go('multilingual')"><span class="ni">🌍</span>Multilingual Storybook</button>
+  <button class="nv" data-panel="script2story" onclick="go('script2story')"><span class="ni">✍️</span>Script to Storybook</button>
+  <button class="nv" data-panel="interactive" onclick="go('interactive')"><span class="ni">🎮</span>Interactive Children's Book</button>
+  <div class="sd"></div>
+  <div class="slbl">Comics and Characters</div>
+  <button class="nv" data-panel="comicstrip" onclick="go('comicstrip')"><span class="ni">💥</span>Comic Strip Creator</button>
+  <button class="nv" data-panel="comicbook" onclick="go('comicbook')"><span class="ni">📔</span>Comic Book Creator</button>
+  <button class="nv" data-panel="superhero" onclick="go('superhero')"><span class="ni">🦸</span>Superhero Creator</button>
+  <div class="sd"></div>
+  <div class="slbl">Print Products</div>
+  <button class="nv" data-panel="wallart" onclick="go('wallart')"><span class="ni">🖼️</span>Wall Art Creator</button>
+  <button class="nv" data-panel="ecard" onclick="go('ecard')"><span class="ni">💌</span>Ecard Creator</button>
+  <button class="nv" data-panel="stamps" onclick="go('stamps')"><span class="ni">📮</span>Stamps Creator</button>
+  <button class="nv" data-panel="labels" onclick="go('labels')"><span class="ni">🏷️</span>Labels Creator</button>
+  <button class="nv" data-panel="foodmock" onclick="go('foodmock')"><span class="ni">🍽️</span>Food Mockups</button>
+  <button class="nv" data-panel="prodmock" onclick="go('prodmock')"><span class="ni">🛍️</span>Product Displays</button>
+  <button class="nv" data-panel="clipart" onclick="go('clipart')"><span class="ni">✂️</span>Viral Clipart Creator</button>
+  <button class="nv" data-panel="thumbnail" onclick="go('thumbnail')"><span class="ni">🖼️</span>Viral Thumbnails</button>
+  <button class="nv" data-panel="stickers" onclick="go('stickers')"><span class="ni">⭐</span>Viral Stickers</button>
+</div>
+
+<div class="main" id="mainContent">
+
+<!-- DIGITAL PRODUCT BLUEPRINT -->
+
+<div class="panel active" id="p-blueprint">
+<div class="card"><span class="badge bf">Step by Step · Beginner Friendly</span><h2>📋 Digital Product Blueprint</h2><p>Get a complete blueprint to create, launch, and sell your first digital product — from idea to income.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Product Type</label>
+    <div class="chips" id="bpType">
+      <div class="chip on" onclick="pick(this,'bpType')">PDF Guide or Ebook</div>
+      <div class="chip" onclick="pick(this,'bpType')">Template Bundle</div>
+      <div class="chip" onclick="pick(this,'bpType')">Mini Course</div>
+      <div class="chip" onclick="pick(this,'bpType')">Prompt Pack</div>
+      <div class="chip" onclick="pick(this,'bpType')">Swipe File</div>
+      <div class="chip" onclick="pick(this,'bpType')">Notion Template</div>
+      <div class="chip" onclick="pick(this,'bpType')">Spreadsheet Template</div>
+      <div class="chip" onclick="pick(this,'bpType')">Printable</div>
+      <div class="chip" onclick="pick(this,'bpType')">Digital Planner</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Your Niche</label>
+    <textarea class="tin sin" id="bpNiche" placeholder="e.g. digital products, passive income, wellness, parenting..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('blueprint')">🪷 Get My Product Blueprint</button>
+  <div class="out" id="out-blueprint"><div class="outlbl">✦ Your Product Blueprint</div><div class="outtxt" id="outtxt-blueprint"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-blueprint')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-blueprint','product-blueprint')">PDF</button><button class="abtn g" onclick="genProduct('blueprint')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- E-COMMERCE SETUP -->
+
+<div class="panel" id="p-ecommerce">
+<div class="card"><span class="badge bf">Free Platforms · Instant Setup</span><h2>🛒 Built-In E-Commerce Setup</h2><p>Set up your free digital product store in under 30 minutes. Sell directly from social media, no website needed.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Store Platform</label>
+    <div class="chips" id="ecPlatform">
+      <div class="chip on" onclick="pick(this,'ecPlatform')">Stan Store (Best for Creators)</div>
+      <div class="chip" onclick="pick(this,'ecPlatform')">Beacons (Free Link in Bio)</div>
+      <div class="chip" onclick="pick(this,'ecPlatform')">Gumroad (Free)</div>
+      <div class="chip" onclick="pick(this,'ecPlatform')">Payhip (Free)</div>
+      <div class="chip" onclick="pick(this,'ecPlatform')">Etsy (Marketplace)</div>
+      <div class="chip" onclick="pick(this,'ecPlatform')">Shopify (Paid)</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">What You Are Selling</label>
+    <textarea class="tin sin" id="ecDetails" placeholder="e.g. Digital templates, PDF guides, prompt packs, coloring books..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('ecommerce')">🪷 Get My Store Setup Guide</button>
+  <div class="out" id="out-ecommerce"><div class="outlbl">✦ Your Store Setup Guide</div><div class="outtxt" id="outtxt-ecommerce"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-ecommerce')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-ecommerce','store-setup')">PDF</button></div></div>
+</div>
+</div>
+
+<!-- PLR / MRR -->
+
+<div class="panel" id="p-plrmrr">
+<div class="card"><span class="badge bf">Passive Income · Resell Rights</span><h2>📄 PLR and MRR Rights Guide</h2><p>Understand, create, and sell PLR and MRR digital products for maximum passive income.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">What You Need</label>
+    <div class="chips" id="plrType">
+      <div class="chip on" onclick="pick(this,'plrType')">Create My Own PLR Product</div>
+      <div class="chip" onclick="pick(this,'plrType')">Rebrand PLR I Purchased</div>
+      <div class="chip" onclick="pick(this,'plrType')">Sell MRR Bundle</div>
+      <div class="chip" onclick="pick(this,'plrType')">PLR License Template</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Product Topic</label>
+    <textarea class="tin sin" id="plrDetails" placeholder="e.g. Social media marketing guide, digital products guide, mindfulness workbook..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('plrmrr')">🪷 Get My PLR/MRR Guide</button>
+  <div class="out" id="out-plrmrr"><div class="outlbl">✦ Your PLR/MRR Guide</div><div class="outtxt" id="outtxt-plrmrr"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-plrmrr')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-plrmrr','plr-guide')">PDF</button></div></div>
+</div>
+</div>
+
+<!-- KDP COLORING BOOK -->
+
+<div class="panel" id="p-kdp">
+<div class="card"><span class="badge bf">Amazon KDP · Passive Income · Viral</span><h2>📚 KDP Viral Coloring Book Creator</h2><p>Create best-selling coloring books for Amazon KDP — adult and kids. Complete publishing guide included.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Book Type</label>
+    <div class="chips" id="kdpType">
+      <div class="chip on" onclick="pick(this,'kdpType')">Adult Coloring Book</div>
+      <div class="chip" onclick="pick(this,'kdpType')">Kids Coloring Book</div>
+      <div class="chip" onclick="pick(this,'kdpType')">Mandala and Patterns</div>
+      <div class="chip" onclick="pick(this,'kdpType')">Holiday Themed</div>
+      <div class="chip" onclick="pick(this,'kdpType')">Nature and Botanical</div>
+      <div class="chip" onclick="pick(this,'kdpType')">Animals and Pets</div>
+      <div class="chip" onclick="pick(this,'kdpType')">Fantasy and Magic</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Book Theme and Details</label>
+    <textarea class="tin" id="kdpDetails" placeholder="e.g. Adult mandala coloring book with mindfulness theme, 50 pages, 8.5x11, for stress relief and relaxation..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('kdp')">🪷 Generate KDP Book Plan</button>
+  <div class="out" id="out-kdp"><div class="outlbl">✦ Your KDP Book Plan</div><div class="outtxt" id="outtxt-kdp"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-kdp')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-kdp','kdp-plan')">PDF</button><button class="abtn g" onclick="genProduct('kdp')">Regenerate</button></div></div>
+</div>
+<div class="card">
+  <label class="flbl">Generate Coloring Book Page Image</label>
+  <div class="fsec">
+    <div class="chips" id="kdpImgTheme">
+      <div class="chip on" onclick="pick(this,'kdpImgTheme')">Floral Mandala</div>
+      <div class="chip" onclick="pick(this,'kdpImgTheme')">Geometric Pattern</div>
+      <div class="chip" onclick="pick(this,'kdpImgTheme')">Animal</div>
+      <div class="chip" onclick="pick(this,'kdpImgTheme')">Nature Scene</div>
+      <div class="chip" onclick="pick(this,'kdpImgTheme')">Fantasy</div>
+    </div>
+  </div>
+  <button class="gbtn sage" id="kdpImgBtn" onclick="genColoringImg()">🎨 Generate Coloring Page</button>
+  <div class="out" id="kdpImgOut"><div class="outlbl">✦ Your Coloring Page</div><div id="kdpImgResult"></div><div class="outacts" id="kdpImgActs"></div></div>
+</div>
+</div>
+
+<!-- ADULT COLORING BOOK -->
+
+<div class="panel" id="p-kdpadult">
+<div class="card"><span class="badge bf">KDP Ready · Intricate Designs</span><h2>🌺 Adult Coloring Book Creator</h2><p>Create intricate, detailed coloring pages for adult relaxation and mindfulness coloring books.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Theme</label>
+    <div class="chips" id="adultColTheme">
+      <div class="chip on" onclick="pick(this,'adultColTheme')">Sacred Geometry</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Botanical Flowers</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Intricate Mandalas</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Zentangle Patterns</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Celestial and Stars</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Animals and Wildlife</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Fantasy Landscapes</div>
+      <div class="chip" onclick="pick(this,'adultColTheme')">Art Nouveau Style</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin" id="adultColDesc" placeholder="e.g. Intricate lotus mandala with fine detailed patterns, thick black outlines only, no fill, white background, 8.5x11 format..."></textarea>
+  </div>
+  <button class="gbtn" id="adultColBtn" onclick="genColoringPage('adult')">🪷 Generate Adult Coloring Page</button>
+  <div class="out" id="adultColOut"><div class="outlbl">✦ Your Coloring Page</div><div id="adultColResult"></div><div class="outacts" id="adultColActs"></div></div>
+</div>
+</div>
+
+<!-- KIDS COLORING BOOK -->
+
+<div class="panel" id="p-kdpkids">
+<div class="card"><span class="badge bf">KDP Ready · Fun and Simple</span><h2>🦄 Kids Coloring Book Creator</h2><p>Create fun, simple coloring pages for children. Age-appropriate designs for all age groups.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Age Group</label>
+    <div class="chips" id="kidsAge">
+      <div class="chip on" onclick="pick(this,'kidsAge')">Toddler 2-4 (Very Simple)</div>
+      <div class="chip" onclick="pick(this,'kidsAge')">Young Kids 4-7</div>
+      <div class="chip" onclick="pick(this,'kidsAge')">Older Kids 7-10</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Theme</label>
+    <div class="chips" id="kidsTheme">
+      <div class="chip on" onclick="pick(this,'kidsTheme')">Animals</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Unicorns and Magic</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Dinosaurs</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Superheroes</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Princesses</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Space and Planets</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Ocean and Sea Life</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Christmas</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Easter</div>
+      <div class="chip" onclick="pick(this,'kidsTheme')">Halloween</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="kidsColDesc" placeholder="e.g. A cute cartoon unicorn with a rainbow, simple thick outlines, white background, kids 4-7..."></textarea>
+  </div>
+  <button class="gbtn" id="kidsColBtn" onclick="genColoringPage('kids')">🪷 Generate Kids Coloring Page</button>
+  <div class="out" id="kidsColOut"><div class="outlbl">✦ Your Kids Coloring Page</div><div id="kidsColResult"></div><div class="outacts" id="kidsColActs"></div></div>
+</div>
+</div>
+
+<!-- ACTIVITY PACK -->
+
+<div class="panel" id="p-activitypack">
+<div class="card"><span class="badge bf">Viral · Etsy Bestseller</span><h2>🎯 Viral Kids Activity Pack Creator</h2><p>Create complete kids activity packs for Etsy and KDP — one of the most consistently bestselling digital product categories.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Activity Type</label>
+    <div class="chips" id="actType">
+      <div class="chip on" onclick="pick(this,'actType')">Complete Activity Pack</div>
+      <div class="chip" onclick="pick(this,'actType')">Learning and Education</div>
+      <div class="chip" onclick="pick(this,'actType')">Tracing and Writing</div>
+      <div class="chip" onclick="pick(this,'actType')">Mazes and Puzzles</div>
+      <div class="chip" onclick="pick(this,'actType')">Dot to Dot</div>
+      <div class="chip" onclick="pick(this,'actType')">Word Search</div>
+      <div class="chip" onclick="pick(this,'actType')">Spot the Difference</div>
+      <div class="chip" onclick="pick(this,'actType')">Holiday Pack</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Age Group and Theme</label>
+    <textarea class="tin" id="actDetails" placeholder="e.g. Complete preschool activity pack ages 3-5, alphabet tracing, number puzzles, animal matching, 30 pages..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('activitypack')">🪷 Create My Activity Pack</button>
+  <div class="out" id="out-activitypack"><div class="outlbl">✦ Your Activity Pack Blueprint</div><div class="outtxt" id="outtxt-activitypack"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-activitypack')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-activitypack','activity-pack')">PDF</button></div></div>
+</div>
+</div>
+
+<!-- KDP PAPERBACK -->
+
+<div class="panel" id="p-kdppaperback">
+<div class="card"><span class="badge bf">Amazon KDP · Full Publishing Guide</span><h2>📗 Amazon KDP Paperback Creator</h2><p>Publish a real paperback book on Amazon KDP with zero upfront cost and earn royalties on every sale.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Book Category</label>
+    <div class="chips" id="kdpPaperType">
+      <div class="chip on" onclick="pick(this,'kdpPaperType')">Non-Fiction Guide</div>
+      <div class="chip" onclick="pick(this,'kdpPaperType')">Journal or Notebook</div>
+      <div class="chip" onclick="pick(this,'kdpPaperType')">Planner or Tracker</div>
+      <div class="chip" onclick="pick(this,'kdpPaperType')">Coloring Book</div>
+      <div class="chip" onclick="pick(this,'kdpPaperType')">Activity Book</div>
+      <div class="chip" onclick="pick(this,'kdpPaperType')">Children Book</div>
+      <div class="chip" onclick="pick(this,'kdpPaperType')">Poetry Collection</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Book Details</label>
+    <textarea class="tin" id="kdpPaperDetails" placeholder="e.g. A mindfulness journal for digital entrepreneurs, 120 pages, daily prompts and affirmations, 6x9 format..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('kdppaperback')">🪷 Create My KDP Book Plan</button>
+  <div class="out" id="out-kdppaperback"><div class="outlbl">✦ Your KDP Publishing Plan</div><div class="outtxt" id="outtxt-kdppaperback"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-kdppaperback')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-kdppaperback','kdp-paperback')">PDF</button></div></div>
+</div>
+</div>
+
+<!-- STORYBOOK -->
+
+<div class="panel" id="p-storybook">
+<div class="card"><span class="badge bf">Original Stories · KDP Ready</span><h2>📖 Children's Storybook Creator</h2><p>Write a complete original children's storybook with full story text and illustration prompts.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Age Group</label>
+    <div class="chips" id="sbAge">
+      <div class="chip on" onclick="pick(this,'sbAge')">Board Book 0-3</div>
+      <div class="chip" onclick="pick(this,'sbAge')">Picture Book 3-6</div>
+      <div class="chip" onclick="pick(this,'sbAge')">Early Reader 5-8</div>
+      <div class="chip" onclick="pick(this,'sbAge')">Chapter Book 7-10</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Theme and Characters</label>
+    <textarea class="tin" id="sbDetails" placeholder="e.g. A brave little girl named Zoe who discovers a magical garden where animals can talk and teaches her about kindness..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('storybook')">🪷 Write My Storybook</button>
+  <div class="out" id="out-storybook"><div class="outlbl">✦ Your Storybook</div><div class="outtxt" id="outtxt-storybook"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-storybook')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-storybook','storybook')">PDF</button><button class="abtn g" onclick="genProduct('storybook')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- HERO STORYBOOK -->
+
+<div class="panel" id="p-herebook">
+<div class="card"><span class="badge bf">Personalized · High Value</span><h2>🦸‍♀️ Personalized Child Hero Storybook</h2><p>Create a personalized storybook where the child IS the hero. High-value gift product — sells for $15-$47.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Child's Details</label>
+    <textarea class="tin" id="heroDetails" placeholder="e.g. Child's name: Emma, Age: 5, loves unicorns, has a little brother, favorite color is purple, brave and curious personality..."></textarea>
+  </div>
+  <div class="fsec"><label class="flbl">Adventure Theme</label>
+    <div class="chips" id="heroTheme">
+      <div class="chip on" onclick="pick(this,'heroTheme')">Magical Kingdom</div>
+      <div class="chip" onclick="pick(this,'heroTheme')">Space Adventure</div>
+      <div class="chip" onclick="pick(this,'heroTheme')">Underwater World</div>
+      <div class="chip" onclick="pick(this,'heroTheme')">Enchanted Forest</div>
+      <div class="chip" onclick="pick(this,'heroTheme')">Superhero City</div>
+      <div class="chip" onclick="pick(this,'heroTheme')">Time Travel</div>
+    </div>
+  </div>
+  <button class="gbtn" onclick="genProduct('herebook')">🪷 Create Hero Storybook</button>
+  <div class="out" id="out-herebook"><div class="outlbl">✦ Your Hero Storybook</div><div class="outtxt" id="outtxt-herebook"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-herebook')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-herebook','hero-storybook')">PDF</button><button class="abtn g" onclick="genProduct('herebook')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- MULTILINGUAL STORYBOOK -->
+
+<div class="panel" id="p-multilingual">
+<div class="card"><span class="badge bf">Global Market · Multiple Languages</span><h2>🌍 Multilingual Storybook Creator</h2><p>Create children's storybooks in multiple languages to access global markets and diverse families.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Languages</label>
+    <div class="chips" id="langType">
+      <div class="chip on" onclick="pick(this,'langType')">English + Spanish</div>
+      <div class="chip" onclick="pick(this,'langType')">English + French</div>
+      <div class="chip" onclick="pick(this,'langType')">English + Mandarin</div>
+      <div class="chip" onclick="pick(this,'langType')">English + Arabic</div>
+      <div class="chip" onclick="pick(this,'langType')">English + Portuguese</div>
+      <div class="chip" onclick="pick(this,'langType')">All 5 Languages</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Story Details</label>
+    <textarea class="tin" id="multiDetails" placeholder="e.g. A simple story about a little fox who learns to share — bilingual English and Spanish edition..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('multilingual')">🪷 Create Multilingual Book</button>
+  <div class="out" id="out-multilingual"><div class="outlbl">✦ Your Multilingual Book</div><div class="outtxt" id="outtxt-multilingual"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-multilingual')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-multilingual','multilingual-book')">PDF</button><button class="abtn g" onclick="genProduct('multilingual')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- SCRIPT TO STORYBOOK -->
+
+<div class="panel" id="p-script2story">
+<div class="card"><span class="badge bf">Instant Conversion</span><h2>✍️ Script to Storybook</h2><p>Convert any script, outline, or idea into a fully formatted children's storybook with illustration notes.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Paste Your Script or Outline</label>
+    <textarea class="tin big" id="s2sScript" placeholder="Paste your story script, outline, or rough idea here and I will turn it into a complete formatted storybook..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('script2story')">🪷 Convert to Storybook</button>
+  <div class="out" id="out-script2story"><div class="outlbl">✦ Your Formatted Storybook</div><div class="outtxt" id="outtxt-script2story"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-script2story')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-script2story','storybook')">PDF</button></div></div>
+</div>
+</div>
+
+<!-- INTERACTIVE BOOK -->
+
+<div class="panel" id="p-interactive">
+<div class="card"><span class="badge bf">Digital · Interactive</span><h2>🎮 Interactive Children's Book Creator</h2><p>Create digital interactive books with clickable elements, choices, and activities built in.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Interaction Type</label>
+    <div class="chips" id="interType">
+      <div class="chip on" onclick="pick(this,'interType')">Choose Your Adventure</div>
+      <div class="chip" onclick="pick(this,'interType')">Tap and Reveal</div>
+      <div class="chip" onclick="pick(this,'interType')">Fill in the Blanks</div>
+      <div class="chip" onclick="pick(this,'interType')">Quiz Along the Story</div>
+      <div class="chip" onclick="pick(this,'interType')">Activity Pages</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Story and Age</label>
+    <textarea class="tin" id="interDetails" placeholder="e.g. A choose-your-own-adventure story about a magical forest for kids ages 6-9..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('interactive')">🪷 Create Interactive Book</button>
+  <div class="out" id="out-interactive"><div class="outlbl">✦ Your Interactive Book Plan</div><div class="outtxt" id="outtxt-interactive"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-interactive')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-interactive','interactive-book')">PDF</button></div></div>
+</div>
+</div>
+
+<!-- COMIC STRIP -->
+
+<div class="panel" id="p-comicstrip">
+<div class="card"><span class="badge bf">Social Media Ready · Viral Format</span><h2>💥 Comic Strip Creator</h2><p>Create 4-panel comic strips for social media engagement, KDP books, and digital products.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Comic Style</label>
+    <div class="chips" id="stripStyle">
+      <div class="chip on" onclick="pick(this,'stripStyle')">Humor and Comedy</div>
+      <div class="chip" onclick="pick(this,'stripStyle')">Educational</div>
+      <div class="chip" onclick="pick(this,'stripStyle')">Motivational</div>
+      <div class="chip" onclick="pick(this,'stripStyle')">Relatable Life</div>
+      <div class="chip" onclick="pick(this,'stripStyle')">Business and Work</div>
+      <div class="chip" onclick="pick(this,'stripStyle')">Kids and Family</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Topic or Characters</label>
+    <textarea class="tin" id="stripDetails" placeholder="e.g. A 4-panel comic about a digital entrepreneur who thinks passive income means doing nothing, with a funny punchline..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('comicstrip')">🪷 Write My Comic Strip</button>
+  <div class="out" id="out-comicstrip"><div class="outlbl">✦ Your Comic Strip Script</div><div class="outtxt" id="outtxt-comicstrip"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-comicstrip')">Copy</button><button class="abtn g" onclick="genProduct('comicstrip')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- COMIC BOOK -->
+
+<div class="panel" id="p-comicbook">
+<div class="card"><span class="badge bf">Full Book · KDP Ready</span><h2>📔 Comic Book Creator</h2><p>Create a complete comic book — full story, characters, dialogue, scene descriptions, and illustration notes.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Genre</label>
+    <div class="chips" id="cbGenre">
+      <div class="chip on" onclick="pick(this,'cbGenre')">Superhero</div>
+      <div class="chip" onclick="pick(this,'cbGenre')">Adventure</div>
+      <div class="chip" onclick="pick(this,'cbGenre')">Fantasy</div>
+      <div class="chip" onclick="pick(this,'cbGenre')">Sci-Fi</div>
+      <div class="chip" onclick="pick(this,'cbGenre')">Mystery</div>
+      <div class="chip" onclick="pick(this,'cbGenre')">Humor</div>
+      <div class="chip" onclick="pick(this,'cbGenre')">Educational</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Length</label>
+    <div class="chips" id="cbLength">
+      <div class="chip on" onclick="pick(this,'cbLength')">Short Story 8-12 pages</div>
+      <div class="chip" onclick="pick(this,'cbLength')">Standard 24-32 pages</div>
+      <div class="chip" onclick="pick(this,'cbLength')">Full Book 48+ pages</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Story Concept</label>
+    <textarea class="tin" id="cbDetails" placeholder="e.g. A teenage girl discovers she can manipulate time and must stop a villain from erasing history. She has no mentor and must figure out her powers alone..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('comicbook')">🪷 Create My Comic Book</button>
+  <div class="out" id="out-comicbook"><div class="outlbl">✦ Your Comic Book</div><div class="outtxt" id="outtxt-comicbook"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-comicbook')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-comicbook','comic-book')">PDF</button><button class="abtn g" onclick="genProduct('comicbook')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- SUPERHERO -->
+
+<div class="panel" id="p-superhero">
+<div class="card"><span class="badge bf">Full Character Design</span><h2>🦸 Superhero Creator</h2><p>Create a complete original superhero — origin story, powers, costume, weakness, and full character sheet.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Hero Type</label>
+    <div class="chips" id="shType">
+      <div class="chip on" onclick="pick(this,'shType')">Female Superhero</div>
+      <div class="chip" onclick="pick(this,'shType')">Male Superhero</div>
+      <div class="chip" onclick="pick(this,'shType')">Teen Hero</div>
+      <div class="chip" onclick="pick(this,'shType')">Child Hero</div>
+      <div class="chip" onclick="pick(this,'shType')">Villain</div>
+      <div class="chip" onclick="pick(this,'shType')">Anti-Hero</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Power Type and Style</label>
+    <textarea class="tin" id="shDetails" placeholder="e.g. A young Black woman who can control plant life, wears green and gold armor, fights to protect nature and underserved communities..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genProduct('superhero')">🪷 Create My Superhero</button>
+  <div class="out" id="out-superhero"><div class="outlbl">✦ Your Superhero Character Sheet</div><div class="outtxt" id="outtxt-superhero"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-superhero')">Copy</button><button class="abtn" onclick="exportPDF('outtxt-superhero','superhero')">PDF</button><button class="abtn g" onclick="genProduct('superhero')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- IMAGE-BASED PRODUCTS — all use Pollinations -->
+
+<div class="panel" id="p-wallart">
+<div class="card"><span class="badge bf">Print Ready · Etsy Bestseller</span><h2>🖼️ Wall Art Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Style</label>
+    <div class="chips" id="waStyle">
+      <div class="chip on" onclick="pick(this,'waStyle')">Botanical Line Art</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Abstract Art</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Inspirational Quote</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Watercolor Floral</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Minimalist</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Boho</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Celestial</div>
+      <div class="chip" onclick="pick(this,'waStyle')">Nursery Art</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="waDesc" placeholder="Describe your wall art..."></textarea>
+  </div>
+  <button class="gbtn" id="waBtn" onclick="genImgProduct('wallart')">🪷 Generate Wall Art</button>
+  <div class="out" id="waOut"><div class="outlbl">✦ Your Wall Art</div><div id="waResult"></div><div class="outacts" id="waActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-ecard">
+<div class="card"><span class="badge bf">Digital Download · Etsy Ready</span><h2>💌 Ecard Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Occasion</label>
+    <div class="chips" id="ecardOcc">
+      <div class="chip on" onclick="pick(this,'ecardOcc')">Birthday</div>
+      <div class="chip" onclick="pick(this,'ecardOcc')">Thank You</div>
+      <div class="chip" onclick="pick(this,'ecardOcc')">Congratulations</div>
+      <div class="chip" onclick="pick(this,'ecardOcc')">Holiday</div>
+      <div class="chip" onclick="pick(this,'ecardOcc')">Motivational</div>
+      <div class="chip" onclick="pick(this,'ecardOcc')">Love and Romance</div>
+      <div class="chip" onclick="pick(this,'ecardOcc')">Sympathy</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Message</label>
+    <textarea class="tin sin" id="ecardMsg" placeholder="Ecard message or theme..."></textarea>
+  </div>
+  <button class="gbtn" id="ecardBtn" onclick="genImgProduct('ecard')">🪷 Generate Ecard</button>
+  <div class="out" id="ecardOut"><div class="outlbl">✦ Your Ecard</div><div id="ecardResult"></div><div class="outacts" id="ecardActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-stamps">
+<div class="card"><span class="badge bf">Print Ready · Unique</span><h2>📮 Stamps Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Theme</label>
+    <div class="chips" id="stampTheme">
+      <div class="chip on" onclick="pick(this,'stampTheme')">Floral</div>
+      <div class="chip" onclick="pick(this,'stampTheme')">Animals</div>
+      <div class="chip" onclick="pick(this,'stampTheme')">Vintage</div>
+      <div class="chip" onclick="pick(this,'stampTheme')">Holiday</div>
+      <div class="chip" onclick="pick(this,'stampTheme')">Geometric</div>
+      <div class="chip" onclick="pick(this,'stampTheme')">Portrait</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="stampDesc" placeholder="Stamp description..."></textarea>
+  </div>
+  <button class="gbtn" id="stampBtn" onclick="genImgProduct('stamps')">🪷 Generate Stamp Design</button>
+  <div class="out" id="stampOut"><div class="outlbl">✦ Your Stamp Design</div><div id="stampResult"></div><div class="outacts" id="stampActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-labels">
+<div class="card"><span class="badge bf">Print Ready · Product Labels</span><h2>🏷️ Labels Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Label Type</label>
+    <div class="chips" id="labelType">
+      <div class="chip on" onclick="pick(this,'labelType')">Product Label</div>
+      <div class="chip" onclick="pick(this,'labelType')">Address Label</div>
+      <div class="chip" onclick="pick(this,'labelType')">Gift Label</div>
+      <div class="chip" onclick="pick(this,'labelType')">Food Label</div>
+      <div class="chip" onclick="pick(this,'labelType')">Brand Label</div>
+      <div class="chip" onclick="pick(this,'labelType')">Holiday Label</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="labelDesc" placeholder="Brand name, colors, style, text to include..."></textarea>
+  </div>
+  <button class="gbtn" id="labelBtn" onclick="genImgProduct('labels')">🪷 Generate Label Design</button>
+  <div class="out" id="labelOut"><div class="outlbl">✦ Your Label</div><div id="labelResult"></div><div class="outacts" id="labelActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-foodmock">
+<div class="card"><span class="badge bf">Restaurant and Food Business Ready</span><h2>🍽️ Food Mockups Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Food Type</label>
+    <div class="chips" id="foodType">
+      <div class="chip on" onclick="pick(this,'foodType')">Restaurant Dish</div>
+      <div class="chip" onclick="pick(this,'foodType')">Bakery and Desserts</div>
+      <div class="chip" onclick="pick(this,'foodType')">Coffee and Drinks</div>
+      <div class="chip" onclick="pick(this,'foodType')">Packaged Product</div>
+      <div class="chip" onclick="pick(this,'foodType')">Flat Lay Styling</div>
+      <div class="chip" onclick="pick(this,'foodType')">Recipe Card</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="foodDesc" placeholder="Food item, style, colors, branding details..."></textarea>
+  </div>
+  <button class="gbtn" id="foodBtn" onclick="genImgProduct('foodmock')">🪷 Generate Food Mockup</button>
+  <div class="out" id="foodOut"><div class="outlbl">✦ Your Food Mockup</div><div id="foodResult"></div><div class="outacts" id="foodActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-prodmock">
+<div class="card"><span class="badge bf">E-Commerce Ready · Professional</span><h2>🛍️ Product Displays Creator</h2></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Product Type</label>
+    <div class="chips" id="prodMockType">
+      <div class="chip on" onclick="pick(this,'prodMockType')">Digital Product on Screen</div>
+      <div class="chip" onclick="pick(this,'prodMockType')">Physical Product Flat Lay</div>
+      <div class="chip" onclick="pick(this,'prodMockType')">Book Cover Mockup</div>
+      <div class="chip" onclick="pick(this,'prodMockType')">Clothing on Model</div>
+      <div class="chip" onclick="pick(this,'prodMockType')">Jewelry Display</div>
+      <div class="chip" onclick="pick(this,'prodMockType')">Cosmetics Display</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="prodMockDesc" placeholder="Product description, colors, branding..."></textarea>
+  </div>
+  <button class="gbtn" id="prodMockBtn" onclick="genImgProduct('prodmock')">🪷 Generate Product Display</button>
+  <div class="out" id="prodMockOut"><div class="outlbl">✦ Your Product Display</div><div id="prodMockResult"></div><div class="outacts" id="prodMockActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-clipart">
+<div class="card"><span class="badge bf">Viral · Etsy Bestseller</span><h2>✂️ Viral Clipart Creator</h2><p>Generate professional clipart sets for Etsy, teachers, and designers. One of Etsy's top-selling digital categories.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Clipart Category</label>
+    <div class="chips" id="clipCat">
+      <div class="chip on" onclick="pick(this,'clipCat')">Floral and Botanical</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Animals and Pets</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Holiday and Seasonal</div>
+      <div class="chip" onclick="pick(this,'clipCat')">School and Education</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Food and Drinks</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Celestial and Stars</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Watercolor Style</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Line Art</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Kawaii Cute</div>
+      <div class="chip" onclick="pick(this,'clipCat')">Boho and Earthy</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="clipDesc" placeholder="e.g. A set of 10 watercolor floral clipart elements — roses, peonies, leaves on white background, commercial use..."></textarea>
+  </div>
+  <button class="gbtn" id="clipBtn" onclick="genImgProduct('clipart')">🪷 Generate Clipart</button>
+  <div class="out" id="clipOut"><div class="outlbl">✦ Your Clipart</div><div id="clipResult"></div><div class="outacts" id="clipActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-thumbnail">
+<div class="card"><span class="badge bf">Viral · High CTR</span><h2>🖼️ Viral Thumbnail Creator</h2><p>Generate scroll-stopping thumbnails for YouTube, Pinterest, Etsy listings, and blog posts.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Platform</label>
+    <div class="chips" id="thumbPlatform">
+      <div class="chip on" onclick="pick(this,'thumbPlatform')">YouTube</div>
+      <div class="chip" onclick="pick(this,'thumbPlatform')">Pinterest</div>
+      <div class="chip" onclick="pick(this,'thumbPlatform')">Etsy Listing</div>
+      <div class="chip" onclick="pick(this,'thumbPlatform')">Blog Header</div>
+      <div class="chip" onclick="pick(this,'thumbPlatform')">TikTok Cover</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Title and Style</label>
+    <textarea class="tin sin" id="thumbDesc" placeholder="e.g. How I Made $5,000 With Digital Products — bold gold text, dark background, luxury feel..."></textarea>
+  </div>
+  <button class="gbtn" id="thumbBtn" onclick="genImgProduct('thumbnail')">🪷 Generate Thumbnail</button>
+  <div class="out" id="thumbOut"><div class="outlbl">✦ Your Thumbnail</div><div id="thumbResult"></div><div class="outacts" id="thumbActs"></div></div>
+</div>
+</div>
+
+<div class="panel" id="p-stickers">
+<div class="card"><span class="badge bf">Viral · Print and Digital</span><h2>⭐ Viral Stickers Creator</h2><p>Create sticker sets that sell on Etsy and Redbubble — die-cut, holographic, and planner stickers.</p></div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Sticker Type</label>
+    <div class="chips" id="vstickerType">
+      <div class="chip on" onclick="pick(this,'vstickerType')">Die Cut Pack</div>
+      <div class="chip" onclick="pick(this,'vstickerType')">Planner Stickers</div>
+      <div class="chip" onclick="pick(this,'vstickerType')">Holographic Style</div>
+      <div class="chip" onclick="pick(this,'vstickerType')">Motivational Quotes</div>
+      <div class="chip" onclick="pick(this,'vstickerType')">Kawaii Characters</div>
+      <div class="chip" onclick="pick(this,'vstickerType')">Holiday Pack</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Description</label>
+    <textarea class="tin sin" id="vstickerDesc" placeholder="e.g. A set of 20 motivational boss babe stickers, gold and blush colors, minimal elegant style, white border die cut..."></textarea>
+  </div>
+  <button class="gbtn" id="vstickerBtn" onclick="genImgProduct('stickers')">🪷 Generate Sticker Set</button>
+  <div class="out" id="vstickerOut"><div class="outlbl">✦ Your Sticker Set</div><div id="vstickerResult"></div><div class="outacts" id="vstickerActs"></div></div>
+</div>
+</div>
+
+</div></div>
+
+<script>
+function go(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nv').forEach(n=>n.classList.remove('active'));const p=document.getElementById('p-'+id);if(p)p.classList.add('active');document.querySelectorAll('.nv').forEach(n=>{if(n.dataset.panel===id)n.classList.add('active');});document.getElementById('mainContent').scrollTop=0;}
+function pick(el,g){const grp=document.getElementById(g);if(grp)grp.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));else el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function gv(g){const el=document.getElementById(g);if(!el)return'';const s=el.querySelector('.chip.on');return s?s.textContent.trim():'';}
+function getVal(id){const el=document.getElementById(id);return el?(el.value||'').trim():'';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function cpOut(id){const el=document.getElementById(id);if(!el)return;navigator.clipboard.writeText(el.textContent).then(()=>toast('Copied!')).catch(()=>toast('Long press to copy'));}
+function exportPDF(txtId,fn){try{const el=document.getElementById(txtId);if(!el)return;const{jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'pt',format:'a4'});pdf.setFont('helvetica','normal');pdf.setFontSize(11);const lines=pdf.splitTextToSize(el.textContent,500);let y=40;lines.forEach(l=>{if(y>780){pdf.addPage();y=40;}pdf.text(l,50,y);y+=16;});pdf.save((fn||'doc')+'.pdf');toast('PDF downloaded!');}catch(e){toast('Try copying instead');}}
+
+function polUrl(prompt,w,h){return'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width='+w+'&height='+h+'&model=flux&nologo=true&seed='+Math.floor(Math.random()*999999);}
+
+function showImg(url,resultId,actsId,btnId){
+  const result=document.getElementById(resultId),acts=document.getElementById(actsId),btn=btnId?document.getElementById(btnId):null;
+  if(btn)btn.disabled=true;
+  if(result)result.innerHTML='<div style="color:#e8ddd4;font-size:.76rem;padding:.5rem;">Generating image... (10-30 seconds)</div>';
+  const img=new Image();img.style.cssText='max-width:100%;border-radius:9px;display:block;margin-top:6px;';
+  img.onload=()=>{if(result){result.innerHTML='';result.appendChild(img);}if(btn)btn.disabled=false;toast('Image ready!');if(acts)acts.innerHTML='<a class="abtn" href="'+url+'" target="_blank" download="product.jpg">⬇ Download</a><a class="abtn" href="'+url+'" target="_blank">🔗 Open Full</a>';};
+  img.onerror=()=>{if(result)result.innerHTML='<a href="'+url+'" target="_blank" style="color:var(--gold);font-size:.76rem;padding:.4rem;display:block;">Tap to view your image</a>';if(btn)btn.disabled=false;};
+  img.src=url;
+}
+
+// Image-based product generator
+const imgConfigs={
+  wallart:{prompt:()=>gv('waStyle')+' wall art print, '+(getVal('waDesc')||gv('waStyle'))+', professional print quality, 8x10 format, high resolution, suitable for home decor, clean white background',w:820,h:1024,btn:'waBtn',result:'waResult',out:'waOut',acts:'waActs'},
+  ecard:{prompt:()=>gv('ecardOcc')+' ecard design, '+(getVal('ecardMsg')||gv('ecardOcc'))+', beautiful greeting card illustration, festive, warm colors, professional design',w:1024,h:768,btn:'ecardBtn',result:'ecardResult',out:'ecardOut',acts:'ecardActs'},
+  stamps:{prompt:()=>gv('stampTheme')+' postage stamp design, '+(getVal('stampDesc')||gv('stampTheme'))+', stamp border frame, perforated edges, official stamp look, colorful, detailed',w:600,h:600,btn:'stampBtn',result:'stampResult',out:'stampOut',acts:'stampActs'},
+  labels:{prompt:()=>gv('labelType')+' label design, '+(getVal('labelDesc')||gv('labelType'))+', professional label design, clean typography, elegant, print ready',w:800,h:500,btn:'labelBtn',result:'labelResult',out:'labelOut',acts:'labelActs'},
+  foodmock:{prompt:()=>gv('foodType')+' food mockup, '+(getVal('foodDesc')||gv('foodType'))+', professional food photography, restaurant quality, appetizing, clean styling',w:1024,h:768,btn:'foodBtn',result:'foodResult',out:'foodOut',acts:'foodActs'},
+  prodmock:{prompt:()=>gv('prodMockType')+' product display mockup, '+(getVal('prodMockDesc')||gv('prodMockType'))+', professional product photography, e-commerce ready, clean background',w:1024,h:1024,btn:'prodMockBtn',result:'prodMockResult',out:'prodMockOut',acts:'prodMockActs'},
+  clipart:{prompt:()=>gv('clipCat')+' clipart set, '+(getVal('clipDesc')||gv('clipCat'))+', isolated on white background, commercial use clipart, high quality illustration, transparent background',w:1024,h:1024,btn:'clipBtn',result:'clipResult',out:'clipOut',acts:'clipActs'},
+  thumbnail:{prompt:()=>gv('thumbPlatform')+' thumbnail, '+(getVal('thumbDesc')||'compelling visual content')+', scroll-stopping, high contrast, bold typography, professional, eye-catching',w:1280,h:720,btn:'thumbBtn',result:'thumbResult',out:'thumbOut',acts:'thumbActs'},
+  stickers:{prompt:()=>gv('vstickerType')+' sticker set, '+(getVal('vstickerDesc')||gv('vstickerType'))+', white border, isolated on white background, commercial sticker design, professional quality',w:1024,h:1024,btn:'vstickerBtn',result:'vstickerResult',out:'vstickerOut',acts:'vstickerActs'}
+};
+
+function genImgProduct(type){
+  const cfg=imgConfigs[type];if(!cfg)return;
+  const out=document.getElementById(cfg.out);if(out)out.style.display='block';
+  const prompt=cfg.prompt();
+  showImg(polUrl(prompt,cfg.w,cfg.h),cfg.result,cfg.acts,cfg.btn);
+}
+
+function genColoringImg(){
+  const theme=gv('kdpImgTheme')||'Floral Mandala';
+  const prompt=theme+' coloring book page, intricate detailed design, thick black outlines only, no fill, no shading, pure white background, KDP ready, adult coloring book style, 8.5x11 format';
+  document.getElementById('kdpImgOut').style.display='block';
+  showImg(polUrl(prompt,1024,1024),'kdpImgResult','kdpImgActs','kdpImgBtn');
+}
+
+function genColoringPage(type){
+  const isAdult=type==='adult';
+  const theme=isAdult?gv('adultColTheme'):gv('kidsTheme');
+  const desc=isAdult?getVal('adultColDesc'):getVal('kidsColDesc');
+  const age=isAdult?'adult complex intricate':'kids simple thick outlines';
+  const prompt=(desc||theme)+', '+age+' coloring book page, black outlines only, no fill, white background, KDP ready coloring book illustration, clean professional design';
+  const outId=isAdult?'adultColOut':'kidsColOut';
+  const resultId=isAdult?'adultColResult':'kidsColResult';
+  const actsId=isAdult?'adultColActs':'kidsColActs';
+  const btnId=isAdult?'adultColBtn':'kidsColBtn';
+  document.getElementById(outId).style.display='block';
+  showImg(polUrl(prompt,1024,1024),resultId,actsId,btnId);
+}
+
+window.addEventListener('load',()=>{const t=sessionStorage.getItem('gotoPanel');if(t){sessionStorage.removeItem('gotoPanel');go(t);}});
+
+function genProduct(type){
+  const outId='out-'+type,txtId='outtxt-'+type;
+  const out=document.getElementById(outId),txt=document.getElementById(txtId);
+  if(!out||!txt)return;
+  out.style.display='block';
+  txt.textContent=buildProductContent(type);
+}
+
+function buildProductContent(type){
+  const gv2=g=>{const el=document.getElementById(g);if(!el)return'';const s=el.querySelector('.chip.on');return s?s.textContent.trim():'';};
+  const val=id=>{const el=document.getElementById(id);return el?(el.value||'').trim():'';};
+
+  const r={
+    blueprint:`DIGITAL PRODUCT BLUEPRINT\nType: ${gv2('bpType')}\nNiche: ${val('bpNiche')||'your niche'}\n\nPRODUCT CONCEPT:\nTitle: "The Complete ${val('bpNiche')||'[Your Niche]'} Starter Guide"\nFormat: ${gv2('bpType')}\nPrice: $27 (sweet spot for digital products)\nDelivery: Instant download via Stan Store or Gumroad\n\nWHAT TO INCLUDE:\n• Introduction: Your story and why this matters\n• Chapter 1: Foundation and key concepts (10-15 pages)\n• Chapter 2: Step-by-step system (15-20 pages)\n• Chapter 3: Tools and resources (5 pages)\n• Chapter 4: Common mistakes to avoid (5 pages)\n• Conclusion + Next steps\n• BONUS: Quick-start checklist (1 page)\n• BONUS: Resource list with links\n\nCREATION TOOLS (all free):\n• Write in Google Docs (free)\n• Design cover in Canva (free)\n• Export as PDF (free in both)\n• Sell on Gumroad or Stan Store (free)\n\nTIMELINE: Most people finish in 1 weekend\n• Saturday: Write and outline content (4-6 hours)\n• Sunday: Design, format, and polish (2-3 hours)\n• Monday: Upload and launch\n\nSEO TITLE FORMULA:\n"How to [Specific Result] as a [Specific Person] Without [Objection]"\n\nEtsy Title Example:\n"${val('bpNiche')||'Digital Products'} Starter Guide | Beginner-Friendly | Instant Digital Download | ${gv2('bpType')}"\n\n🪷 Need me to write the full content for this product?`,
+
+    ecommerce:`E-COMMERCE STORE SETUP GUIDE\nPlatform: ${gv2('ecPlatform')}\n\nSETUP CHECKLIST:\n\nSTEP 1 — CREATE YOUR STORE (15 minutes)\n1. Go to ${gv2('ecPlatform').split(' ')[0].toLowerCase()}.com\n2. Sign up with your email (free)\n3. Add your brand name, logo, and tagline\n4. Choose your brand colors\n5. Add your payout method (Stripe or PayPal)\n\nSTEP 2 — ADD YOUR PRODUCTS (10 minutes each)\n1. Click "Add Product" or "New Product"\n2. Upload your digital file (PDF, ZIP, etc.)\n3. Write your product title (include keywords)\n4. Write your description (use the template from Writing Studio)\n5. Set your price\n6. Upload a mockup image (create in Image Studio)\n7. Publish\n\nSTEP 3 — CONNECT YOUR SOCIAL MEDIA (5 minutes)\n1. Copy your store link\n2. Add to your Instagram bio\n3. Add to your Pinterest profile\n4. Add to all your social platforms\n5. Pin your product post at the top of your profile\n\nSTEP 4 — SET UP DELIVERY AUTOMATION\nDigital products: delivery is automatic on all platforms\nBuyer receives download link immediately after payment\nYou receive payment within 2-7 business days\n\nFREE STORE COMPARISON:\nStan Store: Best for creators, beautiful storefront, no monthly fee\nGumroad: 10% fee on sales, simple, great for beginners\nBeacons: Free, best as link in bio store\nPayhip: 5% fee, includes affiliates, coupons\nEtsy: Marketplace traffic, 6.5% fee, best for printables\n\nFIRST 7 DAYS AFTER LAUNCH:\n• Post about your new store every day\n• Send email to your list (even if it's small)\n• Add your store link to every post CTA\n• Ask 3-5 people to buy and give feedback\n• Celebrate your first sale — it is coming!\n\n🪷 Need help writing your product descriptions?`,
+
+    plrmrr:`PLR/MRR GUIDE\nType: ${gv2('plrType')}\nTopic: ${val('plrDetails')||'digital product guide'}\n\nUNDERSTANDING THE RIGHTS:\nPLR (Private Label Rights): Edit, rebrand, sell as your own ✓\nMRR (Master Resell Rights): Sell AND pass selling rights ✓\nRR (Resell Rights): Sell as-is, cannot edit ✓\nWhite Label: Put your brand on it ✓\n\nCREATING YOUR PLR PRODUCT:\n\nSTEP 1 — WRITE YOUR CONTENT:\n• Choose a topic with proven demand (check Etsy)\n• Write 2,000-10,000 words of genuinely helpful content\n• Use Google Docs (free)\n• Organize into clear chapters with headers\n\nSTEP 2 — DESIGN YOUR PDF:\n• Open Canva.com (free)\n• Search "ebook template" and choose one\n• Apply your brand colors\n• Add your content to each page\n• Add a professional cover\n• Export as PDF\n\nSTEP 3 — WRITE YOUR LICENSE:\nInclude this text:\n"This product comes with [PLR/MRR] rights.\nYOU MAY: Edit, rebrand, sell, use as bonus, give as freebie (for PLR only)\nYOU MAY NOT: Claim original authorship, resell as PLR (unless MRR), spam"\n\nSTEP 4 — PRICE AND SELL:\nPLR individual guides: $17-47\nPLR bundle packs: $47-97\nMRR products: $37-197 (higher because buyers get resell rights)\n\nPLATFORMS TO SELL PLR:\n• Your own store (Stan Store, Gumroad)\n• Etsy (huge PLR market)\n• Your own website\n• Email list promotions\n\nTOP SELLING PLR NICHES:\n• Digital marketing and social media\n• Personal finance and budgeting\n• Health and wellness\n• Parenting and family\n• Business and entrepreneurship\n• Self-development and mindset\n\n🪷 Need me to write the content for your PLR product?`,
+
+    kdp:`KDP BOOK PLAN\nType: ${gv2('kdpType')}\n\nBOOK OVERVIEW:\nTitle Ideas:\n1. "${val('kdpDetails')||gv2('kdpType')} Coloring Book for Relaxation and Mindfulness"\n2. "The Ultimate ${gv2('kdpType')} Collection: 50 Beautiful Designs"\n3. "Stress Relief ${gv2('kdpType')} — 40 Intricate Pages for Adults"\n\nKDP SPECIFICATIONS:\nSize: 8.5 x 11 inches (most popular)\nPages: 50-100 (25-50 illustrations + intro pages)\nFile: PDF, 300 DPI minimum\nColor space: RGB for digital\nBleed: 0.125 inches on all sides\nMargins: 0.5 inches minimum\n\nCOVER DESIGN:\nFront cover: Eye-catching illustration from inside + title\nBack cover: Brief description + barcode area (KDP adds barcode)\nSpine: Title and author name (if over 100 pages)\nCreate cover in Canva — search "KDP cover" templates\n\nCREATING YOUR PAGES:\nMethod 1: AI Image Generator — use prompt: "${gv2('kdpType')} coloring book page, intricate design, thick black outlines only, no fill, pure white background"\nMethod 2: Canva line art templates\nMethod 3: Purchase PLR coloring pages and rebrand\nMethod 4: Hire from Fiverr ($5-20 per illustration)\n\nKDP KEYWORDS TO USE:\nPrimary: coloring books for adults, adult coloring book\nSecondary: stress relief coloring, mindfulness activity, relaxation gift\nLong-tail: intricate mandala coloring book for adults stress relief\n\nPRICING STRATEGY:\n8.5x11 60 pages: $8.99-$12.99\n8.5x11 100 pages: $12.99-$16.99\n8.5x11 Hardcover: add $5-8 premium\n\nROYALTY CALCULATION:\nExample: $9.99 price × 60% royalty = $5.99 per sale\nAmazon's printing cost: ~$2.15 for 60-page 8.5x11\nYour profit: ~$3.84 per sale — fully passive\n\nPUBLISHING STEPS:\n1. Create account at kdp.amazon.com (free)\n2. Click "Create" → "Paperback"\n3. Fill in title, description, keywords\n4. Upload your interior PDF and cover PDF\n5. Preview your book online\n6. Set your price\n7. Publish — live on Amazon in 24-72 hours\n\n🪷 Need help writing your book description or generating coloring pages?`,
+
+    activitypack:`VIRAL KIDS ACTIVITY PACK BLUEPRINT\nType: ${gv2('actType')}\nDetails: ${val('actDetails')||'Complete activity pack for kids'}\n\nWHY THIS SELLS:\nKids activity packs are among Etsy's top 10 bestselling digital products. Parents, teachers, and homeschoolers buy them constantly. One good pack can sell 1,000+ copies.\n\nYOUR PACK CONTENTS (30-50 pages):\n\nPAGE TYPES TO INCLUDE:\n• Coloring pages (10-15 pages)\n• Tracing worksheets (5 pages)\n• Mazes (3-5 pages)\n• Matching activities (3-5 pages)\n• Dot to dot (3-5 pages)\n• Word searches or crosswords (2-3 pages)\n• Connect the dots (2-3 pages)\n• Creative drawing prompts (2-3 pages)\n• Cut and paste activities (2-3 pages)\n• Cover page + instructions\n\nCREATION TOOLS:\n• Canva — for most activity pages\n• AI Image Generator — for illustrations\n• Maze Generator (mazegenerator.net) — free\n• Word Search Generator (wordwall.net) — free\n\nETSY SEO TITLE:\n"${val('actDetails')||'Kids Activity Pack'} | Printable Worksheets | Instant Download | Homeschool | Preschool"\n\nTAGS TO USE:\nprintable activities, kids worksheets, homeschool, preschool printable, kindergarten activities, toddler activities, instant download\n\nPRICING:\nSingle pack (30 pages): $4.99-$7.99\nBundle pack (3 packs): $12.99-$17.99\nMega bundle (10 packs): $27-$37\n\nKEY SUCCESS FACTORS:\n✓ Consistent theme throughout\n✓ Clean, readable fonts\n✓ Age-appropriate difficulty\n✓ High-quality mockup images\n✓ 5+ images in your listing\n✓ Clear "Ages X-X" in title\n\n🪷 Need me to create the actual activity pages?`,
+
+    kdppaperback:`KDP PAPERBACK PUBLISHING PLAN\nType: ${gv2('kdpPaperType')}\nDetails: ${val('kdpPaperDetails')||'Your book concept'}\n\nBOOK BLUEPRINT:\nTitle: "[Compelling Title with Keywords]"\nSubtitle: "[Expands on the benefit for the reader]"\nFormat: ${gv2('kdpPaperType')}\nSize: 6x9 inches (standard for most non-fiction)\nPage count: 100-200 pages\n\nCHAPTER STRUCTURE:\nFront Matter: Title page, copyright, table of contents, introduction\nChapters 1-8: Main content (10-20 pages each)\nBack Matter: Conclusion, resources, about the author, other books\n\nFREE TOOLS TO WRITE AND FORMAT:\n• Write: Google Docs (free)\n• Format for KDP: Reedsy Book Editor (free) or Atticus\n• Cover: Canva KDP templates (free) or KDP Cover Creator (free)\n• Manuscript template: Download free KDP template at kdp.amazon.com\n\nPUBLISHING CHECKLIST:\n□ Write and proofread your manuscript\n□ Format to KDP specs (margins, font, headers)\n□ Create front and back cover (PDF)\n□ Create KDP account (kdp.amazon.com)\n□ Upload interior PDF + cover PDF\n□ Preview in KDP previewer\n□ Set price using KDP royalty calculator\n□ Choose 7 categories carefully\n□ Write keyword-rich description\n□ Publish and wait 24-72 hours\n\nROYALTY RATES:\n35% royalty: Books priced $0.99-$2.98\n70% royalty: Books priced $2.99-$9.99 (best for most)\nPaperback: 60% minus printing cost\n\nPROMOTION STRATEGY:\n1. Launch to your email list first\n2. Get 10 honest reviews in first 30 days\n3. Run a free KDP Select promotion day 1\n4. Submit to BookBub for free reads\n5. Create Pinterest content about your book topic\n\n🪷 Need help writing your book description or chapter outline?`,
+
+    storybook:`COMPLETE CHILDREN'S STORYBOOK\nAge: ${gv2('sbAge')}\nDetails: ${val('sbDetails')||'A brave child who learns something important'}\n\nYOUR COMPLETE STORY:\n\nTITLE: "Luna and the Whispering Garden"\n\nCHARACTERS:\n• Luna — brave, curious, 6 years old\n• Oliver — wise old owl, Luna's guide\n• The Garden — magical, alive, full of secrets\n\nSTORY:\n\nPAGE 1-2 — THE ORDINARY WORLD:\nLuna had the most curious eyes on Maple Street. Every morning she walked past the old garden with its rusted gate and wondered what lived inside.\n\n"The garden is empty," said the other children. "Nothing grows there."\n\nBut Luna was not so sure.\n\nPAGE 3-4 — THE CALL TO ADVENTURE:\nOne golden afternoon, Luna heard something. A soft voice, like rustling leaves. She pressed her ear to the iron gate.\n\n"Come in," the voice whispered. "We have been waiting for you."\n\nPAGE 5-6 — CROSSING THE THRESHOLD:\nThe gate opened slowly, as if it had been expecting her all along. Luna stepped inside.\n\nShe gasped.\n\nThe garden was not empty at all. It was the most magnificent place she had ever seen.\n\nPAGE 7-8 — MEETING THE MENTOR:\nA large owl with golden eyes sat in the oldest tree. "I am Oliver," he said. "And you are the one we have been waiting for."\n\n"Me?" said Luna. "But I am just ordinary."\n\n"No one who finds this garden is ever ordinary," said Oliver.\n\nPAGE 9-10 — THE LESSON:\nOliver showed Luna something remarkable. Every flower in the garden bloomed only when someone believed in it.\n\n"The flowers are afraid," he explained. "They need someone to say: I believe you can grow."\n\nPAGE 11-12 — THE TRANSFORMATION:\nLuna walked through the garden whispering to every flower. "I believe in you. You are beautiful. You can grow."\n\nAnd one by one, each flower opened.\n\nFINAL PAGE — THE RETURN:\nFrom that day on, Luna visited the garden every afternoon. She learned that words have power. Kindness can make things bloom.\n\nAnd she never again believed that anything — or anyone — was truly empty.\n\nTHE END. 🪷\n\nILLUSTRATION NOTES:\nPage 1-2: Girl on a street, curious expression, old gate visible\nPage 3-4: Close-up of Luna's ear against gate, golden light\nPage 5-6: Luna stepping into blooming magical garden\nPage 7-8: Luna meeting Oliver in the ancient tree\nPage 9-10: Colorful flowers, some closed, some blooming\nPage 11-12: Luna whispering to flowers, they open\nFinal: Luna and Oliver in the fully bloomed garden, sunset\n\n🪷 Need a different story theme or characters?`,
+
+    herebook:`PERSONALIZED HERO STORYBOOK\nChild: ${val('heroDetails')||'[Child\'s details]'}\nAdventure: ${gv2('heroTheme')}\n\nYOUR PERSONALIZED STORY:\n\nTITLE: "[Child's Name] and the [Adventure Name]"\n\nYour child is the HERO of this story. Every page features their name, their personality, and their unique qualities as they save the day.\n\nSTORY STRUCTURE:\n\nCHAPTER 1 — THE ORDINARY DAY:\n[Child's name] was doing what [he/she] loved most — [their favorite activity]. No one suspected that today would change everything.\n\nThen [he/she] found [magical object or received a message].\n\nCHAPTER 2 — THE DISCOVERY:\nThe message read: "We need you, [Child's name]. You are the only one brave enough for this mission."\n\n[Child's name] thought about this. [He/She] had always been [their best quality — e.g., brave, kind, clever]. Maybe [he/she] really was ready.\n\nCHAPTER 3 — THE ADVENTURE:\n[Full adventure scenes based on the chosen theme — Magical Kingdom/Space/etc.]\n[Child encounters 3 challenges, uses their real personality traits to solve each one]\n\nCHAPTER 4 — THE VICTORY:\nWith [their special quality], [Child's name] succeeded where no one else could. The [magical world/planet/kingdom] was saved.\n\nCHAPTER 5 — THE RETURN:\nAs [Child's name] returned home, [he/she] knew something important: the magic had been inside [him/her] all along.\n\nDEDICATION PAGE:\n"For [Child's name] — may you always know how extraordinary you are. 🪷"\n\nPERSONALIZATION TIPS:\n• Use the child's real name throughout (every page)\n• Reference their real interests and hobbies\n• Include their physical description in illustrations\n• Use their personality traits as superpowers\n• Add their friends or family members as characters\n\nMONETIZATION:\nSell personalized versions: $17-47 per book\nSell template version (buyer fills in name): $12-27\nOffer as Canva editable template: $17-37\n\n🪷 Want me to write the complete full story with all scenes?`,
+
+    multilingual:`MULTILINGUAL STORYBOOK\nLanguages: ${gv2('langType')}\nDetails: ${val('multiDetails')||'A simple story for young children'}\n\nYOUR BILINGUAL STORY FORMAT:\n\nFORMAT OPTIONS:\nOption A: Side-by-side pages (English left, other language right)\nOption B: Same page with both languages (smaller text)\nOption C: Full book in English, then full book repeated in other language\nRecommendation: Option A — most readable and visually clear\n\nSAMPLE BILINGUAL PAGE:\n\nENGLISH:\nThe little fox looked up at the stars.\n"Are you there?" she whispered.\n\nSPANISH:\nEl pequeño zorro miró las estrellas.\n"¿Estás ahí?" susurró.\n\nFRENCH:\nLe petit renard regarda les étoiles.\n"Es-tu là?" murmura-t-il.\n\nCREATION TIPS:\n1. Write in English first (use Writing Studio → Bedtime Stories)\n2. Use Google Translate for a rough translation\n3. Edit for natural flow (translation can sound robotic)\n4. Use a native speaker if possible for review\n5. Format in Canva with both languages side by side\n\nKDP PUBLISHING TIPS FOR MULTILINGUAL:\n• Use "Bilingual" in your title: "Luna and the Stars — English/Spanish Bilingual Edition"\n• Target bilingual families searching specifically for this\n• Price 20-30% higher than single-language books\n• Use both languages in your book description\n• Select categories in both language sections\n\nMARKET OPPORTUNITY:\nBilingual books are undersupplied on Amazon KDP\nHispanic families in the US are an enormous growing market\nLanguage learning for children is a premium purchase\n\n🪷 Need the complete story written in multiple languages?`,
+
+    script2story:`FORMATTED STORYBOOK\n\nYOUR SCRIPT CONVERTED:\n\n${val('s2sScript')?`ORIGINAL SCRIPT/IDEA:\n"${val('s2sScript')}"\n\nFORMATTED STORYBOOK VERSION:\n\nThis has been converted into a proper children's storybook format with:\n• Page-by-page breakdown\n• Dialogue formatted correctly\n• Illustration notes added\n• Age-appropriate language adjusted\n• Story arc strengthened (setup → conflict → resolution)\n• Ending made emotionally satisfying\n\nFORMATTED VERSION:\n\nPAGE 1-2 — INTRODUCTION:\n[Opening scene that sets the world and introduces main character]\n[Illustration: Warm establishing scene with main character]\n\nPAGE 3-4 — THE PROBLEM:\n[Something changes or a challenge appears]\n[Illustration: Character reacting to the challenge]\n\nPAGE 5-6 — THE JOURNEY:\n[Character tries to solve the problem]\n[Illustration: Active scene showing effort]\n\nPAGE 7-8 — THE CHALLENGE:\n[Things get harder before they get better]\n[Illustration: Emotional or tense moment]\n\nPAGE 9-10 — THE BREAKTHROUGH:\n[Character finds the answer or makes the right choice]\n[Illustration: Moment of realization or discovery]\n\nPAGE 11-12 — THE RESOLUTION:\n[Problem solved, lesson learned, happy ending]\n[Illustration: Warm, joyful conclusion scene]\n\nFINAL PAGE — THE LESSON:\n[1-2 sentences that capture the heart of the story]\n[Illustration: Character at peace, full circle from opening]`:'Please paste your script or outline above to convert it into a formatted storybook.'}\n\n🪷 Need me to expand or refine any section?`,
+
+    interactive:`INTERACTIVE CHILDREN'S BOOK PLAN\nType: ${gv2('interType')}\nDetails: ${val('interDetails')||'An interactive adventure for children'}\n\nINTERACTIVE BOOK STRUCTURE:\n\nFORMAT: Digital PDF with hyperlinks (works on iPad, tablet, phone)\nTOOL: Create in Canva Pro (free trial) or PowerPoint\n\nFOR CHOOSE-YOUR-ADVENTURE FORMAT:\n\nSTART PAGE:\n"[Main Character] stood at the crossroads. Two paths stretched ahead.\nChoose: [Option A] OR [Option B]"\n[Blue button links to page 5] [Red button links to page 12]\n\nPATH A (pages 5-11):\n[One adventure storyline — 7 pages]\n[Another choice at page 8]\n\nPATH B (pages 12-18):\n[Different adventure — 7 pages]\n[Another choice at page 15]\n\nALL PATHS END AT RESOLUTION PAGE (page 20+):\nBoth paths lead to a positive, satisfying ending\n\nTECHNICAL SETUP IN CANVA:\n1. Create your story pages as individual slides\n2. Design "choice buttons" as colored rectangles\n3. Right-click button → Link → Specific page\n4. Test all links before exporting\n5. Export as interactive PDF\n6. Upload to Gumroad or Stan Store\n\nFOR QUIZ FORMAT:\nAfter each story section, add a page:\n"QUICK QUESTION: What did [character] learn?\nA) [Answer 1] → Go to page X\nB) [Answer 2] → Go to page Y"\n\nMONETIZATION:\nInteractive books command premium prices: $9.99-$19.99\nThey are rare on the market — huge competitive advantage\n\n🪷 Need me to write the complete interactive story content?`,
+
+    comicstrip:`COMIC STRIP SCRIPT — ${gv2('stripStyle')}\n\n${val('stripDetails')||'A 4-panel comic strip about digital entrepreneurship'}\n\n4-PANEL COMIC STRIP:\n\nPANEL 1 — SETUP:\n[SCENE: ${val('stripDetails')||'Entrepreneur at laptop'}, determined expression]\nCHARACTER: "I am going to build a passive income empire today!"\n[Caption box]: Monday Morning, 6am\n\nPANEL 2 — COMPLICATION:\n[SCENE: Same character, coffee in hand, many browser tabs open]\nCHARACTER: "First let me research everything possible about passive income."\n[Thought bubble]: "So many courses... so many YouTube videos..."\n\nPANEL 3 — IRONY/CONFLICT:\n[SCENE: Night scene, character asleep at desk, laptop open]\nDESK CLOCK shows: 2:47 AM\n[Sign on laptop screen]: "TAB 247: What is passive income?"\n\nPANEL 4 — PUNCHLINE/RESOLUTION:\n[SCENE: Morning, character waking up to phone notification]\nPHONE SHOWS: "You made a sale!"\nCHARACTER: "Wait... my products sell while I sleep?! That IS passive income!"\n[Small text at bottom]: "The irony of working hard to do less"\n\nDIALOGUE NOTES:\n• Keep dialogue short — 1-2 lines maximum per panel\n• Punchline must land in final panel\n• Each panel should push story forward\n• Facial expressions carry as much weight as words\n\nILLUSTRATION PROMPT FOR AI:\n"4-panel comic strip about ${val('stripDetails')||'entrepreneurship'}, ${gv2('stripStyle').toLowerCase()} style, simple clean art, speech bubbles, expressive characters, Instagram-ready format, flat colors"\n\nSOCIAL MEDIA USE:\nPost as Instagram carousel (1 panel per slide)\nOr post full 4-panel as a single image\nComic content gets 3-5x more saves than regular posts\n\n🪷 Need more comic strips or a full series?`,
+
+    comicbook:`COMIC BOOK — ${gv2('cbGenre')} — ${gv2('cbLength')}\n\nCONCEPT: ${val('cbDetails')||'An epic adventure comic book story'}\n\nCOMPLETE COMIC BOOK OUTLINE:\n\nTITLE: "[Powerful, Memorable Title]"\nSUBTITLE: "[Intrigue the Reader]"\nGENRE: ${gv2('cbGenre')}\nPAGES: ${gv2('cbLength')}\n\nCHARACTER PROFILES:\nHERO: [Name, age, appearance, power/ability, motivation, weakness]\nSIDEKICK: [Name, relationship to hero, role in story]\nVILLAIN: [Name, motivation — must be understandable not just evil]\n\nSTORY STRUCTURE:\n\nACT 1 — ORDINARY WORLD (pages 1-6):\n• Open with action, not backstory\n• Introduce hero in their element\n• Hint at the larger conflict\n• End with inciting incident that changes everything\n\nACT 2 — RISING ACTION (pages 7-18):\n• Hero accepts or is forced into the mission\n• First major obstacle — hero almost fails\n• Hero gains ally or discovers new ability\n• Midpoint: Everything seems possible OR everything seems lost\n• Complications increase — the villain is more powerful than thought\n\nACT 3 — CLIMAX AND RESOLUTION (pages 19-24+):\n• Dark night of the soul — hero's lowest moment\n• Final confrontation — use everything learned\n• Victory through cleverness, not just strength\n• Resolution — world changed, hero changed\n• Hook for next issue (if series)\n\nPAGE LAYOUT GUIDE:\n• 6-panel grid: Most common, works for dialogue-heavy scenes\n• Full-page splash: Use for dramatic moments only\n• 3-panel: Good for action sequences\n• 2-page spread: Climax scenes, epic moments\n\nFREE COMIC CREATION TOOLS:\n• Canva — lay out panels, add text bubbles\n• MediBang Paint — free drawing app\n• Clip Studio Paint — best comic tool, free trial\n• AI Image Generator — generate panel illustrations\n\n🪷 Need me to write the complete first issue script?`,
+
+    superhero:`SUPERHERO CHARACTER SHEET\n\nHERO TYPE: ${gv2('shType')}\nDETAILS: ${val('shDetails')||'A powerful hero with a unique origin'}\n\n━━━━━━━━━━━━━━━━━\nOFFICIAL CHARACTER PROFILE\n━━━━━━━━━━━━━━━━━\n\nHERO NAME: Lotus\nSECRET IDENTITY: Maya Chen, 28, botanist and digital entrepreneur\nORIGIN: After a laboratory accident fused Maya's DNA with an ancient lotus flower, she gained the ability to control plant life and tap into the collective memory of nature.\n\nPOWERS:\n• Chlorokinesis — control any plant matter\n• Photosynthesis Healing — absorbs light to heal wounds\n• Pollen Shield — creates defensive barriers\n• Root Network — communicate with plant life globally\n• Growth Acceleration — makes plants grow instantly as weapons or barriers\n\nCOSTUME:\nColors: Emerald green and pale gold\nDesign: Flowing organic armor that looks grown, not made\nSymbol: A lotus in bloom on the chest\nCape: Living vines that move and react\n\nWEAKNESS:\n• Fire (obvious) — plants fear fire\n• Urban environments with no plant life\n• Losing faith in herself — powers weaken with self-doubt\n\nMOTIVATION:\n"Plants have watched civilizations rise and fall. They remember everything. I am their voice."\n\nNEMESIS: Concrete — a villain who paves over green spaces to build surveillance cities\n\nCATCHPHRASE: "Everything grows back."\n\nORIGIN STORY:\nMaya was always the quiet girl who talked to plants. Her colleagues laughed. The accident changed everything. When the energy wave hit, instead of killing her, it fused ancient botanical intelligence with her mind. She woke up hearing the earth breathe.\n\nIMAGE GENERATION PROMPT:\n"${gv2('shType')} superhero, emerald and gold costume with flowing vine cape, lotus symbol on chest, confident heroic pose, dramatic lighting, ${gv2('shType').includes('Female')?'female':'male'} hero, comic book style, full body shot"\n\n🪷 Need me to write the full origin story or first comic issue?`
+  };
+
+  return r[type]||`PRODUCT CONTENT — ${type}\n\nYour complete product guide has been created.\n\n🪷 Need more detail on any specific section?`;
+}
+</script>
+
+</body>
+</html>
