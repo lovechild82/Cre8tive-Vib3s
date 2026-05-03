@@ -1,2 +1,2 @@
-# Cre8tive-Vib3s
+# Cre8tive-Vib3$
 AI- Powered Creative Studio
