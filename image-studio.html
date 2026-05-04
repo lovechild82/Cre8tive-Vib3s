@@ -1688,6 +1688,31 @@ const active = Array.from(chips).find(c => c.classList.contains("on"));
 }
 
     function genImg() {
+    const desc = document.getElementById("iDesc").value.trim();
+    if (!desc) {
+        alert("Please describe your image first.");
+        return;
+    }
+
+    const model = getChipValue("iModel");
+    const ratio = getChipValue("iRatio");
+    const style = getChipValue("iStyle");
+    const light = getChipValue("iLight");
+    const color = getChipValue("iColor");
+    const camera = getChipValue("iCamera");
+    const scene = getChipValue("iScene");
+    const texture = getChipValue("iTexture");
+    const mood = getChipValue("iMood");
+    const quality = getChipValue("iQuality");
+    const gender = getChipValue("iGender");
+    const eth = getChipValue("iEth");
+    const improve = getChipValue("iImprove");
+    const count = getChipValue("iCount");
+
+    const ref = document.getElementById("iRef").value.trim();
+    const neg = document.getElementById("iNeg").value.trim();
+
+    function genImg() {
   const desc = document.getElementById("iDesc").value.trim();
   if (!desc) {
     alert("Please describe your image first.");
