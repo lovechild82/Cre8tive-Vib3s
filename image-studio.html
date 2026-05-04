@@ -1681,6 +1681,8 @@ function genGuide(type) {
   <script>
 function getChipValue(groupId) {
   const chips = document.querySelectorAll(`#${groupId} .chip`);
+const active = Array.from(chips).find(c => c.classList.contains("on"));
+
   const active = Array.from(chips).find(c => c.classList.contains("on"));
   return active ? active.innerText.trim() : "";
 }
