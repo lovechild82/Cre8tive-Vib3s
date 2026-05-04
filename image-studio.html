@@ -1690,18 +1690,6 @@ function genImg() {
         alert("Please describe your image first.");
         return;
     }
-function getChipValue(groupId) {
-    const chips = document.querySelectorAll(`#${groupId} .chip`);
-    const active = Array.from(chips).find(c => c.classList.contains("on"));
-    return active ? active.innerText.trim() : "";
-}
-
-function genImg() {
-    const desc = document.getElementById("iDesc").value.trim();
-    if (!desc) {
-        alert("Please describe your image first.");
-        return;
-    }
 
     const model = getChipValue("iModel");
     const ratio = getChipValue("iRatio");
@@ -1720,31 +1708,29 @@ function genImg() {
 
     const ref = document.getElementById("iRef").value.trim();
     const neg = document.getElementById("iNeg").value.trim();
+    let prompt = desc;
 
-    const model = getChipValue("iModel");
-    const ratio = getChipValue("iRatio");
-    const style = getChipValue("iStyle");
-    const light = getChipValue("iLight");
-    const color = getChipValue("iColor");
-    const camera = getChipValue("iCamera");
-    const scene = getChipValue("iScene");
-    const texture = getChipValue("iTexture");
-    const mood = getChipValue("iMood");
-    const quality = getChipValue("iQuality");
-    const gender = getChipValue("iGender");
-    const eth = getChipValue("iEth");
-    const improve = getChipValue("iImprove");
-    const count = getChipValue("iCount");
+    if (model) prompt += `, model: ${model}`;
+    if (ratio) prompt += `, ratio: ${ratio}`;
+    if (style) prompt += `, style: ${style}`;
+    if (light) prompt += `, lighting: ${light}`;
+    if (color) prompt += `, color: ${color}`;
+    if (camera) prompt += `, camera: ${camera}`;
+    if (scene) prompt += `, scene: ${scene}`;
+    if (texture) prompt += `, texture: ${texture}`;
+    if (mood) prompt += `, mood: ${mood}`;
+    if (quality) prompt += `, quality: ${quality}`;
+    if (gender) prompt += `, gender: ${gender}`;
+    if (eth) prompt += `, ethnicity: ${eth}`;
+    if (improve) prompt += `, improvements: ${improve}`;
+    if (ref) prompt += `, reference: ${ref}`;
 
-    const ref = document.getElementById("iRef").value.trim();
-    const neg = document.getElementById("iNeg").value.trim();
+    const output = document.getElementById("output");
+    output.value = prompt;
 
-  <script>
-
-    
-
-    
-  
-
+    const negOut = document.getElementById("negOutput");
+    negOut.value = neg;
+  }
+ <script>
 </body>
 </html>
