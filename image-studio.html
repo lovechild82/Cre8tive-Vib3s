@@ -1685,5 +1685,12 @@ function getChipValue(groupId) {
   return active ? active.innerText.trim() : "";
 }
 
+    function genImg() {
+  const desc = document.getElementById("iDesc").value.trim();
+  if (!desc) {
+    alert("Please describe your image first.");
+    return;
+  }
+
 </body>
 </html>
