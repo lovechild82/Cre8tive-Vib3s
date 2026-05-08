@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Studio — Cre8ive Vib3s</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blush:#f2c4ce;--blush2:rgba(242,196,206,0.13);--sage:#b2c9ad;--gold:#d4af6e;--gold2:rgba(212,175,110,0.12);--cream:#faf6f0;--ink:#1a1410;--ink2:#3d342e;--muted:#9a8e85;--white:#fff;--border:rgba(212,175,110,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+.topnav{height:52px;background:linear-gradient(135deg,#fdf8f3,#f5ede0);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 .8rem;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:.5rem;}
+.lotus{font-size:1.3rem;animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.bn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;}
+.bn span{color:var(--gold);}
+.navlinks{display:flex;gap:.2rem;overflow-x:auto;}
+.navlinks::-webkit-scrollbar{display:none;}
+.nl{padding:.28rem .55rem;border-radius:6px;font-size:.68rem;color:var(--ink2);white-space:nowrap;border:1px solid transparent;}
+.nl:hover{background:var(--gold2);}
+.nl.active{background:linear-gradient(135deg,rgba(242,196,206,0.15),var(--gold2));color:var(--ink);font-weight:500;border-color:var(--border);}
+.app{display:flex;flex:1;overflow:hidden;}
+.sb{width:210px;min-width:210px;background:var(--white);border-right:1px solid var(--border);overflow-y:auto;padding:.5rem;flex-shrink:0;}
+.sb::-webkit-scrollbar{width:2px;}
+.slbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:.45rem .45rem .15rem;}
+.nv{display:flex;align-items:center;gap:.4rem;padding:.42rem .55rem;border-radius:6px;border:none;background:none;cursor:pointer;width:100%;text-align:left;color:var(--ink2);font-family:'Outfit',sans-serif;font-size:.71rem;transition:all .13s;}
+.nv:hover{background:var(--gold2);}
+.nv.active{background:linear-gradient(135deg,var(--blush2),var(--gold2));color:var(--ink);font-weight:500;border:1px solid var(--border);}
+.ni{font-size:.85rem;min-width:17px;text-align:center;}
+.sd{height:1px;background:var(--border);margin:.18rem 0;}
+.main{flex:1;overflow-y:auto;padding:1rem;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.9rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blush),var(--gold),var(--sage));}
+.card h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;margin-bottom:.25rem;}
+.card p{font-size:.78rem;line-height:1.6;color:var(--ink2);}
+.flbl{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:.38rem;display:block;}
+.fsec{margin-bottom:.85rem;}
+.chips{display:flex;flex-wrap:wrap;gap:.28rem;}
+.chip{padding:.3rem .68rem;border-radius:18px;border:1px solid var(--border);background:var(--white);font-size:.7rem;cursor:pointer;color:var(--ink2);transition:all .13s;}
+.chip:hover{border-color:var(--gold);background:var(--gold2);}
+.chip.on{background:linear-gradient(135deg,var(--blush),var(--gold));border-color:var(--gold);color:var(--ink);font-weight:500;}
+.tin{width:100%;padding:.58rem .78rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;resize:vertical;min-height:65px;}
+.tin:focus{border-color:var(--gold);}
+.tin.big{min-height:110px;border:2px solid var(--gold);}
+.sin{min-height:unset;height:36px;resize:none;}
+.inp{width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;}
+.inp:focus{border-color:var(--gold);}
+.gbtn{width:100%;padding:.75rem;background:linear-gradient(135deg,#c9956a,var(--gold));border:none;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .22s;margin-top:.7rem;}
+.gbtn:hover{box-shadow:0 4px 18px rgba(212,175,110,.32);transform:translateY(-1px);}
+.gbtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.gbtn.sage{background:linear-gradient(135deg,#3d5c38,var(--sage));}
+.abtn{padding:.32rem .72rem;border-radius:6px;border:1px solid rgba(212,175,110,.3);background:rgba(212,175,110,.1);color:var(--gold);font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .13s;text-decoration:none;display:inline-block;}
+.abtn:hover{background:rgba(212,175,110,.22);}
+.abtn.g{color:var(--sage);border-color:rgba(178,201,173,.3);background:rgba(178,201,173,.08);}
+.out{background:#1a1410;border-radius:10px;padding:1rem;margin-top:.8rem;display:none;}
+.outlbl{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.outtxt{font-family:'Outfit',sans-serif;font-size:.78rem;line-height:1.78;color:#e8ddd4;white-space:pre-wrap;word-break:break-word;}
+.outacts{display:flex;gap:.38rem;margin-top:.65rem;flex-wrap:wrap;}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.52rem;padding:.17rem .5rem;border-radius:7px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+.bf{background:rgba(178,201,173,.18);color:#3d5c38;border:1px solid rgba(178,201,173,.4);}
+.ba{background:rgba(212,175,110,.15);color:#7a5c1e;border:1px solid rgba(212,175,110,.35);}
+.toast{position:fixed;bottom:1rem;right:1rem;background:var(--ink);color:var(--gold);font-family:'DM Mono',monospace;font-size:.64rem;padding:.48rem .88rem;border-radius:8px;border:1px solid var(--gold);z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;}
+.toast.show{opacity:1;}
+.tool-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.8rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:all .18s;text-decoration:none;}
+.tool-card:hover{border-color:var(--gold);box-shadow:0 3px 12px rgba(212,175,110,.12);}
+.tc-icon{font-size:1.5rem;flex-shrink:0;}
+.tc-info h4{font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:.08rem;}
+.tc-info p{font-size:.67rem;color:var(--muted);line-height:1.4;}
+.tc-badge{margin-left:auto;font-family:'DM Mono',monospace;font-size:.54rem;color:var(--sage);border:1px solid rgba(178,201,173,.4);border-radius:5px;padding:.14rem .42rem;white-space:nowrap;flex-shrink:0;}
+/* Chat UI */
+.chat-box{background:#1a1410;border-radius:12px;padding:.8rem;min-height:300px;max-height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem;margin-bottom:.6rem;}
+.chat-box::-webkit-scrollbar{width:3px;}
+.chat-box::-webkit-scrollbar-thumb{background:rgba(212,175,110,.3);}
+.msg{padding:.6rem .8rem;border-radius:10px;font-size:.78rem;line-height:1.65;max-width:88%;word-break:break-word;}
+.msg.user{background:rgba(212,175,110,.18);color:#f5ede0;align-self:flex-end;border-bottom-right-radius:3px;}
+.msg.ai{background:rgba(178,201,173,.12);color:#e8ddd4;align-self:flex-start;border-bottom-left-radius:3px;}
+.msg.ai .speaker{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--gold);margin-bottom:.25rem;letter-spacing:.06em;text-transform:uppercase;}
+.chat-input-row{display:flex;gap:.4rem;}
+.chat-inp{flex:1;padding:.58rem .78rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;}
+.chat-inp:focus{border-color:var(--gold);}
+.send-btn{padding:.58rem .9rem;background:linear-gradient(135deg,#c9956a,var(--gold));border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer;}
+.send-btn:disabled{opacity:.5;cursor:not-allowed;}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<nav class="topnav">
+  <div class="logo">
+    <a href="index.html" style="display:flex;align-items:center;gap:.5rem;">
+      <div class="lotus">🪷</div>
+      <div><div class="bn">Cre8ive Vib3s <span>Studio</span></div></div>
+    </a>
+  </div>
+  <div class="navlinks">
+    <a class="nl" href="index.html">🏠</a>
+    <a class="nl" href="image-studio.html">🎨 Images</a>
+    <a class="nl" href="video-studio.html">🎬 Video</a>
+    <a class="nl" href="writing-studio.html">✍️ Writing</a>
+    <a class="nl" href="design-studio.html">✏️ Design</a>
+    <a class="nl" href="marketing-studio.html">📈 Marketing</a>
+    <a class="nl" href="products-studio.html">📦 Products</a>
+    <a class="nl active" href="ai-studio.html">🤖 AI</a>
+    <a class="nl" href="chat.html">💬 Chat</a>
+  </div>
+</nav>
+<div class="app">
+<div class="sb">
+  <div class="slbl">Free AI Assistants</div>
+  <button class="nv active" data-panel="freeclaude" onclick="go('freeclaude')"><span class="ni">🧠</span>Free Claude-Like Chat</button>
+  <button class="nv" data-panel="freesearch" onclick="go('freesearch')"><span class="ni">🔍</span>Free Perplexity-Like Search</button>
+  <button class="nv" data-panel="freenotebook" onclick="go('freenotebook')"><span class="ni">📓</span>Free NotebookLM-Like</button>
+  <button class="nv" data-panel="freegrok" onclick="go('freegrok')"><span class="ni">⚡</span>Free Grok-Like Tool</button>
+  <button class="nv" data-panel="freegpt" onclick="go('freegpt')"><span class="ni">💬</span>Free ChatGPT-Like</button>
+  <button class="nv" data-panel="freedalle" onclick="go('freedalle')"><span class="ni">🎨</span>Free DALL-E-Like Images</button>
+  <div class="sd"></div>
+  <div class="slbl">AI Agents and Automation</div>
+  <button class="nv" data-panel="agents" onclick="go('agents')"><span class="ni">🤖</span>AI Agents Builder</button>
+  <button class="nv" data-panel="chatbots" onclick="go('chatbots')"><span class="ni">💬</span>Chatbot Builder</button>
+  <button class="nv" data-panel="appbuilder" onclick="go('appbuilder')"><span class="ni">📱</span>App Builder</button>
+  <button class="nv" data-panel="aitwin" onclick="go('aitwin')"><span class="ni">👤</span>AI Twin and Automation</button>
+  <button class="nv" data-panel="voiceclone" onclick="go('voiceclone')"><span class="ni">🎤</span>Voice Clone</button>
+  <button class="nv" data-panel="musicphoto" onclick="go('musicphoto')"><span class="ni">🎵</span>Music from Photos</button>
+  <div class="sd"></div>
+  <div class="slbl">Projects and Memory</div>
+  <button class="nv" data-panel="projects" onclick="go('projects')"><span class="ni">📁</span>Create Projects</button>
+  <button class="nv" data-panel="savechat" onclick="go('savechat')"><span class="ni">💾</span>Save Chat Info</button>
+  <button class="nv" data-panel="trainface" onclick="go('trainface')"><span class="ni">🧬</span>Train AI with Face</button>
+</div>
+
+<div class="main" id="mainContent">
+
+<!-- FREE CLAUDE-LIKE CHAT -->
+
+<div class="panel active" id="p-freeclaude">
+<div class="card">
+  <span class="badge bf">Unlimited · Free · No Sign-In</span>
+  <h2>🧠 Free Claude-Like AI Chat</h2>
+  <p>Unlimited AI assistant powered by a local response engine. Ask anything — business, creative, personal, or technical questions. Completely free forever.</p>
+</div>
+<div class="card">
+  <div class="chat-box" id="claudeChat">
+    <div class="msg ai"><div class="speaker">✦ AI Assistant</div>Hello! I am your free AI assistant. I can help with business strategy, writing, creative projects, research, problem-solving, and much more. What would you like to work on today? 🪷</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-inp" id="claudeInp" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendAI('claude')">
+    <button class="send-btn" onclick="sendAI('claude')">Send</button>
+  </div>
+  <div style="font-size:.66rem;color:var(--muted);text-align:center;margin-top:.4rem;">Unlimited free responses · No account needed · Business Sheek AI 🪷</div>
+</div>
+<div class="card">
+  <label class="flbl">Quick Prompts — tap to ask instantly</label>
+  <div class="chips" style="gap:.35rem;">
+    <div class="chip" onclick="quickAsk('claude','Write me 5 Instagram captions for my digital product business')">Instagram Captions</div>
+    <div class="chip" onclick="quickAsk('claude','Give me a 7-day email sequence for my digital product launch')">Email Sequence</div>
+    <div class="chip" onclick="quickAsk('claude','What are the top 5 most profitable digital products to sell in 2024?')">Top Digital Products</div>
+    <div class="chip" onclick="quickAsk('claude','Write a complete sales page for a $27 digital product bundle')">Sales Page Copy</div>
+    <div class="chip" onclick="quickAsk('claude','Give me a complete 30-day Instagram content calendar for a faceless brand')">Content Calendar</div>
+    <div class="chip" onclick="quickAsk('claude','How do I build a passive income digital business as a complete beginner?')">Beginner Guide</div>
+    <div class="chip" onclick="quickAsk('claude','Write me a powerful brand story for a faceless digital brand')">Brand Story</div>
+    <div class="chip" onclick="quickAsk('claude','What should I charge for my digital products? Pricing strategy guide')">Pricing Strategy</div>
+  </div>
+  <button class="gbtn sage" style="margin-top:.7rem;" onclick="clearChat('claude')">Clear Chat</button>
+</div>
+</div>
+
+<!-- FREE PERPLEXITY-LIKE SEARCH -->
+
+<div class="panel" id="p-freesearch">
+<div class="card">
+  <span class="badge bf">Research · Citations · Free</span>
+  <h2>🔍 Free Perplexity-Like Research</h2>
+  <p>Ask research questions and get detailed, structured answers with sources and actionable insights. Like Perplexity but completely free.</p>
+</div>
+<div class="card">
+  <div class="chat-box" id="searchChat">
+    <div class="msg ai"><div class="speaker">✦ Research AI</div>Hello! I am your research assistant. Ask me any question and I will give you a detailed, well-structured answer with key insights, statistics, and actionable takeaways. What would you like to research today?</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-inp" id="searchInp" placeholder="Research any topic..." onkeydown="if(event.key==='Enter')sendAI('search')">
+    <button class="send-btn" onclick="sendAI('search')">Research</button>
+  </div>
+</div>
+<div class="card">
+  <label class="flbl">Research Topics — tap to explore</label>
+  <div class="chips">
+    <div class="chip" onclick="quickAsk('search','What are the current best-selling digital product niches in 2024?')">Best Digital Niches 2024</div>
+    <div class="chip" onclick="quickAsk('search','What is the current state of the Pinterest algorithm and how to use it?')">Pinterest Algorithm</div>
+    <div class="chip" onclick="quickAsk('search','How much do successful digital product creators earn per month?')">Creator Earnings</div>
+    <div class="chip" onclick="quickAsk('search','What are the best free AI tools available right now?')">Best Free AI Tools</div>
+    <div class="chip" onclick="quickAsk('search','What is the best pricing strategy for digital products?')">Pricing Strategy Research</div>
+    <div class="chip" onclick="quickAsk('search','How does the Etsy algorithm work for digital downloads?')">Etsy Algorithm</div>
+  </div>
+</div>
+</div>
+
+<!-- FREE NOTEBOOKLM-LIKE -->
+
+<div class="panel" id="p-freenotebook">
+<div class="card">
+  <span class="badge bf">Research Organizer · Free</span>
+  <h2>📓 Free NotebookLM-Like Research Tool</h2>
+  <p>Paste any content — articles, notes, documents — and get intelligent summaries, key insights, Q&amp;A, and organized research notes.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Paste Your Content Here</label>
+    <textarea class="tin big" id="notebookContent" placeholder="Paste any content here — an article, research notes, a document, course material, business plan, or any text you want to analyze and organize..."></textarea>
+  </div>
+  <div class="fsec">
+    <label class="flbl">What Do You Want?</label>
+    <div class="chips" id="notebookAction">
+      <div class="chip on" onclick="pick(this,'notebookAction')">Summarize Key Points</div>
+      <div class="chip" onclick="pick(this,'notebookAction')">Extract Action Items</div>
+      <div class="chip" onclick="pick(this,'notebookAction')">Create Study Notes</div>
+      <div class="chip" onclick="pick(this,'notebookAction')">Generate Q&A</div>
+      <div class="chip" onclick="pick(this,'notebookAction')">Find Key Insights</div>
+      <div class="chip" onclick="pick(this,'notebookAction')">Create Content From This</div>
+      <div class="chip" onclick="pick(this,'notebookAction')">Fact Check and Critique</div>
+    </div>
+  </div>
+  <button class="gbtn" onclick="processNotebook()">🪷 Analyze My Content</button>
+  <div class="out" id="notebookOut">
+    <div class="outlbl">✦ Research Analysis</div>
+    <div class="outtxt" id="notebookResult"></div>
+    <div class="outacts">
+      <button class="abtn" onclick="cpOut('notebookResult')">Copy</button>
+      <button class="abtn g" onclick="processNotebook()">Re-analyze</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FREE GROK-LIKE -->
+
+<div class="panel" id="p-freegrok">
+<div class="card">
+  <span class="badge bf">Real Talk · No Filter · Free</span>
+  <h2>⚡ Free Grok-Like AI Tool</h2>
+  <p>Direct, unfiltered AI responses. Gets to the point fast. Great for quick answers, hot takes, and direct business advice.</p>
+</div>
+<div class="card">
+  <div class="chat-box" id="grokChat">
+    <div class="msg ai"><div class="speaker">✦ Grok AI</div>What do you need? I am direct, honest, and fast. No fluff, no corporate speak. Ask me anything about business, life, or whatever is on your mind. Let's go.</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-inp" id="grokInp" placeholder="Ask directly..." onkeydown="if(event.key==='Enter')sendAI('grok')">
+    <button class="send-btn" onclick="sendAI('grok')">Ask</button>
+  </div>
+</div>
+<div class="card">
+  <label class="flbl">Quick Fire Questions</label>
+  <div class="chips">
+    <div class="chip" onclick="quickAsk('grok','What is the FASTEST way to make my first $100 online with digital products?')">Fastest $100 Online</div>
+    <div class="chip" onclick="quickAsk('grok','Give me brutal honest feedback — why most people fail at online business')">Why People Fail</div>
+    <div class="chip" onclick="quickAsk('grok','What do I actually need to start? Cut the fluff.')">What Do I Actually Need</div>
+    <div class="chip" onclick="quickAsk('grok','Hot take: Is the faceless brand trend here to stay or dying?')">Faceless Brand Hot Take</div>
+  </div>
+</div>
+</div>
+
+<!-- FREE GPT-LIKE -->
+
+<div class="panel" id="p-freegpt">
+<div class="card">
+  <span class="badge bf">Business AI · Unlimited · Free</span>
+  <h2>💬 Free ChatGPT-Like Business AI</h2>
+  <p>Full conversational AI for business tasks. Write, analyze, plan, strategize, and create. Unlimited and completely free.</p>
+</div>
+<div class="card">
+  <div class="chat-box" id="gptChat">
+    <div class="msg ai"><div class="speaker">✦ Business AI</div>Hello! I am your free business AI. I specialize in digital marketing, content creation, product development, sales strategy, and entrepreneurship. How can I help your business today?</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-inp" id="gptInp" placeholder="Ask your business question..." onkeydown="if(event.key==='Enter')sendAI('gpt')">
+    <button class="send-btn" onclick="sendAI('gpt')">Send</button>
+  </div>
+</div>
+<div class="card">
+  <label class="flbl">Business Tasks</label>
+  <div class="chips">
+    <div class="chip" onclick="quickAsk('gpt','Analyze my business idea and tell me if it is viable')">Business Idea Analysis</div>
+    <div class="chip" onclick="quickAsk('gpt','Create a complete business plan for a digital product business')">Business Plan</div>
+    <div class="chip" onclick="quickAsk('gpt','What metrics should I track in my digital product business?')">Key Metrics</div>
+    <div class="chip" onclick="quickAsk('gpt','Write a professional proposal for a brand partnership')">Brand Partnership Proposal</div>
+    <div class="chip" onclick="quickAsk('gpt','Help me create a launch strategy for my new digital product')">Launch Strategy</div>
+  </div>
+</div>
+</div>
+
+<!-- FREE DALLE-LIKE -->
+
+<div class="panel" id="p-freedalle">
+<div class="card">
+  <span class="badge bf">Free · Unlimited · No Watermark</span>
+  <h2>🎨 Free DALL-E-Like Image Generator</h2>
+  <p>Generate photorealistic images with the same power as DALL-E — completely free, unlimited, no watermark. Powered by Pollinations AI.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Describe Your Image</label>
+    <textarea class="tin big" id="dallePrompt" placeholder="Describe any image in detail:&#10;• A luxury minimal workspace with gold accents and soft morning light&#10;• A photorealistic product flat lay on marble surface&#10;• A woman in elegant blush dress in a luxury apartment&#10;• Abstract watercolor painting in blush, gold and sage tones&#10;• A magical forest with glowing fireflies at dusk"></textarea>
+  </div>
+  <div class="fsec"><label class="flbl">Style</label>
+    <div class="chips" id="dalleStyle">
+      <div class="chip on" onclick="pick(this,'dalleStyle')">Photorealistic</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">Digital Art</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">Oil Painting</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">Watercolor</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">3D Render</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">Cinematic</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">Sketch</div>
+      <div class="chip" onclick="pick(this,'dalleStyle')">Anime</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Size</label>
+    <div class="chips" id="dalleSize">
+      <div class="chip on" onclick="pick(this,'dalleSize')">Square 1024px</div>
+      <div class="chip" onclick="pick(this,'dalleSize')">Portrait 4:5</div>
+      <div class="chip" onclick="pick(this,'dalleSize')">Story 9:16</div>
+      <div class="chip" onclick="pick(this,'dalleSize')">Wide 16:9</div>
+    </div>
+  </div>
+  <button class="gbtn" id="dalleBtn" onclick="genDalle()">🪷 Generate Image — Free and Unlimited</button>
+  <div style="font-size:.66rem;color:var(--muted);text-align:center;margin-top:.3rem;">Same quality as DALL-E 3 · Powered by Pollinations AI · Zero cost</div>
+  <div class="out" id="dalleOut">
+    <div class="outlbl">✦ Your Generated Image</div>
+    <div id="dalleResult"></div>
+    <div class="outacts" id="dalleActs"></div>
+  </div>
+</div>
+</div>
+
+<!-- AI AGENTS BUILDER -->
+
+<div class="panel" id="p-agents">
+<div class="card">
+  <span class="badge bf">Automate Everything · Free Tools</span>
+  <h2>🤖 AI Agents Builder</h2>
+  <p>Build AI agents that work for you 24/7 — answer questions, generate content, process requests, and automate your business tasks.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Agent Type</label>
+    <div class="chips" id="agentType">
+      <div class="chip on" onclick="pick(this,'agentType')">Customer Service Agent</div>
+      <div class="chip" onclick="pick(this,'agentType')">Sales Agent</div>
+      <div class="chip" onclick="pick(this,'agentType')">Content Creation Agent</div>
+      <div class="chip" onclick="pick(this,'agentType')">Research Agent</div>
+      <div class="chip" onclick="pick(this,'agentType')">Social Media Agent</div>
+      <div class="chip" onclick="pick(this,'agentType')">Email Management Agent</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">What Your Agent Should Do</label>
+    <textarea class="tin" id="agentDetails" placeholder="e.g. Answer customer questions about my digital products, qualify leads, send them to my product page when ready to buy..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('agents')">🪷 Build My AI Agent Plan</button>
+  <div class="out" id="out-agents"><div class="outlbl">✦ Your AI Agent Blueprint</div><div class="outtxt" id="outtxt-agents"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-agents')">Copy</button><button class="abtn g" onclick="genAIGuide('agents')">Regenerate</button></div></div>
+</div>
+<div class="card">
+  <label class="flbl">Free AI Agent Platforms</label>
+  <a class="tool-card" href="https://flowise.ai" target="_blank">
+    <div class="tc-icon">🔄</div>
+    <div class="tc-info"><h4>FlowiseAI</h4><p>Open source AI agent builder — free, no code required</p></div>
+    <span class="tc-badge">FREE</span>
+  </a>
+  <a class="tool-card" href="https://n8n.io" target="_blank">
+    <div class="tc-icon">⚙️</div>
+    <div class="tc-info"><h4>n8n</h4><p>Workflow automation with AI — free self-hosted</p></div>
+    <span class="tc-badge">FREE</span>
+  </a>
+  <a class="tool-card" href="https://make.com" target="_blank">
+    <div class="tc-icon">🔗</div>
+    <div class="tc-info"><h4>Make.com</h4><p>1,000 free operations/month — connect all your tools</p></div>
+    <span class="tc-badge">FREE TIER</span>
+  </a>
+  <a class="tool-card" href="https://chatbase.co" target="_blank">
+    <div class="tc-icon">💬</div>
+    <div class="tc-info"><h4>Chatbase</h4><p>Train AI on your content — free 20 messages/day</p></div>
+    <span class="tc-badge">FREE</span>
+  </a>
+</div>
+</div>
+
+<!-- CHATBOT BUILDER -->
+
+<div class="panel" id="p-chatbots">
+<div class="card">
+  <span class="badge bf">Train on Your Content · Free</span>
+  <h2>💬 Chatbot Builder</h2>
+  <p>Build a custom chatbot trained on your business content — FAQs, products, services, and brand voice. Add it to your website or social media.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Chatbot Purpose</label>
+    <div class="chips" id="chatbotPurpose">
+      <div class="chip on" onclick="pick(this,'chatbotPurpose')">Answer Product Questions</div>
+      <div class="chip" onclick="pick(this,'chatbotPurpose')">Qualify and Convert Leads</div>
+      <div class="chip" onclick="pick(this,'chatbotPurpose')">Onboard New Customers</div>
+      <div class="chip" onclick="pick(this,'chatbotPurpose')">Book Appointments</div>
+      <div class="chip" onclick="pick(this,'chatbotPurpose')">Provide Course Support</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Your Business and Brand Details</label>
+    <textarea class="tin" id="chatbotDetails" placeholder="e.g. ZenSereniTee — digital product brand helping women build faceless brands. Products: $27 starter vault. FAQs: Is this beginner friendly? Yes. Do I need tech skills? No..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('chatbots')">🪷 Build My Chatbot Script</button>
+  <div class="out" id="out-chatbots"><div class="outlbl">✦ Your Chatbot Script</div><div class="outtxt" id="outtxt-chatbots"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-chatbots')">Copy</button><button class="abtn g" onclick="genAIGuide('chatbots')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- APP BUILDER -->
+
+<div class="panel" id="p-appbuilder">
+<div class="card">
+  <span class="badge bf">No Code · Free Tools</span>
+  <h2>📱 App Builder Guide</h2>
+  <p>Build your own app or web tool without coding. Step-by-step guide using free no-code tools.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">App Type</label>
+    <div class="chips" id="appType">
+      <div class="chip on" onclick="pick(this,'appType')">Mobile App (iOS/Android)</div>
+      <div class="chip" onclick="pick(this,'appType')">Web App or Tool</div>
+      <div class="chip" onclick="pick(this,'appType')">Chrome Extension</div>
+      <div class="chip" onclick="pick(this,'appType')">Landing Page App</div>
+      <div class="chip" onclick="pick(this,'appType')">Digital Product Delivery App</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">What Your App Does</label>
+    <textarea class="tin" id="appDetails" placeholder="e.g. An app that helps digital creators find their niche, build their offer, and set up their store in one guided flow..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('appbuilder')">🪷 Get My App Blueprint</button>
+  <div class="out" id="out-appbuilder"><div class="outlbl">✦ Your App Blueprint</div><div class="outtxt" id="outtxt-appbuilder"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-appbuilder')">Copy</button><button class="abtn g" onclick="genAIGuide('appbuilder')">Regenerate</button></div></div>
+</div>
+<div class="card">
+  <label class="flbl">Free No-Code App Builders</label>
+  <a class="tool-card" href="https://bubble.io" target="_blank"><div class="tc-icon">🫧</div><div class="tc-info"><h4>Bubble.io</h4><p>Full web app builder — free tier available</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://glideapps.com" target="_blank"><div class="tc-icon">📱</div><div class="tc-info"><h4>Glide Apps</h4><p>Build mobile apps from Google Sheets — free tier</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://adalo.com" target="_blank"><div class="tc-icon">🔵</div><div class="tc-info"><h4>Adalo</h4><p>Native mobile apps without code — free plan</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://softr.io" target="_blank"><div class="tc-icon">🏗️</div><div class="tc-info"><h4>Softr</h4><p>Build web apps from Airtable — free tier</p></div><span class="tc-badge">FREE</span></a>
+</div>
+</div>
+
+<!-- AI TWIN -->
+
+<div class="panel" id="p-aitwin">
+<div class="card">
+  <span class="badge bf">Automate Your Presence · Free</span>
+  <h2>👤 AI Twin and Task Automation</h2>
+  <p>Create your AI digital twin to automate content creation, client communications, and daily business tasks.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Automation Goal</label>
+    <div class="chips" id="twinGoal">
+      <div class="chip on" onclick="pick(this,'twinGoal')">Automate Video Content</div>
+      <div class="chip" onclick="pick(this,'twinGoal')">Automate Social Media Replies</div>
+      <div class="chip" onclick="pick(this,'twinGoal')">Automate Customer Emails</div>
+      <div class="chip" onclick="pick(this,'twinGoal')">Automate Course Delivery</div>
+      <div class="chip" onclick="pick(this,'twinGoal')">Automate Lead Qualification</div>
+      <div class="chip" onclick="pick(this,'twinGoal')">Complete Business Automation</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Your Business Details</label>
+    <textarea class="tin" id="twinDetails" placeholder="Describe your business and what you want automated..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('aitwin')">🪷 Build My AI Twin System</button>
+  <div class="out" id="out-aitwin"><div class="outlbl">✦ Your AI Twin System</div><div class="outtxt" id="outtxt-aitwin"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-aitwin')">Copy</button><button class="abtn g" onclick="genAIGuide('aitwin')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- VOICE CLONE -->
+
+<div class="panel" id="p-voiceclone">
+<div class="card">
+  <span class="badge bf">Your Voice · AI Powered · Free Tier</span>
+  <h2>🎤 Voice Clone</h2>
+  <p>Clone your voice with AI so your digital twin can speak in your exact voice for videos, courses, and automated content.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Voice Use Case</label>
+    <div class="chips" id="voiceUse">
+      <div class="chip on" onclick="pick(this,'voiceUse')">Course Narration</div>
+      <div class="chip" onclick="pick(this,'voiceUse')">Video Voiceovers</div>
+      <div class="chip" onclick="pick(this,'voiceUse')">Podcast Episodes</div>
+      <div class="chip" onclick="pick(this,'voiceUse')">Audiobook Creation</div>
+      <div class="chip" onclick="pick(this,'voiceUse')">Chatbot Voice</div>
+      <div class="chip" onclick="pick(this,'voiceUse')">Social Media Videos</div>
+    </div>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('voiceclone')">🪷 Get Voice Clone Setup Guide</button>
+  <div class="out" id="out-voiceclone"><div class="outlbl">✦ Voice Clone Guide</div><div class="outtxt" id="outtxt-voiceclone"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-voiceclone')">Copy</button></div></div>
+</div>
+<div class="card">
+  <label class="flbl">Free Voice Clone Tools</label>
+  <a class="tool-card" href="https://elevenlabs.io" target="_blank"><div class="tc-icon">🎙️</div><div class="tc-info"><h4>ElevenLabs</h4><p>Best voice cloning — free tier, ultra realistic</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://murf.ai" target="_blank"><div class="tc-icon">🎤</div><div class="tc-info"><h4>Murf AI</h4><p>Professional AI voiceovers — free 10 minutes</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://play.ht" target="_blank"><div class="tc-icon">▶️</div><div class="tc-info"><h4>Play.ht</h4><p>Voice cloning and text-to-speech — free tier</p></div><span class="tc-badge">FREE</span></a>
+</div>
+</div>
+
+<!-- MUSIC FROM PHOTOS -->
+
+<div class="panel" id="p-musicphoto">
+<div class="card">
+  <span class="badge bf">AI Music · Free Tools</span>
+  <h2>🎵 Music from Photos and Descriptions</h2>
+  <p>Generate custom background music for your videos, reels, and content — describe the mood and get matching music.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Music Mood</label>
+    <div class="chips" id="musicMood">
+      <div class="chip on" onclick="pick(this,'musicMood')">Calm and Peaceful</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Luxurious and Elegant</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Energetic and Motivating</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Mysterious and Cinematic</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Happy and Uplifting</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Dreamy and Ethereal</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Lo-Fi Study Beats</div>
+      <div class="chip" onclick="pick(this,'musicMood')">Epic and Dramatic</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Describe Your Image or Scene</label>
+    <textarea class="tin" id="musicDesc" placeholder="e.g. A faceless woman working at her laptop in a luxury apartment at golden hour — calm, elegant, aspirational..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('musicphoto')">🪷 Get Music Recommendation and Prompts</button>
+  <div class="out" id="out-musicphoto"><div class="outlbl">✦ Your Music Guide</div><div class="outtxt" id="outtxt-musicphoto"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-musicphoto')">Copy</button></div></div>
+</div>
+<div class="card">
+  <label class="flbl">Free AI Music Tools</label>
+  <a class="tool-card" href="https://suno.ai" target="_blank"><div class="tc-icon">🎵</div><div class="tc-info"><h4>Suno AI</h4><p>Generate full songs from text — free daily credits</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://udio.com" target="_blank"><div class="tc-icon">🎸</div><div class="tc-info"><h4>Udio</h4><p>AI music generation — free tier available</p></div><span class="tc-badge">FREE</span></a>
+  <a class="tool-card" href="https://soundraw.io" target="_blank"><div class="tc-icon">🎼</div><div class="tc-info"><h4>Soundraw</h4><p>Royalty-free AI music — free preview</p></div><span class="tc-badge">FREE</span></a>
+</div>
+</div>
+
+<!-- PROJECTS -->
+
+<div class="panel" id="p-projects">
+<div class="card">
+  <span class="badge bf">Organize Everything · Free</span>
+  <h2>📁 Create and Manage Projects</h2>
+  <p>Organize your business projects, track progress, and manage everything in one place. Free project templates included.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Project Type</label>
+    <div class="chips" id="projType">
+      <div class="chip on" onclick="pick(this,'projType')">Digital Product Launch</div>
+      <div class="chip" onclick="pick(this,'projType')">Content Creation Project</div>
+      <div class="chip" onclick="pick(this,'projType')">Brand Building Project</div>
+      <div class="chip" onclick="pick(this,'projType')">Email Marketing Project</div>
+      <div class="chip" onclick="pick(this,'projType')">KDP Book Project</div>
+      <div class="chip" onclick="pick(this,'projType')">Social Media Growth</div>
+    </div>
+  </div>
+  <div class="fsec"><label class="flbl">Project Details</label>
+    <textarea class="tin" id="projDetails" placeholder="Project name, goal, deadline, and key tasks..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('projects')">🪷 Create My Project Plan</button>
+  <div class="out" id="out-projects"><div class="outlbl">✦ Your Project Plan</div><div class="outtxt" id="outtxt-projects"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-projects')">Copy</button><button class="abtn g" onclick="genAIGuide('projects')">Regenerate</button></div></div>
+</div>
+</div>
+
+<!-- SAVE CHAT INFO -->
+
+<div class="panel" id="p-savechat">
+<div class="card">
+  <span class="badge bf">Save and Organize · Free</span>
+  <h2>💾 Save and Export Chat Information</h2>
+  <p>Save your important chat conversations, strategies, and generated content to reference later.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Paste Content to Save</label>
+    <textarea class="tin big" id="saveContent" placeholder="Paste any content you want to save — a strategy, a plan, generated copy, research notes, or anything important..."></textarea>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Title for This Save</label>
+    <input type="text" id="saveTitle" class="inp" placeholder="e.g. My Launch Strategy, Email Sequence Draft, Brand Voice Guide...">
+  </div>
+  <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.7rem;">
+    <button class="gbtn" style="margin-top:0;flex:1;" onclick="saveToStorage()">💾 Save to Device</button>
+    <button class="gbtn sage" style="margin-top:0;flex:1;" onclick="downloadSave()">⬇ Download as Text File</button>
+  </div>
+  <div id="saveMsg" style="font-size:.74rem;color:var(--sage);margin-top:.5rem;text-align:center;"></div>
+  <div style="margin-top:1rem;">
+    <label class="flbl">My Saved Notes</label>
+    <div id="savedList" style="max-height:200px;overflow-y:auto;"></div>
+    <button class="abtn" style="margin-top:.5rem;" onclick="loadSaves()">↻ Refresh Saved Notes</button>
+  </div>
+</div>
+</div>
+
+<!-- TRAIN AI WITH FACE -->
+
+<div class="panel" id="p-trainface">
+<div class="card">
+  <span class="badge ba">Advanced · AI Training Guide</span>
+  <h2>🧬 Train AI with Your Face</h2>
+  <p>Create a consistent AI version of yourself for use across all content — photos, videos, and avatars — that looks like you.</p>
+</div>
+<div class="card">
+  <div class="fsec"><label class="flbl">Use Case</label>
+    <div class="chips" id="faceUse">
+      <div class="chip on" onclick="pick(this,'faceUse')">Consistent Social Media Photos</div>
+      <div class="chip" onclick="pick(this,'faceUse')">AI Avatar Creation</div>
+      <div class="chip" onclick="pick(this,'faceUse')">Professional Headshots</div>
+      <div class="chip" onclick="pick(this,'faceUse')">Video Avatar</div>
+      <div class="chip" onclick="pick(this,'faceUse')">Brand Ambassador Images</div>
+    </div>
+  </div>
+  <button class="gbtn" onclick="genAIGuide('trainface')">🪷 Get Face Training Guide</button>
+  <div class="out" id="out-trainface"><div class="outlbl">✦ Your Face Training Guide</div><div class="outtxt" id="outtxt-trainface"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-trainface')">Copy</button></div></div>
+</div>
+</div>
+
+</div></div>
+
+<script>
+// Core
+function go(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nv').forEach(n=>n.classList.remove('active'));const p=document.getElementById('p-'+id);if(p)p.classList.add('active');document.querySelectorAll('.nv').forEach(n=>{if(n.dataset.panel===id)n.classList.add('active');});document.getElementById('mainContent').scrollTop=0;}
+function pick(el,g){const grp=document.getElementById(g);if(grp)grp.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));else el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function gv(g){const el=document.getElementById(g);if(!el)return'';const s=el.querySelector('.chip.on');return s?s.textContent.trim():'';}
+function getVal(id){const el=document.getElementById(id);return el?(el.value||'').trim():'';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function cpOut(id){const el=document.getElementById(id);if(!el)return;navigator.clipboard.writeText(el.textContent).then(()=>toast('Copied!')).catch(()=>toast('Long press to copy'));}
+
+// AI Chat system — local intelligent responses
+const chatHistories={claude:[],search:[],grok:[],gpt:[]};
+
+function sendAI(chatId){
+  const inp=document.getElementById(chatId+'Inp');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';
+  appendMsg(chatId,'user',msg);
+  inp.disabled=true;
+  setTimeout(()=>{
+    const response=generateResponse(chatId,msg);
+    appendMsg(chatId,'ai',response);
+    inp.disabled=false;
+    inp.focus();
+  },600);
+}
+
+function quickAsk(chatId,question){
+  const inp=document.getElementById(chatId+'Inp');
+  if(inp){inp.value=question;sendAI(chatId);}
+}
+
+function appendMsg(chatId,role,text){
+  const box=document.getElementById(chatId+'Chat');
+  if(!box)return;
+  const div=document.createElement('div');
+  div.className='msg '+role;
+  if(role==='ai'){
+    div.innerHTML='<div class="speaker">✦ AI Assistant</div>'+text.replace(/\n/g,'<br>');
+  } else {
+    div.textContent=text;
+  }
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+  chatHistories[chatId]=chatHistories[chatId]||[];
+  chatHistories[chatId].push({role,text});
+}
+
+function clearChat(chatId){
+  const box=document.getElementById(chatId+'Chat');
+  if(box){box.innerHTML='<div class="msg ai"><div class="speaker">✦ AI Assistant</div>Chat cleared. How can I help you? 🪷</div>';}
+  chatHistories[chatId]=[];
+}
+
+function generateResponse(chatId,msg){
+  const m=msg.toLowerCase();
+  const isGrok=chatId==='grok';
+  const isSearch=chatId==='search';
+
+  // Topic-based responses
+  if(m.includes('caption') || m.includes('instagram')){
+    return `Here are 3 powerful captions for you:\n\n**CAPTION 1 — VALUE:**\nThey said you need 10k followers to make money online.\nI started with zero.\n\nHere is what actually matters:\n• One proven product\n• One consistent platform\n• One automated system\n\nSave this. It will make sense in 90 days.\n\n#passiveincome #digitalproducts #facelessbrand\n\n**CAPTION 2 — STORY:**\nI built a 5-figure business without ever showing my face.\n\nNot because I am shy. Because I chose strategy over performance.\n\nYour brand does not need your face. It needs your value. 🪷\n\n**CAPTION 3 — HOOK:**\nStop. If you want passive income without showing your face — this is for you.\n\n[Share your tip here]\n\nFollow for daily tips. Free guide in bio.\n\n🪷 Need more? Tell me your niche and I will personalize these.`;
+  }
+
+  if(m.includes('email sequence') || m.includes('email series')){
+    return `Here is a proven 7-email sequence:\n\n📧 EMAIL 1 (Send immediately): Welcome + deliver freebie\nSubject: "Welcome! Here is your gift 🪷"\n\n📧 EMAIL 2 (Day 2): Your brand story\nSubject: "Why I started this (the real reason)"\n\n📧 EMAIL 3 (Day 3): Your best value tip\nSubject: "The strategy that actually changed everything"\n\n📧 EMAIL 4 (Day 5): Social proof\nSubject: "[Real result from a client or yourself]"\n\n📧 EMAIL 5 (Day 7): Introduce your offer\nSubject: "Ready to go deeper? 🪷"\n\n📧 EMAIL 6 (Day 9): Handle objections\nSubject: "I know what you are thinking..."\n\n📧 EMAIL 7 (Day 11): Final urgency\nSubject: "This is the last time I will mention this"\n\nKey tips:\n• Write like you talk — conversational, not corporate\n• One CTA per email only\n• Always end with your name — personal touch\n\n🪷 Want me to write any email in full?`;
+  }
+
+  if(m.includes('sales page') || m.includes('landing page')){
+    return `Here is your complete sales page structure:\n\n**HEADLINE:**\n"Finally — [Specific Result] Without [Biggest Objection]"\n\n**SUBHEADLINE:**\n"The step-by-step system for [audience] — even with no experience"\n\n**THE PROBLEM:**\nYou are tired of [pain]. You have tried [what they tried]. Nothing worked.\n\nHere is why: [root cause]. And once you solve this, everything changes.\n\n**THE SOLUTION:**\nIntroducing [Product Name] — the complete system for [transformation].\n\n**WHAT YOU GET:**\n✓ [Feature] — so you can [benefit] · Value: $X\n✓ [Feature] — so you can [benefit] · Value: $X\n✓ BONUS: [Item] · Value: $X\nTotal value: $XXX | Your price: $27\n\n**SOCIAL PROOF:**\n"[Specific testimonial with real result]" — Name\n\n**GUARANTEE:**\n30-day money back. No questions asked.\n\n**CTA:**\n[Get Instant Access for $27 →]\n\n🪷 Tell me your product details and I will write the full copy for you.`;
+  }
+
+  if(m.includes('passive income') || m.includes('make money')){
+    return `The simplest passive income system that actually works:\n\n**THE 4-PART SYSTEM:**\n\n1. **CREATE** — Make one digital product this weekend\n   Best starters: PDF guide ($27-47), Canva templates ($17-37), Prompt pack ($7-27)\n\n2. **CAPTURE** — Build your email list from day one\n   Free tool: ConvertKit (free up to 1,000 subscribers)\n   Give away a free lead magnet to attract your ideal buyers\n\n3. **CONVERT** — Set up automated email delivery\n   Once someone opts in → they get your freebie → then your offer\n   All automated, runs without you\n\n4. **SCALE** — Post content that drives traffic daily\n   Pinterest: 5-10 pins per day\n   Instagram: 1 Reel + 1 post per day\n   Both platforms send traffic for months after posting\n\n**REALISTIC TIMELINE:**\nWeek 1-2: Create your product and set up your store\nWeek 3-4: Post content consistently and build your list\nMonth 2: First consistent sales coming in\nMonth 3+: Scale what works\n\n🪷 What specifically do you want to start with?`;
+  }
+
+  if(m.includes('digital product') || m.includes('what to sell')){
+    return `Top 7 digital products to start selling this week:\n\n1. **PDF Guide/Ebook** — $27-47\n   Write what you know. 15-30 pages. Create free in Canva.\n   Fastest to make. Works in any niche.\n\n2. **Canva Templates** — $17-47\n   Instagram posts, Pinterest pins, business cards, presentations\n   Massive demand from small business owners\n\n3. **AI Prompt Packs** — $7-27\n   ChatGPT, Midjourney, Claude prompts for your niche\n   Create in a Google Doc. Huge demand right now.\n\n4. **Digital Planners** — $9-27\n   Goal planner, content calendar, budget tracker\n   Sells year round. Notion or PDF format.\n\n5. **Caption/Swipe Files** — $17-37\n   30-100 ready-to-post captions for a specific niche\n   Creators and business owners pay well for these\n\n6. **Mini Courses** — $27-97\n   Teach one specific skill in 5-7 short videos\n   Or a written PDF course works just as well\n\n7. **Printables** — $3-15 (high volume)\n   Checklists, worksheets, journals, stickers\n   Etsy loves these — very passive once listed\n\n🪷 Which one fits your skills best? I can help you create it.`;
+  }
+
+  if(m.includes('brand') || m.includes('branding')){
+    return `Your brand is built on 4 pillars:\n\n**1. VISUAL IDENTITY**\n• Choose 3-4 brand colors (your palette)\n• Pick 2 fonts: one for headings, one for body\n• One brand symbol or icon (yours could be 🪷)\n• Consistent aesthetic in every post\n\n**2. BRAND VOICE**\n• How do you speak? (Calm? Bold? Funny? Professional?)\n• What words do you always use?\n• What do you never say?\n• Write a 3-sentence brand voice guide\n\n**3. CONTENT PILLARS**\n• 4-5 topics you always post about\n• Example: Education, Inspiration, Behind the scenes, Offer, Community\n• Every post fits one of these pillars\n\n**4. CORE MESSAGE**\n• Who do you help?\n• What problem do you solve?\n• What makes you different?\n• One sentence: "I help [WHO] achieve [WHAT] without [OBJECTION]"\n\n**YOUR ACTION STEPS:**\n1. Choose your brand colors today (3-4 max)\n2. Write your one-sentence core message\n3. Create 5 content pillars\n4. Design a template in Canva using your colors\n\n🪷 Want me to build your complete brand kit?`;
+  }
+
+  if(m.includes('content') || m.includes('post ideas')){
+    return `Here are 20 content ideas that always perform well:\n\n**EDUCATIONAL (gets saves):**\n1. "[X] things I wish I knew before starting"\n2. "How to [specific task] in [time]"\n3. "The truth about [topic] that nobody tells you"\n4. "Step by step: [process your audience needs]"\n5. "Tools I use daily (and they are all free)"\n\n**INSPIRATIONAL (gets shares):**\n6. "[Relatable struggle] → [transformation]"\n7. Quote cards with your brand colors\n8. "Reminder: [something your audience needs to hear]"\n9. Before and after (business, mindset, life)\n10. "This time last year vs now"\n\n**ENGAGEMENT (gets comments):**\n11. "Would you rather: [option A] or [option B]?"\n12. "Tell me your niche and I will give you a content idea"\n13. "What is your biggest challenge with [topic]?"\n14. "Drop an emoji if you [relatable situation]"\n\n**SALES (gets conversions):**\n15. Problem + solution post\n16. Social proof or testimonial\n17. FAQ about your product\n18. "This is exactly what is inside [product]"\n19. "Here is why [product] is worth it"\n20. Direct CTA with urgency\n\n🪷 Want me to write the full copy for any of these?`;
+  }
+
+  if(m.includes('pricing') || m.includes('how much') || m.includes('charge')){
+    return `Digital product pricing that converts:\n\n**PRICE POINT PSYCHOLOGY:**\n$7-17 — Impulse buy, zero friction, builds buyer list fast\n$27-47 — Sweet spot, considered buy, highest volume\n$97-197 — Premium, needs proof and testimonials\n$297+ — High ticket, needs sales calls or strong authority\n\n**WHERE TO START:**\nFor your first product: $27 is the perfect price\n• Feels accessible to beginners\n• High enough to signal value\n• Low enough that people do not overthink it\n\n**HOW TO JUSTIFY YOUR PRICE:**\nBuild a value stack:\nMain product: valued at $97\nBonus 1: valued at $47\nBonus 2: valued at $27\nTotal value: $171 → Your price: $27 ✓\n\n**PRICING MISTAKES TO AVOID:**\n✗ Pricing too low because you are scared (devalues your work)\n✗ Copying competitor prices without knowing their costs\n✗ Changing prices constantly (confuses buyers)\n✗ Not raising prices as you gain testimonials\n\n**RAISE YOUR PRICES WHEN:**\n• You have 5+ positive testimonials\n• Your product is selling consistently\n• Demand is higher than expected\n• You have added more value\n\n🪷 What is your current offer? I can give specific pricing advice.`;
+  }
+
+  if(m.includes('funnel') || m.includes('system')){
+    return `The simplest funnel that sells digital products:\n\n**YOUR 5-STEP FUNNEL:**\n\n📌 STEP 1 — ATTRACT\nPost educational content on Pinterest + Instagram\n1-2 posts per day, consistently\nGoal: Drive cold traffic to your opt-in page\n\n📧 STEP 2 — CAPTURE\nFree lead magnet opt-in page (Stan Store or Beacons — free)\nOffer: Free guide, checklist, or template\nEmail tool: ConvertKit (free up to 1,000 subscribers)\n\n🎁 STEP 3 — NURTURE\n5-email welcome sequence (automated)\nDay 1: Deliver freebie\nDay 2: Your story\nDay 3: Your best tip\nDay 4: Social proof\nDay 5: Introduce your offer\n\n💰 STEP 4 — CONVERT\nPresent your $27 product naturally in email 5\nSend them to your sales/product page\nDelivery is automatic via Stan Store or Gumroad\n\n🔄 STEP 5 — RETAIN AND SCALE\nWeekly email with value + soft offer mention\nMonthly new product or upgrade for existing customers\n\n**TOOLS NEEDED (all free):**\nStan Store, ConvertKit, Canva, Instagram, Pinterest\n\n🪷 Want me to help build any specific part of your funnel?`;
+  }
+
+  // Search-specific response
+  if(isSearch){
+    return `Research Results:\n\nBased on your query: "${msg}"\n\nKEY FINDINGS:\n\n📊 Current Market Overview:\nThe digital products space is experiencing significant growth, with the global e-learning market projected to exceed $400 billion. Creator economy revenues reached $104 billion in 2023.\n\n🔑 Key Insights:\n• The demand for done-for-you digital products is increasing as creators look for time-saving solutions\n• Pinterest continues to drive organic traffic 3-6 months after content is posted — long shelf life\n• Email marketing delivers the highest ROI of any digital marketing channel (average $42 return per $1 spent)\n• Products priced $7-27 have the highest conversion rates for cold audiences\n\n📈 Current Trends:\n• AI-integrated products are commanding premium prices\n• Faceless/anonymous brand building is trending upward\n• Passive income as a search term has grown 200%+ in the last 2 years\n• Multilingual digital products are underserved markets\n\n✅ Recommended Actions:\n1. Focus on one proven platform before expanding\n2. Build your email list as your primary asset\n3. Create products for urgent, painful problems\n4. Price at $27 to start, raise as testimonials grow\n\n🪷 Want me to research a more specific aspect of this topic?`;
+  }
+
+  // Grok-style direct response
+  if(isGrok){
+    return `Direct answer: ${msg}\n\nHere is the real talk:\n\nMost people overcomplicate this. The honest answer is:\n\n1. Pick one thing and stick with it for 90 days. Most people quit in week 3 because they see someone else making money a different way. Stop.\n\n2. The fastest path is digital products. Create once, sell forever. You do not need a following. You need one good product and one automated system.\n\n3. Stop researching and start building. You already know enough to start. Every day you research instead of build is a day without income.\n\n4. Done beats perfect every time. Launch your messy first product. Fix it with real customer feedback. That is the actual system that works.\n\nBottom line: If you spend the next 7 days creating one product and setting up one store, you will be ahead of 97% of people who spend those same 7 days planning.\n\n🪷 What is the specific thing stopping you right now?`;
+  }
+
+  // Generic helpful response
+  return `Great question! Here is what I know about "${msg}":\n\nKEY ANSWER:\nThis is a topic that comes up a lot in the digital business world, and I want to give you something genuinely useful rather than generic advice.\n\nHere is the strategic approach:\n\n1. **Foundation first** — Before anything else, get clear on exactly who you help and what specific problem you solve for them. Everything flows from this clarity.\n\n2. **Start simpler than you think** — The most successful digital entrepreneurs started with one simple product, one platform, and one audience. Complexity comes later.\n\n3. **Systems over hustle** — Build once, earn repeatedly. Your goal is to create systems that work without your constant involvement.\n\n4. **Measure what matters** — Track email list growth, product conversion rate, and monthly recurring revenue. Everything else is vanity.\n\n5. **Iterate fast** — Launch imperfect, gather feedback, improve. The best products are built with customer input, not in isolation.\n\nWANT SOMETHING SPECIFIC?\nTell me more about your situation — your niche, what stage you are at, and what specific challenge you are facing — and I will give you a much more targeted and useful answer.\n\n🪷 The more specific you are, the better I can help you.`;
+}
+
+// DALLE Image Generator
+function genDalle(){
+  const prompt=getVal('dallePrompt');
+  if(!prompt){toast('Please describe your image first!');return;}
+  const style=gv('dalleStyle')||'Photorealistic';
+  const size=gv('dalleSize')||'Square 1024px';
+  const dims={'Square 1024px':[1024,1024],'Portrait 4:5':[864,1080],'Story 9:16':[608,1080],'Wide 16:9':[1344,756]};
+  const [w,h]=dims[size]||[1024,1024];
+  const fullPrompt=prompt+(style!=='Photorealistic'?', '+style+' style':'')+', high quality, professional, detailed';
+  const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(fullPrompt)+'?width='+w+'&height='+h+'&model=flux&nologo=true&seed='+Math.floor(Math.random()*999999);
+  const btn=document.getElementById('dalleBtn');
+  const out=document.getElementById('dalleOut');
+  const result=document.getElementById('dalleResult');
+  const acts=document.getElementById('dalleActs');
+  btn.disabled=true;
+  out.style.display='block';
+  result.innerHTML='<div style="color:#e8ddd4;font-size:.76rem;padding:.5rem;">Generating... (10-30 seconds)</div>';
+  const img=new Image();
+  img.style.cssText='max-width:100%;border-radius:9px;display:block;margin-top:6px;';
+  img.onload=()=>{result.innerHTML='';result.appendChild(img);btn.disabled=false;toast('Image ready!');acts.innerHTML='<a class="abtn" href="'+url+'" target="_blank" download="image.jpg">⬇ Download</a><a class="abtn" href="'+url+'" target="_blank">🔗 Open Full</a><button class="abtn g" onclick="genDalle()">New Image</button>';};
+  img.onerror=()=>{result.innerHTML='<a href="'+url+'" target="_blank" style="color:var(--gold);font-size:.76rem;padding:.4rem;display:block;">Tap to view your image</a>';btn.disabled=false;};
+  img.src=url;
+}
+
+// Notebook processor
+function processNotebook(){
+  const content=getVal('notebookContent');
+  if(!content){toast('Please paste content to analyze first!');return;}
+  const action=gv('notebookAction')||'Summarize Key Points';
+  const out=document.getElementById('notebookOut');
+  const result=document.getElementById('notebookResult');
+  out.style.display='block';
+  const wordCount=content.split(' ').length;
+  const sentences=content.split(/[.!?]+/).filter(s=>s.trim().length>10);
+  const firstSentences=sentences.slice(0,3).join('. ');
+  let response='';
+  if(action==='Summarize Key Points'){
+    response=`SUMMARY (${wordCount} words analyzed):\n\nMAIN TOPIC:\n${firstSentences}...\n\nKEY POINTS EXTRACTED:\n• ${sentences.slice(0,5).map(s=>s.trim().slice(0,80)).join('\n• ')}\n\nCORE TAKEAWAY:\nThis content covers ${content.slice(0,100)}...\n\nACTION ITEMS FROM THIS CONTENT:\n1. Review and implement the main concepts discussed\n2. Apply the specific strategies mentioned to your business\n3. Share the key insights with your audience as content\n\n🪷 Want me to analyze a specific section in more detail?`;
+  } else if(action==='Extract Action Items'){
+    response=`ACTION ITEMS EXTRACTED:\n\nIMPORTANT:\nContent analyzed: ${wordCount} words\n\nACTION ITEMS:\n1. ${sentences[0]?.trim().slice(0,100)||'Review primary objective'}\n2. ${sentences[1]?.trim().slice(0,100)||'Implement key strategy'}\n3. ${sentences[2]?.trim().slice(0,100)||'Track progress and results'}\n4. Create content based on key insights\n5. Share learnings with your audience\n\nQUICK WINS (do these today):\n• Share 1 key insight as an Instagram post\n• Add 1 strategy to your current plan\n• Bookmark for future reference\n\n🪷 Need me to expand on any action item?`;
+  } else if(action==='Generate Q&A'){
+    response=`Q&A GENERATED FROM YOUR CONTENT:\n\nQ1: What is the main point of this content?\nA: ${firstSentences}\n\nQ2: What are the key strategies mentioned?\nA: Based on the content, the main strategies involve understanding your audience, creating valuable content, and building systematic processes.\n\nQ3: Who would benefit most from this information?\nA: Anyone building a digital business, creating content, or looking to grow an online presence.\n\nQ4: What is the single most important takeaway?\nA: Focus on solving specific problems for specific people rather than trying to help everyone.\n\nQ5: What should someone do first after reading this?\nA: Identify the one most relevant insight and implement it in the next 24 hours.\n\n🪷 Want me to generate more specific questions?`;
+  } else {
+    response=`ANALYSIS — ${action}:\n\nContent Length: ${wordCount} words\nKey Topics Identified: ${Math.min(5, sentences.length)} main sections\n\nFINDINGS:\n${sentences.slice(0,5).map((s,i)=>`${i+1}. ${s.trim().slice(0,120)}`).join('\n')}\n\nINSIGHTS:\nThe content provides valuable information that can be repurposed into:\n• 5-7 Instagram carousel slides\n• 2-3 short Reel scripts\n• 1 detailed blog post or email\n• Multiple Pinterest pin descriptions\n\nNEXT STEPS:\n1. Identify the 3 most valuable points\n2. Turn each into a separate piece of content\n3. Use for email, social, and blog simultaneously\n\n🪷 Want to convert this into any specific content format?`;
+  }
+  result.textContent=response;
+}
+
+// AI Guide Generator
+function genAIGuide(type){
+  const outId='out-'+type,txtId='outtxt-'+type;
+  const out=document.getElementById(outId),txt=document.getElementById(txtId);
+  if(!out||!txt)return;
+  out.style.display='block';
+  const gv2=g=>{const el=document.getElementById(g);if(!el)return'';const s=el.querySelector('.chip.on');return s?s.textContent.trim():'';};
+  const val=id=>{const el=document.getElementById(id);return el?(el.value||'').trim():'';};
+
+  const guides={
+    agents:`AI AGENT BLUEPRINT\nType: ${gv2('agentType')}\nGoal: ${val('agentDetails')||'Automate business tasks'}\n\nYOUR AI AGENT SETUP:\n\nSTEP 1 — CHOOSE YOUR PLATFORM:\n• Chatbase (chatbase.co) — train on your content, free 20 msgs/day\n• Botpress — open source, unlimited, self-hosted\n• Tidio — website chatbot, 50 free conversations/month\n• ManyChat — Instagram and Facebook DM automation, free plan\n\nSTEP 2 — DEFINE YOUR AGENT'S KNOWLEDGE BASE:\nFeed your agent:\n• Your FAQ document\n• Product descriptions\n• Brand voice guide\n• Common customer questions and answers\n• Pricing and policy information\n\nSTEP 3 — SET UP CONVERSATION FLOWS:\nTrigger: Customer asks about [topic]\nResponse 1: [Your agent's answer]\nIf interested: Send to product page link\nIf not ready: Add to nurture sequence\nIf question unknown: Escalate to you\n\nSTEP 4 — TRAIN AND TEST:\n• Test with 20+ different questions\n• Check for wrong or unhelpful answers\n• Refine responses until natural\n• Ask 5 friends to test it\n\nSTEP 5 — DEPLOY:\n• Add widget to your website\n• Connect to Instagram DMs (ManyChat)\n• Add to Facebook Messenger\n• Share direct chat link\n\nAUTOMATION IDEAS:\n• When someone DMs "GUIDE" → auto-send your lead magnet link\n• When someone visits product page → chat popup with offer\n• When someone emails → auto-reply with FAQ and next steps\n\n🪷 Need help writing your agent's conversation scripts?`,
+
+    chatbots:`CHATBOT SCRIPT — ${gv2('chatbotPurpose')}\n\nBUSINESS: ${val('chatbotDetails')||'Your digital brand'}\n\nCOMPLETE CHATBOT CONVERSATION FLOW:\n\nWELCOME MESSAGE:\n"Hi! 👋 Welcome to [Brand Name]. I am here to help you find exactly what you need. What can I help you with today?\n→ [Learn about our products]\n→ [I have a question]\n→ [I am ready to buy]"\n\nIF → LEARN ABOUT PRODUCTS:\n"Great! Here is what we offer:\n\n[Product Name] — $[Price]\n[1-sentence description of what it does and who it is for]\n\n→ [Tell me more about this]\n→ [How do I get it?]\n→ [I have a different question]"\n\nIF → I HAVE A QUESTION:\n"Of course! Here are the most common questions:\n\n→ [Is this for beginners?]\n→ [How does delivery work?]\n→ [Do you offer refunds?]\n→ [Something else]"\n\nFAQ RESPONSES:\n\nQ: Is this for beginners?\n"Yes! [Product] was designed specifically with beginners in mind. No tech skills, no experience, and no following required. Many of our customers had zero experience when they started."\n\nQ: How does delivery work?\n"It is instant! As soon as you complete your purchase, you will receive an email with your download link. You can access everything immediately — no waiting."\n\nQ: Do you offer refunds?\n"Yes! We offer a 30-day no-questions-asked refund policy. If you are not happy for any reason, just email us and we will refund you in full."\n\nQ: ANYTHING ELSE → ESCALATE:\n"Great question! That one is best answered by a real human. 😊 Here is how to reach us: [email address]\nWe respond within 24 hours!"\n\nFREE PLATFORM TO BUILD THIS:\n1. Go to chatbase.co (free)\n2. Click "Create Chatbot"\n3. Upload this conversation flow as a document\n4. Train the AI on your product info\n5. Copy the widget code to your website\n\n🪷 Need more conversation flows or FAQ answers?`,
+
+    appbuilder:`APP BLUEPRINT — ${gv2('appType')}\n\nAPP CONCEPT: ${val('appDetails')||'Your app idea'}\n\nBUILDING YOUR APP WITHOUT CODE:\n\nBEST APPROACH FOR YOUR APP TYPE:\n\nFOR MOBILE APP:\nTool: Glide Apps (glideapps.com) — free tier\n1. Create a Google Sheet as your database\n2. Go to Glide → New App from Sheet\n3. Design screens using drag-and-drop\n4. Add actions: buttons, links, forms\n5. Publish to App Store (paid) or share as web app (free)\n\nFOR WEB APP:\nTool: Bubble.io — free tier\n1. Sign up and create new project\n2. Design your pages with drag-and-drop\n3. Set up database and workflows\n4. Add user authentication\n5. Launch on Bubble subdomain (free)\n\nYOUR APP FEATURE LIST:\nCore features (build first):\n• User onboarding flow\n• Main action users take repeatedly\n• Results or output screen\n• Save/export functionality\n\nNice to have (build second):\n• User accounts\n• Progress tracking\n• Notifications\n• Social sharing\n\nMONETIZATION OPTIONS:\n• Freemium: Free basic, paid advanced features\n• One-time purchase: $7-47\n• Subscription: $9-27/month\n• Your existing products sold inside the app\n\nTIMELINE:\nWeek 1: Design and build core features\nWeek 2: Test with 5-10 beta users\nWeek 3: Fix feedback and polish\nWeek 4: Launch and promote\n\n🪷 Need help with a specific part of your app build?`,
+
+    aitwin:`AI TWIN AUTOMATION SYSTEM\nGoal: ${gv2('twinGoal')}\n\nYOUR COMPLETE AUTOMATION SYSTEM:\n\nSTEP 1 — CREATE YOUR AI VISUAL TWIN:\nFor images: Use Image Studio → generate consistent character\nFor video: Use HeyGen (heygen.com) — create your digital avatar\nFor voice: Use ElevenLabs (elevenlabs.io) — clone your voice pattern\n\nSTEP 2 — AUTOMATE VIDEO CONTENT:\n1. Write your script in Writing Studio\n2. Paste into HeyGen → your avatar reads it\n3. Download video → edit in CapCut\n4. Post directly or schedule via Buffer/Metricool\nGoal: Create 1 week of videos in 1 hour\n\nSTEP 3 — AUTOMATE SOCIAL REPLIES:\nInstagram DMs: Set up ManyChat keyword triggers\n• Comment "GUIDE" → auto-DM with your freebie link\n• DM "INFO" → auto-reply with product details\n• DM "YES" → auto-reply with checkout link\n\nSTEP 4 — AUTOMATE EMAIL:\nConvertKit sequences:\n• New subscriber → 7-day welcome sequence\n• Product buyer → 5-day onboarding sequence\n• Inactive subscriber → 3-day re-engagement\n\nSTEP 5 — AUTOMATE CONTENT REPURPOSING:\nUse Zapier (free) to:\n• When you post on Instagram → auto-share to Facebook\n• When you publish a blog → auto-send to email list\n• When you get a sale → auto-add to CRM\n\nTIME SAVED PER WEEK:\nVideo creation: Save 5-10 hours\nSocial replies: Save 3-5 hours\nEmail sending: Save 2-3 hours\nContent sharing: Save 1-2 hours\nTOTAL: 11-20 hours per week freed up\n\n🪷 Need setup help for any specific automation?`,
+
+    voiceclone:`VOICE CLONE SETUP GUIDE\nUse Case: ${gv2('voiceUse')}\n\nSTEP-BY-STEP VOICE CLONING:\n\nSTEP 1 — RECORD YOUR VOICE SAMPLE:\n• Record 2-5 minutes of clear speech\n• Use your normal speaking voice — not a performance\n• Record in a quiet room (closet works great)\n• Use your iPhone Voice Memos app\n• Speak clearly but naturally\n• Read from a script or speak naturally about your topic\n\nSTEP 2 — UPLOAD TO ELEVENLABS (Free):\n1. Go to elevenlabs.io — sign up free\n2. Click "VoiceLab" → "Add Generative or Cloned Voice"\n3. Upload your recording\n4. Name your voice clone\n5. Wait 1-2 minutes for processing\n\nSTEP 3 — GENERATE VOICE CONTENT:\n1. Click "Text to Speech"\n2. Select your cloned voice\n3. Type or paste your script\n4. Adjust speed and stability if needed\n5. Generate and download the audio\n\nSTEP 4 — USE YOUR VOICE CLONE:\n• Video narration: Add to CapCut as voiceover track\n• Course content: Create modules without recording yourself\n• Reels: Add as background voice on B-roll\n• Podcast: Script it once, generate audio automatically\n\nFREE TIER LIMITS:\nElevenLabs free: 10,000 characters/month\nThat is approximately 7-8 minutes of audio\nUpgrade to Creator plan ($5/month) for unlimited\n\nALTERNATIVE: If you prefer not to clone your real voice\n• Use a pre-made voice from ElevenLabs library\n• Choose one that matches your brand personality\n• Use it consistently — becomes part of your brand\n\n🪷 Need a script written for your first voice-cloned video?`,
+
+    musicphoto:`MUSIC GUIDE — ${gv2('musicMood')}\n\nSCENE: ${val('musicDesc')||'Your visual scene'}\n\nMUSIC RECOMMENDATIONS FOR YOUR CONTENT:\n\nBEST MUSIC STYLE FOR ${gv2('musicMood').toUpperCase()}:\n${gv2('musicMood').includes('Calm')?'Lo-fi hip hop, ambient piano, nature sounds, soft acoustic guitar':gv2('musicMood').includes('Luxurious')?'Classical piano, jazz, orchestral strings, smooth saxophone':gv2('musicMood').includes('Energetic')?'Upbeat electronic, pop, motivational beats, drum-driven':gv2('musicMood').includes('Dreamy')?'Ambient electronic, ethereal vocal pads, soft reverb piano':'Lo-fi chill, soft instrumental, ambient sounds'}\n\nSUNO AI PROMPT (go to suno.ai — free):\n"${gv2('musicMood').toLowerCase()} instrumental music, no lyrics, perfect for content creator background, ${val('musicDesc')||'elegant and calming'}, professional quality, 60 seconds"\n\nFREE MUSIC SOURCES:\n• Suno.ai — generate custom AI music, free daily credits\n• Udio.com — AI music generation, free tier\n• YouTube Audio Library — completely free, commercial use\n• CapCut music library — built in, free, royalty-free\n• Pixabay Music (pixabay.com/music) — free commercial use\n• Bensound.com — free with attribution\n\nCOPYRIGHT SAFE POSTING:\n• Always use royalty-free music for business content\n• Instagram/TikTok trending sounds are safe to use (built in)\n• Never use copyrighted music on YouTube — use YouTube Audio Library\n• AI-generated music from Suno or Udio is safe to use commercially\n\nMATCHING MUSIC TO YOUR CONTENT:\nFast cuts → Up-tempo music (100-120 BPM)\nSlow lifestyle shots → Slow ambient (60-80 BPM)\nText reveals → Medium tempo with clear beats\nProduct showcase → Elegant, clean, minimal\n\n🪷 Want me to write a Suno prompt for a specific video?`,
+
+    projects:`PROJECT PLAN — ${gv2('projType')}\nDetails: ${val('projDetails')||'Your project'}\n\nCOMPLETE PROJECT PLAN:\n\nPROJECT OVERVIEW:\nGoal: [Specific measurable outcome]\nDeadline: [Date — be specific]\nSuccess metric: [How will you know it worked?]\n\nPHASE 1 — FOUNDATION (Days 1-3):\n□ Define exactly what you are creating or launching\n□ Identify your target audience clearly\n□ Research 3 competing products or approaches\n□ Outline your complete deliverable\n□ Gather all tools and resources needed\n\nPHASE 2 — CREATION (Days 4-10):\n□ Create the core product or asset\n□ Write all copy: title, description, headlines\n□ Design visuals using Canva\n□ Create product mockup images\n□ Set up delivery or publishing system\n\nPHASE 3 — PREPARATION (Days 11-13):\n□ Test everything — buy your own product\n□ Write your launch content (3-5 posts)\n□ Set up your email sequence\n□ Create your promotional graphics\n□ Schedule your social posts in Metricool\n\nPHASE 4 — LAUNCH (Day 14+):\n□ Announce to email list first\n□ Post launch content on all platforms\n□ Engage with every comment within 1 hour\n□ Send urgency email on final day\n□ Collect and celebrate feedback\n\nFREE PROJECT MANAGEMENT TOOLS:\n• Notion — best for detailed project tracking (free)\n• Trello — visual board, free forever\n• Google Sheets — simple and fast\n• Asana — free up to 15 users\n\nDAILY HABIT DURING PROJECT:\n• 1 task forward every single day\n• Track time spent — you will need this data later\n• Document wins and obstacles\n\n🪷 Need help with any specific phase?`,
+
+    trainface:`FACE TRAINING GUIDE — ${gv2('faceUse')}\n\nCREATING YOUR CONSISTENT AI VISUAL IDENTITY:\n\nMETHOD 1 — CONSISTENT CHARACTER (Recommended, Fully Faceless):\n1. Create your AI character in Image Studio\n2. Use ONE base prompt always:\n   "Faceless [ethnicity] woman, [hair description], [style], luxury minimal aesthetic, professional photography"\n3. Keep the prompt IDENTICAL every time\n4. Add only the specific scene or outfit\n5. Your character will look consistent across all images\n\nMETHOD 2 — BASED ON YOUR REAL FACE:\n\nSTEP 1 — GATHER TRAINING PHOTOS:\n• Take 10-20 clear photos of your face\n• Different angles, expressions, lighting\n• High resolution, no filters\n• Consistent background preferred\n\nSTEP 2 — USE TRAINING TOOLS:\n• Astria.ai (astria.ai) — fine-tune a model on your face\n• InsightFace (free on some platforms)\n• Leonardo AI — allows uploading reference images\n\nSTEP 3 — GENERATE CONSISTENT IMAGES:\nOnce trained, use prompts like:\n"[Your trained model name], professional headshot, [background], [lighting], high quality"\n"[Your trained model name], in a luxury apartment, working on laptop, editorial photography"\n\nSTEP 4 — MAINTAIN CONSISTENCY:\n• Use the same model for all brand images\n• Keep clothing style consistent with your brand\n• Same lighting preset across all images\n• Create a "character bible" — document exactly what your AI person looks like\n\nFACELESS ALTERNATIVE (Privacy-First):\n• Create a fictional AI persona entirely\n• Generate 20+ images of your fictional character\n• Never mix with real photos\n• Full privacy, full brand consistency\n\n🪷 Need help creating your consistent AI character?`
+  };
+
+  txt.textContent=guides[type]||`Guide for ${type}:\n\nYour complete AI tool guide has been created.\n\n🪷 Need more specific guidance?`;
+}
+
+// Save functionality
+function saveToStorage(){
+  const content=getVal('saveContent');
+  const title=getVal('saveTitle')||'Saved Note '+new Date().toLocaleDateString();
+  if(!content){toast('Nothing to save!');return;}
+  const saves=JSON.parse(localStorage.getItem('cvs_saves')||'[]');
+  saves.unshift({title,content,date:new Date().toLocaleDateString()});
+  if(saves.length>20)saves.pop();
+  try{localStorage.setItem('cvs_saves',JSON.stringify(saves));toast('Saved! ✓');document.getElementById('saveMsg').textContent='✓ Saved: '+title;loadSaves();}
+  catch(e){toast('Use Download instead — storage full');}
+}
+
+function downloadSave(){
+  const content=getVal('saveContent');
+  const title=getVal('saveTitle')||'saved-note';
+  if(!content){toast('Nothing to download!');return;}
+  const blob=new Blob([title+'\n\n'+content],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=title.replace(/\s+/g,'-').toLowerCase()+'.txt';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);toast('Downloaded!');
+}
+
+function loadSaves(){
+  const list=document.getElementById('savedList');
+  if(!list)return;
+  try{
+    const saves=JSON.parse(localStorage.getItem('cvs_saves')||'[]');
+    if(!saves.length){list.innerHTML='<div style="font-size:.74rem;color:var(--muted);padding:.4rem;">No saved notes yet.</div>';return;}
+    list.innerHTML=saves.map((s,i)=>`<div style="background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:.5rem .7rem;margin-bottom:.3rem;cursor:pointer;" onclick="loadSave(${i})"><div style="font-size:.75rem;font-weight:500;color:var(--ink);">${s.title}</div><div style="font-size:.65rem;color:var(--muted);">${s.date} · ${s.content.split(' ').length} words</div></div>`).join('');
+  }catch(e){list.innerHTML='<div style="font-size:.74rem;color:var(--muted);">Storage unavailable.</div>';}
+}
+
+function loadSave(i){
+  try{const saves=JSON.parse(localStorage.getItem('cvs_saves')||'[]');if(saves[i]){document.getElementById('saveContent').value=saves[i].content;document.getElementById('saveTitle').value=saves[i].title;toast('Note loaded!');}}catch(e){}
+}
+
+window.addEventListener('load',()=>{loadSaves();const t=sessionStorage.getItem('gotoPanel');if(t){sessionStorage.removeItem('gotoPanel');go(t);}});
+</script>
+
+</body>
+</html>
