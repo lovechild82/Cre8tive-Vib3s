@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Studio — Cre8ive Vib3s</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blush:#f2c4ce;--blush2:rgba(242,196,206,0.13);--sage:#b2c9ad;--gold:#d4af6e;--gold2:rgba(212,175,110,0.12);--cream:#faf6f0;--ink:#1a1410;--ink2:#3d342e;--muted:#9a8e85;--white:#fff;--border:rgba(212,175,110,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+.topnav{height:52px;background:linear-gradient(135deg,#fdf8f3,#f5ede0);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 .8rem;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:.5rem;}
+.lotus{font-size:1.3rem;animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.bn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;}
+.bn span{color:var(--gold);}
+.navlinks{display:flex;gap:.2rem;overflow-x:auto;}
+.navlinks::-webkit-scrollbar{display:none;}
+.nl{padding:.28rem .55rem;border-radius:6px;font-size:.68rem;color:var(--ink2);white-space:nowrap;border:1px solid transparent;}
+.nl:hover{background:var(--gold2);}
+.nl.active{background:linear-gradient(135deg,rgba(242,196,206,0.15),var(--gold2));color:var(--ink);font-weight:500;border-color:var(--border);}
+.app{display:flex;flex:1;overflow:hidden;}
+.sb{width:210px;min-width:210px;background:var(--white);border-right:1px solid var(--border);overflow-y:auto;padding:.5rem;flex-shrink:0;}
+.sb::-webkit-scrollbar{width:2px;}
+.slbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:.45rem .45rem .15rem;}
+.nv{display:flex;align-items:center;gap:.4rem;padding:.42rem .55rem;border-radius:6px;border:none;background:none;cursor:pointer;width:100%;text-align:left;color:var(--ink2);font-family:'Outfit',sans-serif;font-size:.71rem;transition:all .13s;}
+.nv:hover{background:var(--gold2);}
+.nv.active{background:linear-gradient(135deg,var(--blush2),var(--gold2));color:var(--ink);font-weight:500;border:1px solid var(--border);}
+.ni{font-size:.85rem;min-width:17px;text-align:center;}
+.sd{height:1px;background:var(--border);margin:.18rem 0;}
+.main{flex:1;overflow-y:auto;padding:1rem;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.9rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blush),var(--gold),var(--sage));}
+.card h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;margin-bottom:.25rem;}
+.card p{font-size:.78rem;line-height:1.6;color:var(--ink2);}
+.flbl{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:.38rem;display:block;}
+.fsec{margin-bottom:.85rem;}
+.chips{display:flex;flex-wrap:wrap;gap:.28rem;}
+.chip{padding:.3rem .68rem;border-radius:18px;border:1px solid var(--border);background:var(--white);font-size:.7rem;cursor:pointer;color:var(--ink2);font-family:'Outfit',sans-serif;transition:all .13s;}
+.chip:hover{border-color:var(--gold);background:var(--gold2);}
+.chip.on{background:linear-gradient(135deg,var(--blush),var(--gold));border-color:var(--gold);color:var(--ink);font-weight:500;}
+.tin{width:100%;padding:.58rem .78rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;resize:vertical;min-height:65px;}
+.tin:focus{border-color:var(--gold);}
+.tin.big{min-height:110px;border:2px solid var(--gold);}
+.sin{min-height:unset;height:36px;resize:none;}
+.inp{width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--ink);background:var(--white);outline:none;}
+.inp:focus{border-color:var(--gold);}
+.gbtn{width:100%;padding:.75rem;background:linear-gradient(135deg,#c9956a,var(--gold));border:none;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .22s;margin-top:.7rem;}
+.gbtn:hover{box-shadow:0 4px 18px rgba(212,175,110,.32);transform:translateY(-1px);}
+.gbtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.gbtn.sage{background:linear-gradient(135deg,#3d5c38,var(--sage));}
+.abtn{padding:.32rem .72rem;border-radius:6px;border:1px solid rgba(212,175,110,.3);background:rgba(212,175,110,.1);color:var(--gold);font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .13s;text-decoration:none;display:inline-block;}
+.abtn:hover{background:rgba(212,175,110,.22);}
+.abtn.g{color:var(--sage);border-color:rgba(178,201,173,.3);background:rgba(178,201,173,.08);}
+.out{background:#1a1410;border-radius:10px;padding:1rem;margin-top:.8rem;display:none;}
+.outlbl{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.outtxt{font-family:'Outfit',sans-serif;font-size:.78rem;line-height:1.78;color:#e8ddd4;white-space:pre-wrap;word-break:break-word;}
+.outacts{display:flex;gap:.38rem;margin-top:.65rem;flex-wrap:wrap;}
+.ld{display:inline-flex;gap:4px;align-items:center;color:#e8ddd4;font-size:.76rem;}
+.ld span{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:bounce 1.2s ease-in-out infinite;}
+.ld span:nth-child(2){animation-delay:.2s;}
+.ld span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.52rem;padding:.17rem .5rem;border-radius:7px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+.bf{background:rgba(178,201,173,.18);color:#3d5c38;border:1px solid rgba(178,201,173,.4);}
+.ba{background:rgba(212,175,110,.15);color:#7a5c1e;border:1px solid rgba(212,175,110,.35);}
+.toast{position:fixed;bottom:1rem;right:1rem;background:var(--ink);color:var(--gold);font-family:'DM Mono',monospace;font-size:.64rem;padding:.48rem .88rem;border-radius:8px;border:1px solid var(--gold);z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;}
+.toast.show{opacity:1;}
+/* Color grid */
+.color-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:.3rem;margin-top:.5rem;}
+.color-swatch{width:100%;aspect-ratio:1;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all .15s;position:relative;}
+.color-swatch:hover{transform:scale(1.15);z-index:2;}
+.color-swatch.selected{border-color:var(--ink);box-shadow:0 0 0 2px var(--gold);}
+/* Font preview */
+.font-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.2rem;min-height:80px;display:flex;align-items:center;justify-content:center;margin:.5rem 0;word-break:break-word;transition:all .2s;}
+/* Presentation slides */
+.slide-preview{background:#111;border-radius:10px;padding:0;overflow:hidden;aspect-ratio:16/9;margin-bottom:.6rem;position:relative;}
+.slide-canvas{width:100%;height:100%;display:block;}
+/* Animation canvas */
+.anim-canvas{background:#1a1410;border-radius:10px;width:100%;height:180px;display:block;}
+/* QR output */
+.qr-out{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin-top:.6rem;}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<nav class="topnav">
+  <div class="logo">
+    <a href="index.html" style="display:flex;align-items:center;gap:.5rem;">
+      <div class="lotus">🪷</div>
+      <div><div class="bn">Cre8ive Vib3s <span>Studio</span></div></div>
+    </a>
+  </div>
+  <div class="navlinks">
+    <a class="nl" href="index.html">🏠</a>
+    <a class="nl" href="image-studio.html">🎨 Images</a>
+    <a class="nl" href="video-studio.html">🎬 Video</a>
+    <a class="nl" href="writing-studio.html">✍️ Writing</a>
+    <a class="nl active" href="design-studio.html">✏️ Design</a>
+    <a class="nl" href="marketing-studio.html">📈 Marketing</a>
+    <a class="nl" href="products-studio.html">📦 Products</a>
+    <a class="nl" href="ai-studio.html">🤖 AI</a>
+    <a class="nl" href="chat.html">💬 Chat</a>
+  </div>
+</nav>
+<div class="app">
+<div class="sb">
+  <div class="slbl">Presentations</div>
+  <button class="nv active" data-panel="presentation" onclick="go('presentation')"><span class="ni">🖥️</span>Presentation Maker</button>
+  <div class="sd"></div>
+  <div class="slbl">Typography</div>
+  <button class="nv" data-panel="fonts" onclick="go('fonts')"><span class="ni">🔤</span>Font Styles Studio</button>
+  <button class="nv" data-panel="splittext" onclick="go('splittext')"><span class="ni">↗️</span>Split Diagonal Text</button>
+  <button class="nv" data-panel="quotepage" onclick="go('quotepage')"><span class="ni">💬</span>Quote Pages</button>
+  <button class="nv" data-panel="bookmark" onclick="go('bookmark')"><span class="ni">🔖</span>Bookmark Creator</button>
+  <div class="sd"></div>
+  <div class="slbl">Colors</div>
+  <button class="nv" data-panel="colorbook" onclick="go('colorbook')"><span class="ni">🎨</span>Color Book</button>
+  <button class="nv" data-panel="gradient" onclick="go('gradient')"><span class="ni">🌈</span>Gradient Creator</button>
+  <button class="nv" data-panel="colorblend" onclick="go('colorblend')"><span class="ni">🔀</span>Color Blending</button>
+  <div class="sd"></div>
+  <div class="slbl">Animations</div>
+  <button class="nv" data-panel="animations" onclick="go('animations')"><span class="ni">✨</span>Animations Studio</button>
+  <button class="nv" data-panel="gifcreator" onclick="go('gifcreator')"><span class="ni">🎞️</span>GIF Creator</button>
+  <div class="sd"></div>
+  <div class="slbl">Social Design</div>
+  <button class="nv" data-panel="pins" onclick="go('pins')"><span class="ni">📌</span>Pinterest Pins</button>
+  <button class="nv" data-panel="infographic" onclick="go('infographic')"><span class="ni">📊</span>Infographic Designer</button>
+  <button class="nv" data-panel="collage" onclick="go('collage')"><span class="ni">🔲</span>Collage Creator</button>
+  <button class="nv" data-panel="wallartdesign" onclick="go('wallartdesign')"><span class="ni">🖼️</span>Wall Art Designer</button>
+  <div class="sd"></div>
+  <div class="slbl">Utilities</div>
+  <button class="nv" data-panel="qrcode" onclick="go('qrcode')"><span class="ni">📲</span>QR Code Creator</button>
+  <button class="nv" data-panel="linkcreator" onclick="go('linkcreator')"><span class="ni">🔗</span>Link Creator</button>
+  <button class="nv" data-panel="stickercreator" onclick="go('stickercreator')"><span class="ni">⭐</span>Sticker Creator</button>
+</div>
+
+<div class="main" id="mainContent">
+
+<!-- PRESENTATION MAKER -->
+
+<div class="panel active" id="p-presentation">
+<div class="card">
+  <span class="badge bf">Visual Slides · Interactive · Exportable</span>
+  <h2>🖥️ Presentation Maker</h2>
+  <p>Build real visual slide decks. Present live in fullscreen, or export each slide as an image to import into Canva or Google Slides.</p>
+</div>
+<div class="card">
+  <div style="display:flex;gap:.35rem;margin-bottom:.8rem;flex-wrap:wrap;">
+    <button id="ptab1" class="abtn" style="background:linear-gradient(135deg,var(--blush),var(--gold));color:var(--ink);font-weight:600;" onclick="pTab(1)">⚙️ Build</button>
+    <button id="ptab2" class="abtn" onclick="pTab(2)">🖥️ Present</button>
+    <button id="ptab3" class="abtn" onclick="pTab(3)">⬇ Export</button>
+  </div>
+
+  <!-- BUILD TAB -->
+
+  <div id="psec1">
+    <div class="fsec">
+      <label class="flbl">Presentation Topic</label>
+      <textarea class="tin" id="pTopic" placeholder="e.g. How to build a passive income digital product business without showing your face..."></textarea>
+    </div>
+    <div class="fsec">
+      <label class="flbl">Number of Slides</label>
+      <div class="chips" id="pSlideCount">
+        <div class="chip" onclick="pick(this,'pSlideCount')">5 slides</div>
+        <div class="chip on" onclick="pick(this,'pSlideCount')">8 slides</div>
+        <div class="chip" onclick="pick(this,'pSlideCount')">10 slides</div>
+        <div class="chip" onclick="pick(this,'pSlideCount')">15 slides</div>
+      </div>
+    </div>
+    <div class="fsec">
+      <label class="flbl">Theme</label>
+      <div class="chips" id="pTheme">
+        <div class="chip on" onclick="pick(this,'pTheme')">Luxury Blush Gold</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Dark Elegant</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Minimal White</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Bold Color</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Sage Nature</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Corporate Blue</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Warm Earthy</div>
+        <div class="chip" onclick="pick(this,'pTheme')">Neon Modern</div>
+      </div>
+    </div>
+    <div class="fsec">
+      <label class="flbl">Presentation Type</label>
+      <div class="chips" id="pType">
+        <div class="chip on" onclick="pick(this,'pType')">Pitch Deck</div>
+        <div class="chip" onclick="pick(this,'pType')">Course Slides</div>
+        <div class="chip" onclick="pick(this,'pType')">Workshop</div>
+        <div class="chip" onclick="pick(this,'pType')">Brand Story</div>
+        <div class="chip" onclick="pick(this,'pType')">Sales Presentation</div>
+        <div class="chip" onclick="pick(this,'pType')">Tutorial</div>
+        <div class="chip" onclick="pick(this,'pType')">Report</div>
+      </div>
+    </div>
+    <button class="gbtn" id="pGenBtn" onclick="genPresentation()">🪷 Generate Presentation</button>
+    <div id="pStatus" style="font-size:.74rem;color:var(--muted);margin-top:.4rem;text-align:center;"></div>
+    <div id="pSlideList" style="margin-top:.8rem;"></div>
+  </div>
+
+  <!-- PRESENT TAB -->
+
+  <div id="psec2" style="display:none;">
+    <div class="slide-preview">
+      <canvas id="pCanvas" class="slide-canvas"></canvas>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:.5rem 0;gap:.4rem;">
+      <button class="abtn" onclick="pPrev()">← Prev</button>
+      <span id="pSlideNum" style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);">Slide 1 of 1</span>
+      <button class="abtn" onclick="pNext()">Next →</button>
+    </div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+      <button class="abtn" onclick="pFullscreen()" style="flex:1;">▶ Fullscreen</button>
+      <button class="abtn g" onclick="pTab(3)" style="flex:1;">⬇ Export Slides</button>
+    </div>
+  </div>
+
+  <!-- EXPORT TAB -->
+
+  <div id="psec3" style="display:none;">
+    <p style="font-size:.78rem;color:var(--ink2);margin-bottom:.8rem;">Download each slide as a PNG image. Import into Canva, Google Slides, or PowerPoint.</p>
+    <button class="gbtn" onclick="pExportAll()">⬇ Download All Slides as PNG</button>
+    <div id="pExportList" style="margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem;"></div>
+  </div>
+</div>
+</div>
+
+<!-- FONT STYLES STUDIO -->
+
+<div class="panel" id="p-fonts">
+<div class="card">
+  <span class="badge bf">Live Preview · Export as Image</span>
+  <h2>🔤 Font Styles Studio</h2>
+  <p>Preview and style your text with fonts, colors, sizes, and effects. Export as image for social media use.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Your Text</label>
+    <input type="text" id="fontText" class="inp" value="Cre8ive Vib3s" oninput="updateFontPreview()" style="font-size:.9rem;">
+  </div>
+  <div class="fsec">
+    <label class="flbl">Text Formatting</label>
+    <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.5rem;">
+      <button id="fmtBold" class="abtn" onclick="toggleFmt('bold')" style="font-weight:700;">B Bold</button>
+      <button id="fmtItalic" class="abtn" onclick="toggleFmt('italic')" style="font-style:italic;">I Italic</button>
+      <button id="fmtUnder" class="abtn" onclick="toggleFmt('underline')" style="text-decoration:underline;">U Underline</button>
+      <button id="fmtStrike" class="abtn" onclick="toggleFmt('line-through')" style="text-decoration:line-through;">S Strike</button>
+    </div>
+    <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.5rem;">
+      <button class="abtn" onclick="setAlign('left')">← Left</button>
+      <button class="abtn" onclick="setAlign('center')">≡ Center</button>
+      <button class="abtn" onclick="setAlign('right')">→ Right</button>
+      <button class="abtn" onclick="setAlign('justify')">⇔ Justify</button>
+    </div>
+    <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.5rem;">
+      <button class="abtn" onclick="addListFx('1. ')">1. Numbered</button>
+      <button class="abtn" onclick="addListFx('— ')">— Dashes</button>
+      <button class="abtn" onclick="addListFx('• ')">• Bullets</button>
+      <button class="abtn" onclick="addTextFx('highlight')">▣ Highlight</button>
+      <button class="abtn" onclick="addTextFx('bubble')">○ Bubble</button>
+      <button class="abtn" onclick="addTextFx('cartoon')">★ Cartoon</button>
+    </div>
+    <div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;margin-bottom:.5rem;">
+      <span style="font-size:.62rem;color:var(--muted);">SIZE:</span>
+      <input type="number" id="fontSz" value="32" min="8" max="200" style="width:58px;padding:.3rem .45rem;border:1px solid var(--border);border-radius:6px;font-size:.76rem;" oninput="updateFontPreview()">
+      <span style="font-size:.62rem;color:var(--muted);">COLOR:</span>
+      <input type="color" id="fontColor" value="#1a1410" onchange="syncColorHex()" style="width:30px;height:26px;border:1px solid var(--border);border-radius:5px;cursor:pointer;padding:2px;">
+      <input type="text" id="fontColorHex" value="#1a1410" placeholder="#hex" style="width:75px;padding:.3rem .45rem;border:1px solid var(--border);border-radius:6px;font-family:'DM Mono',monospace;font-size:.7rem;outline:none;" oninput="applyHexColor(this.value)">
+      <span style="font-size:.62rem;color:var(--muted);">BG:</span>
+      <input type="color" id="fontBg" value="#ffffff" onchange="updateFontPreview()" style="width:30px;height:26px;border:1px solid var(--border);border-radius:5px;cursor:pointer;padding:2px;">
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Font Family</label>
+    <div class="chips" id="fontFam">
+      <div class="chip on" onclick="pickFont(this,'Cormorant Garamond, serif')">Cormorant Garamond</div>
+      <div class="chip" onclick="pickFont(this,'Outfit, sans-serif')">Outfit</div>
+      <div class="chip" onclick="pickFont(this,'DM Mono, monospace')">DM Mono</div>
+      <div class="chip" onclick="pickFont(this,'Georgia, serif')">Georgia</div>
+      <div class="chip" onclick="pickFont(this,'Impact, sans-serif')">Impact</div>
+      <div class="chip" onclick="pickFont(this,'Arial, sans-serif')">Arial</div>
+      <div class="chip" onclick="pickFont(this,'Times New Roman, serif')">Times New Roman</div>
+      <div class="chip" onclick="pickFont(this,'Courier New, monospace')">Courier New</div>
+      <div class="chip" onclick="pickFont(this,'Verdana, sans-serif')">Verdana</div>
+      <div class="chip" onclick="pickFont(this,'Trebuchet MS, sans-serif')">Trebuchet MS</div>
+      <div class="chip" onclick="pickFont(this,'Comic Sans MS, cursive')">Comic Sans</div>
+      <div class="chip" onclick="pickFont(this,'Palatino, serif')">Palatino</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Live Preview</label>
+    <div id="fontPreview" class="font-preview" style="font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;color:#1a1410;background:#fff;">
+      Cre8ive Vib3s
+    </div>
+  </div>
+  <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem;">
+    <button class="gbtn" style="margin-top:0;flex:1;" onclick="exportFontAsImage()">🎨 Export as Image</button>
+    <button class="abtn" onclick="resetFont()" style="flex:0;">Reset</button>
+  </div>
+  <div id="fontImgOut" style="margin-top:.8rem;display:none;">
+    <canvas id="fontCanvas" style="display:none;"></canvas>
+    <img id="fontImgResult" style="max-width:100%;border-radius:8px;display:block;" alt="Text design">
+    <div style="margin-top:.5rem;display:flex;gap:.4rem;">
+      <a id="fontImgDownload" class="abtn" download="text-design.png">⬇ Download</a>
+    </div>
+  </div>
+  <div class="fsec" style="margin-top:1rem;">
+    <label class="flbl">Generate Font Pairing Recommendations</label>
+    <button class="gbtn sage" style="margin-top:0;" onclick="genFontPairings()">🪷 Get Font Pairing Guide</button>
+    <div class="out" id="out-fontpair"><div class="outlbl">✦ Font Pairings</div><div class="outtxt" id="outtxt-fontpair"></div><div class="outacts"><button class="abtn" onclick="cpOut('outtxt-fontpair')">Copy</button></div></div>
+  </div>
+</div>
+</div>
+
+<!-- SPLIT DIAGONAL TEXT -->
+
+<div class="panel" id="p-splittext">
+<div class="card">
+  <span class="badge bf">Unique Design Effect</span>
+  <h2>↗️ Split Diagonal Text Creator</h2>
+  <p>Create eye-catching split diagonal text designs for social media, thumbnails, and branded content.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Your Text</label>
+    <input type="text" id="splitText" class="inp" value="BUILD YOUR DREAM" oninput="renderSplitText()">
+  </div>
+  <div class="fsec">
+    <label class="flbl">Split Style</label>
+    <div class="chips" id="splitStyle">
+      <div class="chip on" onclick="pick(this,'splitStyle');renderSplitText()">Diagonal Left</div>
+      <div class="chip" onclick="pick(this,'splitStyle');renderSplitText()">Diagonal Right</div>
+      <div class="chip" onclick="pick(this,'splitStyle');renderSplitText()">Horizontal Split</div>
+      <div class="chip" onclick="pick(this,'splitStyle');renderSplitText()">Vertical Split</div>
+      <div class="chip" onclick="pick(this,'splitStyle');renderSplitText()">X Split</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Color 1 (Top/Left)</label>
+    <input type="color" id="splitColor1" value="#d4af6e" onchange="renderSplitText()" style="width:40px;height:34px;border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:2px;">
+    <label class="flbl" style="margin-top:.5rem;">Color 2 (Bottom/Right)</label>
+    <input type="color" id="splitColor2" value="#f2c4ce" onchange="renderSplitText()" style="width:40px;height:34px;border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:2px;">
+  </div>
+  <div class="fsec">
+    <label class="flbl">Live Preview</label>
+    <canvas id="splitCanvas" style="width:100%;border-radius:10px;display:block;background:#1a1410;max-height:200px;" height="200"></canvas>
+  </div>
+  <button class="gbtn" onclick="downloadSplitText()">⬇ Download Split Text Design</button>
+</div>
+</div>
+
+<!-- QUOTE PAGES -->
+
+<div class="panel" id="p-quotepage">
+<div class="card">
+  <span class="badge bf">Shareable · Brand Ready</span>
+  <h2>💬 Quote Page Creator</h2>
+  <p>Design beautiful quote graphics for social media, presentations, and digital products.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Your Quote</label>
+    <textarea class="tin" id="quoteText" placeholder="Enter your quote here..."></textarea>
+    <input type="text" id="quoteAuthor" class="inp" placeholder="Author or source (optional)" style="margin-top:.4rem;">
+  </div>
+  <div class="fsec">
+    <label class="flbl">Design Style</label>
+    <div class="chips" id="quoteStyle">
+      <div class="chip on" onclick="pick(this,'quoteStyle')">Luxury Minimal</div>
+      <div class="chip" onclick="pick(this,'quoteStyle')">Bold Statement</div>
+      <div class="chip" onclick="pick(this,'quoteStyle')">Soft Aesthetic</div>
+      <div class="chip" onclick="pick(this,'quoteStyle')">Dark Elegant</div>
+      <div class="chip" onclick="pick(this,'quoteStyle')">Nature Inspired</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Format</label>
+    <div class="chips" id="quoteFmt">
+      <div class="chip on" onclick="pick(this,'quoteFmt')">Square 1:1</div>
+      <div class="chip" onclick="pick(this,'quoteFmt')">Portrait 4:5</div>
+      <div class="chip" onclick="pick(this,'quoteFmt')">Story 9:16</div>
+    </div>
+  </div>
+  <button class="gbtn" id="quoteGenBtn" onclick="genQuoteImage()">🪷 Generate Quote Page</button>
+  <div class="out" id="quoteImgOut" style="text-align:center;">
+    <div class="outlbl">✦ Your Quote Page</div>
+    <div id="quoteImgResult"></div>
+    <div class="outacts" id="quoteImgActs"></div>
+  </div>
+</div>
+</div>
+
+<!-- BOOKMARK CREATOR -->
+
+<div class="panel" id="p-bookmark">
+<div class="card">
+  <span class="badge bf">Print Ready · KDP Ready</span>
+  <h2>🔖 Bookmark Creator</h2>
+  <p>Design beautiful bookmarks for printing, selling on Etsy, or including in KDP books.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Bookmark Style</label>
+    <div class="chips" id="bkmkStyle">
+      <div class="chip on" onclick="pick(this,'bkmkStyle')">Floral Elegant</div>
+      <div class="chip" onclick="pick(this,'bkmkStyle')">Minimalist Quote</div>
+      <div class="chip" onclick="pick(this,'bkmkStyle')">Motivational</div>
+      <div class="chip" onclick="pick(this,'bkmkStyle')">Nature Botanical</div>
+      <div class="chip" onclick="pick(this,'bkmkStyle')">Abstract Art</div>
+      <div class="chip" onclick="pick(this,'bkmkStyle')">Holiday Theme</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Text for Bookmark</label>
+    <input type="text" id="bkmkText" class="inp" placeholder="e.g. She believed she could, so she did 🪷">
+  </div>
+  <button class="gbtn" id="bkmkBtn" onclick="genBookmarkImage()">🪷 Generate Bookmark Design</button>
+  <div class="out" id="bkmkOut">
+    <div class="outlbl">✦ Your Bookmark</div>
+    <div id="bkmkResult"></div>
+    <div class="outacts" id="bkmkActs"></div>
+  </div>
+</div>
+</div>
+
+<!-- COLOR BOOK -->
+
+<div class="panel" id="p-colorbook">
+<div class="card">
+  <span class="badge bf">Thousands of Colors · Hex Codes</span>
+  <h2>🎨 Color Book and Palette Explorer</h2>
+  <p>Explore thousands of colors organized by family. Copy any hex code instantly. Build your custom brand palette.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Color Family</label>
+    <div class="chips" id="cbFamily">
+      <div class="chip on" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Blush Pinks</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Rose Reds</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Sage Greens</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Forest Greens</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Gold Neutrals</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Ocean Blues</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Sky Blues</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Earthy Browns</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Lavender Purples</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Deep Purples</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Coral Oranges</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Mint Greens</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Teal Teals</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Deep Jewel Tones</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Neon Brights</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Warm Creams</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Cool Grays</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Moody Darks</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Black and White</div>
+      <div class="chip" onclick="pick(this,'cbFamily');showColorFamily(this.textContent)">Metallic Tones</div>
+    </div>
+  </div>
+  <div id="colorGrid" style="margin-top:.5rem;"></div>
+  <div id="selectedColors" style="margin-top:.8rem;display:none;">
+    <label class="flbl">My Palette (tap to remove)</label>
+    <div id="myPalette" style="display:flex;flex-wrap:wrap;gap:.35rem;"></div>
+    <div style="display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap;">
+      <button class="abtn" onclick="copyPaletteCodes()">Copy All Hex Codes</button>
+      <button class="abtn g" onclick="clearPalette()">Clear Palette</button>
+    </div>
+  </div>
+  <div class="fsec" style="margin-top:.8rem;">
+    <label class="flbl">Add Custom Hex Code</label>
+    <div style="display:flex;gap:.4rem;align-items:center;">
+      <input type="color" id="cbCustomColor" value="#d4af6e" style="width:40px;height:36px;border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:2px;">
+      <input type="text" id="cbCustomHex" value="#d4af6e" class="inp" placeholder="#hex code" style="flex:1;font-family:'DM Mono',monospace;font-size:.8rem;" oninput="syncCustomColor()">
+      <button class="abtn" onclick="addCustomColor()">Add</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- GRADIENT CREATOR -->
+
+<div class="panel" id="p-gradient">
+<div class="card">
+  <span class="badge bf">Beautiful Gradients · CSS Code</span>
+  <h2>🌈 Gradient Creator</h2>
+  <p>Create stunning gradients for backgrounds, overlays, and designs. Get the CSS code instantly.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Gradient Type</label>
+    <div class="chips" id="gradType">
+      <div class="chip on" onclick="pick(this,'gradType');renderGrad()">Linear</div>
+      <div class="chip" onclick="pick(this,'gradType');renderGrad()">Radial</div>
+      <div class="chip" onclick="pick(this,'gradType');renderGrad()">Conic</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Direction (for linear)</label>
+    <div class="chips" id="gradDir">
+      <div class="chip on" onclick="pick(this,'gradDir');renderGrad()">Top to Bottom</div>
+      <div class="chip" onclick="pick(this,'gradDir');renderGrad()">Left to Right</div>
+      <div class="chip" onclick="pick(this,'gradDir');renderGrad()">Diagonal ↘</div>
+      <div class="chip" onclick="pick(this,'gradDir');renderGrad()">Diagonal ↗</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;">
+      <div>
+        <label class="flbl">Color 1</label>
+        <input type="color" id="grad1" value="#f2c4ce" onchange="renderGrad()" style="width:100%;height:40px;border:1px solid var(--border);border-radius:7px;cursor:pointer;padding:3px;">
+      </div>
+      <div>
+        <label class="flbl">Color 2</label>
+        <input type="color" id="grad2" value="#d4af6e" onchange="renderGrad()" style="width:100%;height:40px;border:1px solid var(--border);border-radius:7px;cursor:pointer;padding:3px;">
+      </div>
+      <div>
+        <label class="flbl">Color 3</label>
+        <input type="color" id="grad3" value="#b2c9ad" onchange="renderGrad()" style="width:100%;height:40px;border:1px solid var(--border);border-radius:7px;cursor:pointer;padding:3px;">
+      </div>
+    </div>
+  </div>
+  <div id="gradPreview" style="height:120px;border-radius:10px;margin:.5rem 0;background:linear-gradient(135deg,#f2c4ce,#d4af6e,#b2c9ad);transition:all .3s;"></div>
+  <div class="out" style="display:block;" id="gradOut">
+    <div class="outlbl">✦ CSS Code</div>
+    <div class="outtxt" id="gradCSS">background: linear-gradient(135deg, #f2c4ce, #d4af6e, #b2c9ad);</div>
+    <div class="outacts">
+      <button class="abtn" onclick="cpOut('gradCSS')">Copy CSS</button>
+      <button class="abtn g" onclick="downloadGradient()">⬇ Download as PNG</button>
+    </div>
+  </div>
+  <div class="fsec" style="margin-top:.8rem;">
+    <label class="flbl">Preset Gradients — tap to apply</label>
+    <div id="gradPresets" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem;"></div>
+  </div>
+</div>
+</div>
+
+<!-- COLOR BLENDING -->
+
+<div class="panel" id="p-colorblend">
+<div class="card">
+  <span class="badge bf">Blend Modes · Mix Colors</span>
+  <h2>🔀 Color Blending Studio</h2>
+  <p>Blend colors together, explore blend modes, and create mixed color palettes for your brand.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Pick Two Colors to Blend</label>
+    <div style="display:flex;gap:.6rem;align-items:center;">
+      <input type="color" id="blend1" value="#f2c4ce" onchange="renderBlend()" style="width:60px;height:50px;border:1px solid var(--border);border-radius:8px;cursor:pointer;padding:3px;flex:1;">
+      <span style="font-size:1.2rem;color:var(--muted);">+</span>
+      <input type="color" id="blend2" value="#7a9e76" onchange="renderBlend()" style="width:60px;height:50px;border:1px solid var(--border);border-radius:8px;cursor:pointer;padding:3px;flex:1;">
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Number of Steps</label>
+    <div class="chips" id="blendSteps">
+      <div class="chip" onclick="pick(this,'blendSteps');renderBlend()">3 steps</div>
+      <div class="chip on" onclick="pick(this,'blendSteps');renderBlend()">5 steps</div>
+      <div class="chip" onclick="pick(this,'blendSteps');renderBlend()">7 steps</div>
+      <div class="chip" onclick="pick(this,'blendSteps');renderBlend()">10 steps</div>
+    </div>
+  </div>
+  <div id="blendResult" style="margin-top:.6rem;"></div>
+  <div id="blendHexCodes" style="margin-top:.5rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);line-height:1.8;"></div>
+  <div style="margin-top:.5rem;display:flex;gap:.4rem;">
+    <button class="abtn" onclick="copyBlendCodes()">Copy All Hex Codes</button>
+    <button class="abtn g" onclick="addBlendToPalette()">Add to My Palette</button>
+  </div>
+</div>
+</div>
+
+<!-- ANIMATIONS STUDIO -->
+
+<div class="panel" id="p-animations">
+<div class="card">
+  <span class="badge bf">Live Canvas Preview · CSS Code</span>
+  <h2>✨ Animations Studio</h2>
+  <p>Preview animation effects live and get CSS code to use on your website or in design tools.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Live Animation Preview — tap to play</label>
+    <canvas id="animCanvas" class="anim-canvas" width="600" height="180"></canvas>
+    <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem;">
+      <button class="abtn" onclick="playAnim('wave')">🌊 Wave</button>
+      <button class="abtn" onclick="playAnim('particles')">✨ Particles</button>
+      <button class="abtn" onclick="playAnim('text')">📝 Text Reveal</button>
+      <button class="abtn" onclick="playAnim('glitch')">⚡ Glitch</button>
+      <button class="abtn" onclick="playAnim('confetti')">🎉 Confetti</button>
+      <button class="abtn" onclick="playAnim('pulse')">💓 Pulse</button>
+      <button class="abtn" onclick="playAnim('spin')">🌀 Spin</button>
+      <button class="abtn g" onclick="stopAnim()">■ Stop</button>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Animation Type for Code</label>
+    <div class="chips" id="animType">
+      <div class="chip on" onclick="pick(this,'animType')">Fade In</div>
+      <div class="chip" onclick="pick(this,'animType')">Slide Up</div>
+      <div class="chip" onclick="pick(this,'animType')">Slide In Left</div>
+      <div class="chip" onclick="pick(this,'animType')">Scale Pop</div>
+      <div class="chip" onclick="pick(this,'animType')">Bounce</div>
+      <div class="chip" onclick="pick(this,'animType')">Shake</div>
+      <div class="chip" onclick="pick(this,'animType')">Spin Rotate</div>
+      <div class="chip" onclick="pick(this,'animType')">Pulse Glow</div>
+      <div class="chip" onclick="pick(this,'animType')">Typewriter</div>
+      <div class="chip" onclick="pick(this,'animType')">Float Loop</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Duration</label>
+    <div class="chips" id="animDur">
+      <div class="chip" onclick="pick(this,'animDur')">0.3s (Fast)</div>
+      <div class="chip on" onclick="pick(this,'animDur')">0.6s (Medium)</div>
+      <div class="chip" onclick="pick(this,'animDur')">1s (Slow)</div>
+      <div class="chip" onclick="pick(this,'animDur')">2s (Very Slow)</div>
+    </div>
+  </div>
+  <button class="gbtn" onclick="genAnimCSS()">🪷 Get Animation CSS Code</button>
+  <div class="out" id="out-animcss">
+    <div class="outlbl">✦ Your CSS Animation Code</div>
+    <div class="outtxt" id="outtxt-animcss"></div>
+    <div class="outacts"><button class="abtn" onclick="cpOut('outtxt-animcss')">Copy CSS</button></div>
+  </div>
+</div>
+</div>
+
+<!-- GIF CREATOR -->
+
+<div class="panel" id="p-gifcreator">
+<div class="card">
+  <span class="badge ba">AI Guided · Free Tools</span>
+  <h2>🎞️ GIF Creator</h2>
+  <p>Create animated GIFs using free tools. Generate the frames with AI, then combine them into a GIF.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">GIF Type</label>
+    <div class="chips" id="gifType">
+      <div class="chip on" onclick="pick(this,'gifType')">Animated Loop</div>
+      <div class="chip" onclick="pick(this,'gifType')">Slideshow GIF</div>
+      <div class="chip" onclick="pick(this,'gifType')">Text Animation GIF</div>
+      <div class="chip" onclick="pick(this,'gifType')">Brand Logo GIF</div>
+      <div class="chip" onclick="pick(this,'gifType')">Reaction GIF</div>
+      <div class="chip" onclick="pick(this,'gifType')">Sparkle Effect GIF</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">GIF Theme</label>
+    <div class="chips" id="gifTheme">
+      <div class="chip on" onclick="pick(this,'gifTheme')">Floral and Nature</div>
+      <div class="chip" onclick="pick(this,'gifTheme')">Abstract Patterns</div>
+      <div class="chip" onclick="pick(this,'gifTheme')">Text and Typography</div>
+      <div class="chip" onclick="pick(this,'gifTheme')">Celestial Stars</div>
+      <div class="chip" onclick="pick(this,'gifTheme')">Particle Effects</div>
+      <div class="chip" onclick="pick(this,'gifTheme')">Brand and Logo</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Describe Your GIF</label>
+    <textarea class="tin" id="gifDesc" placeholder="e.g. A lotus flower gently blooming in slow motion, soft pink petals, loop animation, transparent background..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genGIFGuide()">🪷 Get GIF Creation Guide</button>
+  <div class="out" id="out-gif">
+    <div class="outlbl">✦ Your GIF Creation Guide</div>
+    <div class="outtxt" id="outtxt-gif"></div>
+    <div class="outacts"><button class="abtn" onclick="cpOut('outtxt-gif')">Copy Guide</button></div>
+  </div>
+</div>
+</div>
+
+<!-- PINTEREST PINS -->
+
+<div class="panel" id="p-pins">
+<div class="card">
+  <span class="badge bf">Pinterest Optimized · SEO Ready</span>
+  <h2>📌 Pinterest Pin Creator</h2>
+  <p>Create beautiful Pinterest pins optimized for saves and clicks. Generate the pin image and copy-paste ready description.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Pin Type</label>
+    <div class="chips" id="pinType">
+      <div class="chip on" onclick="pick(this,'pinType')">Standard Pin (2:3)</div>
+      <div class="chip" onclick="pick(this,'pinType')">Idea Pin</div>
+      <div class="chip" onclick="pick(this,'pinType')">Product Pin</div>
+      <div class="chip" onclick="pick(this,'pinType')">Infographic Pin</div>
+      <div class="chip" onclick="pick(this,'pinType')">Quote Pin</div>
+      <div class="chip" onclick="pick(this,'pinType')">Tutorial Pin</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Niche</label>
+    <div class="chips" id="pinNiche">
+      <div class="chip on" onclick="pick(this,'pinNiche')">Digital Business</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Passive Income</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Mindfulness</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Fashion and Beauty</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Food and Recipes</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Home Decor</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Fitness</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Travel</div>
+      <div class="chip" onclick="pick(this,'pinNiche')">Parenting</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Pin Title and Topic</label>
+    <textarea class="tin" id="pinDesc" placeholder="e.g. 5 passive income ideas for beginner women entrepreneurs who want to build a digital brand without showing their face..."></textarea>
+  </div>
+  <button class="gbtn" id="pinBtn" onclick="genPinImage()">🪷 Generate Pinterest Pin</button>
+  <div class="out" id="pinOut">
+    <div class="outlbl">✦ Your Pinterest Pin</div>
+    <div id="pinResult"></div>
+    <div id="pinCopy" class="outtxt" style="margin-top:.6rem;"></div>
+    <div class="outacts" id="pinActs"></div>
+  </div>
+</div>
+</div>
+
+<!-- INFOGRAPHIC DESIGNER -->
+
+<div class="panel" id="p-infographic">
+<div class="card">
+  <span class="badge bf">Scroll-Stopping · SEO Ready</span>
+  <h2>📊 Infographic Designer</h2>
+  <p>Create scroll-stopping infographics for Pinterest, social media, and content marketing.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Infographic Type</label>
+    <div class="chips" id="infoType">
+      <div class="chip on" onclick="pick(this,'infoType')">Steps / How-To</div>
+      <div class="chip" onclick="pick(this,'infoType')">Stats and Data</div>
+      <div class="chip" onclick="pick(this,'infoType')">Comparison</div>
+      <div class="chip" onclick="pick(this,'infoType')">Timeline</div>
+      <div class="chip" onclick="pick(this,'infoType')">List / Checklist</div>
+      <div class="chip" onclick="pick(this,'infoType')">Process Flow</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Topic</label>
+    <textarea class="tin" id="infoTopic" placeholder="e.g. 10 steps to build a passive income digital product business from scratch..."></textarea>
+  </div>
+  <button class="gbtn" id="infoBtnGen" onclick="genInfoImage()">🪷 Generate Infographic</button>
+  <div class="out" id="infoOut">
+    <div class="outlbl">✦ Your Infographic</div>
+    <div id="infoResult"></div>
+    <div class="outacts" id="infoActs"></div>
+  </div>
+</div>
+</div>
+
+<!-- COLLAGE CREATOR -->
+
+<div class="panel" id="p-collage">
+<div class="card">
+  <span class="badge bf">Multi-Photo · Brand Ready</span>
+  <h2>🔲 Collage Creator</h2>
+  <p>Create beautiful photo collages from your images. Choose from multiple layouts.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Upload Your Photos (up to 6)</label>
+    <div class="upz">
+      <input type="file" accept="image/*" multiple onchange="handleCollageUp(event)">
+      <div style="font-size:1.3rem;">📷</div>
+      <div style="font-size:.72rem;color:var(--muted);">Upload up to 6 photos for your collage</div>
+    </div>
+    <div id="collagePrevs" class="prevs"></div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Layout</label>
+    <div class="chips" id="collageLayout">
+      <div class="chip on" onclick="pick(this,'collageLayout')">2x2 Grid</div>
+      <div class="chip" onclick="pick(this,'collageLayout')">3x2 Grid</div>
+      <div class="chip" onclick="pick(this,'collageLayout')">1 Large + 4 Small</div>
+      <div class="chip" onclick="pick(this,'collageLayout')">Horizontal Strip</div>
+      <div class="chip" onclick="pick(this,'collageLayout')">Vertical Strip</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Gap Style</label>
+    <div class="chips" id="collageGap">
+      <div class="chip on" onclick="pick(this,'collageGap')">White Gap</div>
+      <div class="chip" onclick="pick(this,'collageGap')">No Gap</div>
+      <div class="chip" onclick="pick(this,'collageGap')">Gold Gap</div>
+      <div class="chip" onclick="pick(this,'collageGap')">Black Gap</div>
+    </div>
+  </div>
+  <button class="gbtn" id="collageBtn" onclick="renderCollage()">🪷 Create Collage</button>
+  <div id="collageOut" style="display:none;margin-top:.8rem;">
+    <canvas id="collageCanvas" style="max-width:100%;border-radius:10px;display:block;"></canvas>
+    <div style="margin-top:.5rem;display:flex;gap:.4rem;">
+      <button class="abtn" onclick="downloadCollage()">⬇ Download Collage</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- WALL ART DESIGNER -->
+
+<div class="panel" id="p-wallartdesign">
+<div class="card">
+  <span class="badge bf">Print Ready · Etsy Ready</span>
+  <h2>🖼️ Wall Art Designer</h2>
+  <p>Generate beautiful wall art prints for homes, offices, and nurseries. Perfect for Etsy digital downloads.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Wall Art Style</label>
+    <div class="chips" id="wallStyle">
+      <div class="chip on" onclick="pick(this,'wallStyle')">Botanical Line Art</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Abstract Expressionist</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Minimalist Quote</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Watercolor Floral</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Geometric Modern</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Boho Earthy</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Celestial Space</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Nursery Kids Art</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Architecture Sketch</div>
+      <div class="chip" onclick="pick(this,'wallStyle')">Fashion Illustration</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Print Size</label>
+    <div class="chips" id="wallSize">
+      <div class="chip on" onclick="pick(this,'wallSize')">8x10 inch</div>
+      <div class="chip" onclick="pick(this,'wallSize')">5x7 inch</div>
+      <div class="chip" onclick="pick(this,'wallSize')">11x14 inch</div>
+      <div class="chip" onclick="pick(this,'wallSize')">16x20 inch</div>
+      <div class="chip" onclick="pick(this,'wallSize')">24x36 inch</div>
+      <div class="chip" onclick="pick(this,'wallSize')">Square 12x12</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Description</label>
+    <textarea class="tin" id="wallDesc" placeholder="e.g. A delicate botanical lotus flower illustration with gold accents, minimal white background, elegant line art style, suitable for luxury home decor..."></textarea>
+  </div>
+  <button class="gbtn" id="wallBtn" onclick="genWallArt()">🪷 Generate Wall Art</button>
+  <div class="out" id="wallOut">
+    <div class="outlbl">✦ Your Wall Art</div>
+    <div id="wallResult"></div>
+    <div class="outacts" id="wallActs"></div>
+  </div>
+</div>
+</div>
+
+<!-- QR CODE CREATOR -->
+
+<div class="panel" id="p-qrcode">
+<div class="card">
+  <span class="badge bf">Instant · Customizable · Free</span>
+  <h2>📲 QR Code Creator</h2>
+  <p>Create custom QR codes for any URL, text, or link. Download instantly and use anywhere.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">URL or Text to Encode</label>
+    <input type="text" id="qrUrl" class="inp" placeholder="https://beacons.ai/yourusername or any URL or text..." value="https://beacons.ai/">
+  </div>
+  <div class="fsec">
+    <label class="flbl">QR Color</label>
+    <div style="display:flex;gap:.5rem;align-items:center;">
+      <input type="color" id="qrColor" value="#1a1410" style="width:38px;height:34px;border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:2px;">
+      <input type="color" id="qrBg" value="#faf6f0" style="width:38px;height:34px;border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:2px;">
+      <span style="font-size:.72rem;color:var(--muted);">Foreground / Background</span>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">QR Size</label>
+    <div class="chips" id="qrSize">
+      <div class="chip" onclick="pick(this,'qrSize')">Small (200px)</div>
+      <div class="chip on" onclick="pick(this,'qrSize')">Medium (300px)</div>
+      <div class="chip" onclick="pick(this,'qrSize')">Large (400px)</div>
+    </div>
+  </div>
+  <button class="gbtn" onclick="generateQR()">🪷 Generate QR Code</button>
+  <div class="qr-out" id="qrOut" style="display:none;">
+    <div id="qrDisplay"></div>
+    <div style="display:flex;gap:.4rem;margin-top:.4rem;">
+      <button class="abtn" onclick="downloadQR()">⬇ Download QR Code</button>
+      <button class="abtn g" onclick="generateQR()">Regenerate</button>
+    </div>
+    <div style="font-size:.7rem;color:var(--muted);margin-top:.3rem;">Always test your QR code before printing</div>
+  </div>
+</div>
+</div>
+
+<!-- LINK CREATOR -->
+
+<div class="panel" id="p-linkcreator">
+<div class="card">
+  <span class="badge bf">Bio Links · Smart Links</span>
+  <h2>🔗 Link Creator and Manager</h2>
+  <p>Build your bio link page, smart links, and link-in-bio strategy for all platforms.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Link Type</label>
+    <div class="chips" id="linkType">
+      <div class="chip on" onclick="pick(this,'linkType')">Bio Link Page</div>
+      <div class="chip" onclick="pick(this,'linkType')">Link in Bio Strategy</div>
+      <div class="chip" onclick="pick(this,'linkType')">Short Link / URL</div>
+      <div class="chip" onclick="pick(this,'linkType')">Affiliate Link Guide</div>
+      <div class="chip" onclick="pick(this,'linkType')">Smart Link (Multi-platform)</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Your Brand and Links</label>
+    <textarea class="tin" id="linkDetails" placeholder="e.g. Brand: ZenSereniTee. Links: Free guide, Main product ($27), Instagram, Pinterest, Facebook community..."></textarea>
+  </div>
+  <button class="gbtn" onclick="genLinkStrategy()">🪷 Build My Link Strategy</button>
+  <div class="out" id="out-links">
+    <div class="outlbl">✦ Your Link Strategy</div>
+    <div class="outtxt" id="outtxt-links"></div>
+    <div class="outacts"><button class="abtn" onclick="cpOut('outtxt-links')">Copy</button></div>
+  </div>
+</div>
+</div>
+
+<!-- STICKER CREATOR -->
+
+<div class="panel" id="p-stickercreator">
+<div class="card">
+  <span class="badge bf">Print Ready · Etsy Ready</span>
+  <h2>⭐ Sticker Creator</h2>
+  <p>Generate sticker designs with white borders, transparent backgrounds, and die-cut styles ready for Etsy or printing.</p>
+</div>
+<div class="card">
+  <div class="fsec">
+    <label class="flbl">Sticker Style</label>
+    <div class="chips" id="stickerStyle">
+      <div class="chip on" onclick="pick(this,'stickerStyle')">Die Cut White Border</div>
+      <div class="chip" onclick="pick(this,'stickerStyle')">Holographic</div>
+      <div class="chip" onclick="pick(this,'stickerStyle')">Kawaii Cute</div>
+      <div class="chip" onclick="pick(this,'stickerStyle')">Vintage Label</div>
+      <div class="chip" onclick="pick(this,'stickerStyle')">Glossy Minimal</div>
+      <div class="chip" onclick="pick(this,'stickerStyle')">Hand Drawn</div>
+      <div class="chip" onclick="pick(this,'stickerStyle')">Gold Foil</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Category</label>
+    <div class="chips" id="stickerCat">
+      <div class="chip on" onclick="pick(this,'stickerCat')">Floral and Botanical</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Animals and Pets</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Food and Drinks</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Motivational Text</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Brand and Logo</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Holiday and Seasonal</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Abstract Art</div>
+      <div class="chip" onclick="pick(this,'stickerCat')">Planner</div>
+    </div>
+  </div>
+  <div class="fsec">
+    <label class="flbl">Describe Your Sticker</label>
+    <textarea class="tin" id="stickerDesc" placeholder="e.g. A cute lotus flower with sparkles around it, white border sticker, flat pastel illustration, isolated on transparent background..."></textarea>
+  </div>
+  <button class="gbtn" id="stickerBtn" onclick="genStickerImage()">🪷 Generate Sticker</button>
+  <div class="out" id="stickerOut">
+    <div class="outlbl">✦ Your Sticker</div>
+    <div id="stickerResult"></div>
+    <div class="outacts" id="stickerActs"></div>
+  </div>
+</div>
+</div>
+
+</div><!-- main -->
+</div><!-- app -->
+
+<script>
+// Core nav
+function go(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nv').forEach(n=>n.classList.remove('active'));
+  const p=document.getElementById('p-'+id);
+  if(p)p.classList.add('active');
+  document.querySelectorAll('.nv').forEach(n=>{if(n.dataset.panel===id)n.classList.add('active');});
+  document.getElementById('mainContent').scrollTop=0;
+}
+function pick(el,g){
+  const grp=document.getElementById(g);
+  if(grp)grp.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  else el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+}
+function gv(g){const el=document.getElementById(g);if(!el)return'';const s=el.querySelector('.chip.on');return s?s.textContent.trim():'';}
+function getVal(id){const el=document.getElementById(id);return el?(el.value||'').trim():'';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function cpOut(id){const el=document.getElementById(id);if(!el)return;navigator.clipboard.writeText(el.textContent).then(()=>toast('Copied!')).catch(()=>toast('Long press to copy'));}
+
+// Pollinations image
+function polUrl(prompt,w,h){
+  return'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width='+w+'&height='+h+'&model=flux&nologo=true&seed='+Math.floor(Math.random()*999999);
+}
+function showImg(url,resultId,actsId,btnId){
+  const result=document.getElementById(resultId);
+  const acts=document.getElementById(actsId);
+  const btn=btnId?document.getElementById(btnId):null;
+  if(btn)btn.disabled=true;
+  if(result)result.innerHTML='<div class="ld"><span></span><span></span><span></span></div> Generating...';
+  const img=new Image();
+  img.style.cssText='max-width:100%;border-radius:9px;display:block;margin-top:6px;';
+  img.onload=()=>{
+    if(result){result.innerHTML='';result.appendChild(img);}
+    if(btn)btn.disabled=false;
+    toast('Image ready!');
+    if(acts)acts.innerHTML='<a class="abtn" href="'+url+'" target="_blank" download="design.jpg">⬇ Download</a><a class="abtn" href="'+url+'" target="_blank">🔗 Open</a>';
+  };
+  img.onerror=()=>{
+    if(result)result.innerHTML='<a href="'+url+'" target="_blank" style="color:var(--gold);font-size:.76rem;display:block;padding:.4rem;">Tap to view your generated image</a>';
+    if(btn)btn.disabled=false;
+  };
+  img.src=url;
+}
+
+// ═══ PRESENTATION ═══
+var pSlides=[];
+var pCurrentSlide=0;
+var pThemes={
+  'Luxury Blush Gold':{bg:'#fdf8f3',accent:'#d4af6e',text:'#1a1410',sub:'#6b5c4e',headFont:'Cormorant Garamond, serif'},
+  'Dark Elegant':{bg:'#1a1410',accent:'#d4af6e',text:'#f5ede0',sub:'#9a8e85',headFont:'Cormorant Garamond, serif'},
+  'Minimal White':{bg:'#ffffff',accent:'#333333',text:'#1a1a1a',sub:'#666666',headFont:'Arial, sans-serif'},
+  'Bold Color':{bg:'#2d1b69',accent:'#ff6b9d',text:'#ffffff',sub:'#ccbbff',headFont:'Impact, sans-serif'},
+  'Sage Nature':{bg:'#f0f4ed',accent:'#7a9e76',text:'#2d3a29',sub:'#5a7a56',headFont:'Georgia, serif'},
+  'Corporate Blue':{bg:'#f0f4f8',accent:'#2563eb',text:'#1e293b',sub:'#64748b',headFont:'Arial, sans-serif'},
+  'Warm Earthy':{bg:'#fdf6e3',accent:'#c9956a',text:'#3d2e1e',sub:'#7a5c3e',headFont:'Georgia, serif'},
+  'Neon Modern':{bg:'#0a0a0a',accent:'#00ff88',text:'#ffffff',sub:'#aaaaaa',headFont:'Courier New, monospace'}
+};
+
+function genPresentation(){
+  var topic=getVal('pTopic')||'How to Build a Digital Business';
+  var count=parseInt(gv('pSlideCount'))||8;
+  var theme=gv('pTheme')||'Luxury Blush Gold';
+  var type=gv('pType')||'Pitch Deck';
+  var btn=document.getElementById('pGenBtn');
+  var status=document.getElementById('pStatus');
+  btn.disabled=true;
+  status.textContent='Building your presentation...';
+
+  pSlides=buildSlides(topic,count,type);
+  renderSlideList();
+  status.textContent=count+' slides ready — tap Present or Export below';
+  btn.disabled=false;
+  pTab(2);
+}
+
+function buildSlides(topic,count,type){
+  var t=pThemes[gv('pTheme')||'Luxury Blush Gold'];
+  var slides=[
+    {title:topic,body:'A '+type+' by ZenSereniTee Studio 🪷',type:'title'},
+    {title:'The Problem',body:'Most people struggle with:\n• No clear starting point\n• Information overload\n• Fear of failure\n• Wrong strategies',type:'content'},
+    {title:'The Solution',body:'A proven, calm, step-by-step system that works for beginners and experienced creators alike.',type:'content'},
+    {title:'How It Works',body:'Step 1: Foundation and Strategy\nStep 2: Create Your Offer\nStep 3: Build Your System\nStep 4: Grow and Scale',type:'content'},
+    {title:'Key Benefits',body:'✓ Save time with done-for-you resources\n✓ Proven strategies that actually work\n✓ Beginner friendly, no experience needed\n✓ Full support and community',type:'content'},
+    {title:'What You Get',body:'• Complete starter blueprint\n• Templates and swipe files\n• Step-by-step tutorials\n• Bonus resources\n• Lifetime access',type:'content'},
+    {title:'Social Proof',body:'"This completely changed how I approach my digital business. I went from zero to my first sale within 30 days." — Sarah M.',type:'quote'},
+    {title:'Investment',body:'Everything you need to start your journey.\n\nPrice: $27\nValue: $197+\n\n30-day money back guarantee',type:'content'},
+    {title:'Get Started Today',body:'Your journey to digital freedom starts now.\n\nTap the link below to get instant access.\n\n🪷 Ready when you are.',type:'cta'},
+    {title:'Thank You',body:'Questions? We are here to help.\n\nbeacons.ai/yourusername\n\n🪷 ZenSereniTee Studio',type:'title'}
+  ];
+  return slides.slice(0,count);
+}
+
+function renderSlideList(){
+  var list=document.getElementById('pSlideList');
+  if(!list)return;
+  list.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;">'+pSlides.length+' slides generated — tap Present to view</div>';
+  pSlides.forEach((s,i)=>{
+    var div=document.createElement('div');
+    div.style.cssText='background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:.5rem .7rem;margin-bottom:.3rem;cursor:pointer;font-size:.74rem;display:flex;align-items:center;gap:.5rem;';
+    div.innerHTML='<span style="font-family:\'DM Mono\',monospace;color:var(--muted);font-size:.6rem;">'+(i+1)+'</span><span style="font-weight:500;">'+s.title+'</span>';
+    div.onclick=()=>{pCurrentSlide=i;pTab(2);drawSlide(i);};
+    list.appendChild(div);
+  });
+}
+
+function pTab(n){
+  [1,2,3].forEach(i=>{
+    var s=document.getElementById('psec'+i);
+    var b=document.getElementById('ptab'+i);
+    if(s)s.style.display=i===n?'block':'none';
+    if(b){
+      if(i===n){b.style.background='linear-gradient(135deg,var(--blush),var(--gold))';b.style.color='var(--ink)';b.style.fontWeight='600';}
+      else{b.style.background='rgba(212,175,110,0.1)';b.style.color='var(--gold)';b.style.fontWeight='400';}
+    }
+  });
+  if(n===2&&pSlides.length>0)drawSlide(pCurrentSlide);
+}
+
+function drawSlide(idx){
+  if(!pSlides[idx])return;
+  var canvas=document.getElementById('pCanvas');
+  if(!canvas)return;
+  canvas.width=1280;canvas.height=720;
+  var ctx=canvas.getContext('2d');
+  var s=pSlides[idx];
+  var th=pThemes[gv('pTheme')||'Luxury Blush Gold'];
+
+  ctx.fillStyle=th.bg;
+  ctx.fillRect(0,0,1280,720);
+
+  // Accent bar
+  ctx.fillStyle=th.accent;
+  ctx.fillRect(0,0,1280,6);
+  ctx.fillRect(0,714,1280,6);
+
+  if(s.type==='title'){
+    // Centered title slide
+    ctx.fillStyle=th.accent;
+    ctx.fillRect(540,340,200,2);
+    ctx.fillStyle=th.text;
+    ctx.font='bold 58px '+th.headFont;
+    ctx.textAlign='center';
+    wrapText(ctx,s.title,640,280,1100,68);
+    ctx.font='28px Outfit, sans-serif';
+    ctx.fillStyle=th.sub;
+    ctx.fillText(s.body,640,420);
+    ctx.font='20px DM Mono, monospace';
+    ctx.fillStyle=th.accent;
+    ctx.fillText('🪷',640,490);
+  } else if(s.type==='quote'){
+    ctx.font='italic 36px '+th.headFont;
+    ctx.fillStyle=th.accent;
+    ctx.textAlign='center';
+    ctx.fillText('"',640,180);
+    ctx.fillStyle=th.text;
+    ctx.font='italic 34px '+th.headFont;
+    wrapText(ctx,s.body.replace(/"/g,''),640,260,1100,44);
+  } else {
+    // Standard content slide
+    ctx.fillStyle=th.text;
+    ctx.font='bold 52px '+th.headFont;
+    ctx.textAlign='left';
+    ctx.fillText(s.title,80,120);
+    ctx.fillStyle=th.accent;
+    ctx.fillRect(80,135,100,3);
+    ctx.fillStyle=th.sub;
+    ctx.font='28px Outfit, sans-serif';
+    var lines=s.body.split('\n');
+    var y=200;
+    lines.forEach(line=>{
+      if(line.trim()){ctx.fillText(line.trim(),80,y);}
+      y+=52;
+    });
+  }
+
+  // Slide number
+  ctx.fillStyle=th.accent;
+  ctx.font='18px DM Mono, monospace';
+  ctx.textAlign='right';
+  ctx.fillText((idx+1)+' / '+pSlides.length,1200,700);
+  document.getElementById('pSlideNum').textContent='Slide '+(idx+1)+' of '+pSlides.length;
+}
+
+function wrapText(ctx,text,x,y,maxWidth,lineHeight){
+  var words=text.split(' ');
+  var line='';
+  for(var i=0;i<words.length;i++){
+    var test=line+words[i]+' ';
+    if(ctx.measureText(test).width>maxWidth&&i>0){
+      ctx.fillText(line,x,y);
+      line=words[i]+' ';
+      y+=lineHeight;
+    } else line=test;
+  }
+  ctx.fillText(line,x,y);
+}
+
+function pPrev(){if(pCurrentSlide>0){pCurrentSlide--;drawSlide(pCurrentSlide);}}
+function pNext(){if(pCurrentSlide<pSlides.length-1){pCurrentSlide++;drawSlide(pCurrentSlide);}}
+
+function pFullscreen(){
+  var canvas=document.getElementById('pCanvas');
+  if(canvas.requestFullscreen)canvas.requestFullscreen();
+  else if(canvas.webkitRequestFullscreen)canvas.webkitRequestFullscreen();
+}
+
+function pExportAll(){
+  if(pSlides.length===0){toast('Generate your presentation first!');return;}
+  var list=document.getElementById('pExportList');
+  list.innerHTML='';
+  pSlides.forEach((s,i)=>{
+    drawSlide(i);
+    var canvas=document.getElementById('pCanvas');
+    canvas.toBlob(blob=>{
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a');
+      a.href=url;a.download='slide-'+(i+1)+'.png';a.className='abtn';a.textContent='Slide '+(i+1);
+      list.appendChild(a);
+    });
+  });
+  toast('Slides ready to download!');
+}
+
+// ═══ FONT STUDIO ═══
+var fontState={bold:false,italic:false,underline:false,strikethrough:false,align:'center',font:'Cormorant Garamond, serif',size:32,color:'#1a1410',bg:'#ffffff'};
+
+function updateFontPreview(){
+  var p=document.getElementById('fontPreview');
+  if(!p)return;
+  var txt=document.getElementById('fontText').value||'Cre8ive Vib3s';
+  var sz=document.getElementById('fontSz').value||32;
+  p.style.fontFamily=fontState.font;
+  p.style.fontSize=sz+'px';
+  p.style.fontWeight=fontState.bold?'700':'300';
+  p.style.fontStyle=fontState.italic?'italic':'normal';
+  p.style.textDecoration=(fontState.underline?'underline ':'')+( fontState.strikethrough?'line-through':'');
+  p.style.textAlign=fontState.align;
+  p.style.color=fontState.color;
+  p.style.background=fontState.bg;
+  p.textContent=txt;
+}
+
+function toggleFmt(type){
+  if(type==='bold')fontState.bold=!fontState.bold;
+  else if(type==='italic')fontState.italic=!fontState.italic;
+  else if(type==='underline')fontState.underline=!fontState.underline;
+  else if(type==='line-through')fontState.strikethrough=!fontState.strikethrough;
+  updateFontPreview();
+}
+
+function setAlign(a){fontState.align=a;updateFontPreview();}
+function pickFont(el,f){fontState.font=f;updateFontPreview();}
+
+function addListFx(prefix){
+  var el=document.getElementById('fontText');
+  if(el)el.value=prefix+el.value;
+  updateFontPreview();
+}
+
+function addTextFx(fx){
+  var p=document.getElementById('fontPreview');
+  if(!p)return;
+  if(fx==='highlight'){p.style.background='#ffe082';fontState.bg='#ffe082';}
+  else if(fx==='bubble'){p.style.border='3px solid var(--gold)';p.style.borderRadius='50px';}
+  else if(fx==='cartoon'){p.style.textShadow='2px 2px 0 #000, -1px -1px 0 #000';p.style.webkitTextStroke='1px black';}
+  updateFontPreview();
+}
+
+function syncColorHex(){
+  var c=document.getElementById('fontColor').value;
+  document.getElementById('fontColorHex').value=c;
+  fontState.color=c;
+  updateFontPreview();
+}
+
+function applyHexColor(hex){
+  if(/^#[0-9A-Fa-f]{6}$/.test(hex)){
+    document.getElementById('fontColor').value=hex;
+    fontState.color=hex;
+    updateFontPreview();
+  }
+}
+
+function resetFont(){
+  fontState={bold:false,italic:false,strikethrough:false,underline:false,align:'center',font:'Cormorant Garamond, serif',size:32,color:'#1a1410',bg:'#ffffff'};
+  document.getElementById('fontSz').value=32;
+  document.getElementById('fontColor').value='#1a1410';
+  document.getElementById('fontColorHex').value='#1a1410';
+  document.getElementById('fontBg').value='#ffffff';
+  updateFontPreview();
+}
+
+function exportFontAsImage(){
+  var canvas=document.getElementById('fontCanvas');
+  var preview=document.getElementById('fontPreview');
+  canvas.width=1080;canvas.height=1080;
+  var ctx=canvas.getContext('2d');
+  var bg=document.getElementById('fontBg').value||'#ffffff';
+  var color=fontState.color||'#1a1410';
+  var sz=parseInt(document.getElementById('fontSz').value)||32;
+  var txt=document.getElementById('fontText').value||'Cre8ive Vib3s';
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,1080,1080);
+  ctx.fillStyle=color;
+  ctx.font=(fontState.bold?'bold ':'')+sz*2+'px '+fontState.font;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  if(fontState.underline||fontState.strikethrough){
+    var m=ctx.measureText(txt);
+    if(fontState.underline){ctx.fillRect(540-m.width/2,560,m.width,3);}
+    if(fontState.strikethrough){ctx.fillRect(540-m.width/2,540,m.width,3);}
+  }
+  ctx.fillText(txt,540,540);
+  var url=canvas.toDataURL('image/png');
+  var img=document.getElementById('fontImgResult');
+  var dl=document.getElementById('fontImgDownload');
+  img.src=url;
+  dl.href=url;
+  document.getElementById('fontImgOut').style.display='block';
+  toast('Text exported as image!');
+}
+
+function genFontPairings(){
+  var out=document.getElementById('out-fontpair');
+  var txt=document.getElementById('outtxt-fontpair');
+  out.style.display='block';
+  txt.textContent=`FONT PAIRING GUIDE FOR YOUR BRAND:\n\nYOUR CURRENT BRAND PAIRING (Business Sheek):\nHeading: Cormorant Garamond Italic — elegant, editorial, luxury\nBody: Outfit Light — clean, modern, readable\nAccent: DM Mono — technical, trustworthy, distinctive\nUse for: Digital products, coaching, luxury brands\n\nPAIRING 2 — Modern Professional:\nHeading: Playfair Display Bold\nBody: Lato Regular\nAccent: Lato Light Italic\nUse for: Business, consulting, corporate brands\n\nPAIRING 3 — Warm and Friendly:\nHeading: Lora Bold\nBody: Open Sans\nAccent: Open Sans Italic\nUse for: Wellness, food, lifestyle brands\n\nPAIRING 4 — Bold Impact:\nHeading: Montserrat Black\nBody: Montserrat Regular\nAccent: Roboto Mono\nUse for: Fitness, motivation, bold brands\n\nPAIRING 5 — Minimal Clean:\nHeading: DM Sans Bold\nBody: DM Sans Light\nAccent: DM Mono\nUse for: Tech, SaaS, minimalist brands\n\nRULES FOR FONT PAIRING:\n• Never use more than 3 fonts in one design\n• Pair serif headings with sans-serif body text\n• Create contrast through weight, not just style\n• Keep body text 14-18px minimum for readability\n• Headings should be 2-3x larger than body text\n• Decorative fonts only for headings — never for long text\n\nFREE FONT SOURCES:\n• Google Fonts (fonts.google.com) — thousands free\n• DaFont (dafont.com) — creative and unique\n• Font Squirrel (fontsquirrel.com) — commercial use\n• Canva Fonts — all available free in Canva\n\n🪷 Need pairings for a specific brand vibe or industry?`;
+}
+
+// ═══ SPLIT DIAGONAL TEXT ═══
+function renderSplitText(){
+  var canvas=document.getElementById('splitCanvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  canvas.width=800;canvas.height=200;
+  var text=document.getElementById('splitText').value||'BUILD YOUR DREAM';
+  var c1=document.getElementById('splitColor1').value||'#d4af6e';
+  var c2=document.getElementById('splitColor2').value||'#f2c4ce';
+  var style=gv('splitStyle')||'Diagonal Left';
+
+  ctx.fillStyle='#1a1410';
+  ctx.fillRect(0,0,800,200);
+  ctx.font='bold 80px Impact, Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+
+  // Create split effect
+  ctx.save();
+  if(style.includes('Diagonal')){
+    var clip=new Path2D();
+    clip.moveTo(0,0);
+    clip.lineTo(style.includes('Right')?600:400,0);
+    clip.lineTo(style.includes('Right')?200:400,200);
+    clip.lineTo(0,200);
+    clip.closePath();
+    ctx.clip(clip);
+  } else if(style==='Horizontal Split'){
+    ctx.rect(0,0,800,100);
+  } else {
+    ctx.rect(0,0,400,200);
+  }
+  ctx.fillStyle=c1;
+  ctx.fillText(text,400,100);
+  ctx.restore();
+
+  ctx.save();
+  if(style.includes('Diagonal')){
+    var clip2=new Path2D();
+    clip2.moveTo(style.includes('Right')?600:400,0);
+    clip2.lineTo(800,0);
+    clip2.lineTo(800,200);
+    clip2.lineTo(style.includes('Right')?200:400,200);
+    clip2.closePath();
+    ctx.clip(clip2);
+  } else if(style==='Horizontal Split'){
+    ctx.rect(0,100,800,100);
+  } else {
+    ctx.rect(400,0,400,200);
+  }
+  ctx.fillStyle=c2;
+  ctx.fillText(text,400,100);
+  ctx.restore();
+}
+
+function downloadSplitText(){
+  var canvas=document.getElementById('splitCanvas');
+  canvas.toBlob(blob=>{
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='split-text.png';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    toast('Downloaded!');
+  });
+}
+
+// ═══ COLOR BOOK ═══
+var myPaletteColors=[];
+var colorFamilies={
+  'Blush Pinks':['#fce4ec','#f8bbd0','#f48fb1','#f06292','#ec407a','#e91e63','#f2c4ce','#f9d0d8','#fde0e8','#ffc0cb','#ffb6c1','#ff69b4','#ff1493','#db7093','#c71585','#e75480'],
+  'Rose Reds':['#ffebee','#ffcdd2','#ef9a9a','#e57373','#ef5350','#f44336','#e53935','#d32f2f','#c62828','#b71c1c','#ff5252','#ff1744','#d50000','#ff8a80','#f4436d','#c0392b'],
+  'Sage Greens':['#e8f5e9','#c8e6c9','#a5d6a7','#81c784','#66bb6a','#4caf50','#b2c9ad','#7a9e76','#5a8a56','#3d6b39','#8fbc8f','#90ee90','#98fb98','#00fa9a','#3cb371','#2e8b57'],
+  'Forest Greens':['#1b5e20','#2e7d32','#388e3c','#43a047','#4caf50','#33691e','#558b2f','#689f38','#7cb342','#8bc34a','#006400','#228b22','#32cd32','#00ff00','#7fff00','#adff2f'],
+  'Gold Neutrals':['#fff8e1','#ffecb3','#ffe082','#ffd54f','#ffca28','#ffc107','#d4af6e','#c9956a','#b8860b','#daa520','#ffd700','#f0e68c','#eee8aa','#bdb76b','#e6c87a','#c8a560'],
+  'Ocean Blues':['#e3f2fd','#bbdefb','#90caf9','#64b5f6','#42a5f5','#2196f3','#1e88e5','#1976d2','#1565c0','#0d47a1','#00bcd4','#0097a7','#00838f','#006064','#039be5','#0288d1'],
+  'Sky Blues':['#e1f5fe','#b3e5fc','#81d4fa','#4fc3f7','#29b6f6','#03a9f4','#039be5','#0288d1','#0277bd','#01579b','#87ceeb','#87cefa','#6495ed','#4169e1','#add8e6','#b0e0e6'],
+  'Earthy Browns':['#efebe9','#d7ccc8','#bcaaa4','#a1887f','#8d6e63','#795548','#6d4c41','#5d4037','#4e342e','#3e2723','#d2b48c','#c4a882','#b8956a','#a0785a','#8b6347','#7a4f30'],
+  'Lavender Purples':['#f3e5f5','#e1bee7','#ce93d8','#ba68c8','#ab47bc','#9c27b0','#8e24aa','#7b1fa2','#e8d5f0','#d4b0e8','#c49ada','#b07acc','#9b59b6','#8e44ad','#7d3c98','#6c3483'],
+  'Deep Purples':['#ede7f6','#d1c4e9','#b39ddb','#9575cd','#7e57c2','#673ab7','#5e35b1','#4527a0','#311b92','#6a0572','#4a0080','#4b0082','#800080','#8b008b','#9400d3','#9932cc'],
+  'Coral Oranges':['#fbe9e7','#ffccbc','#ffab91','#ff8a65','#ff7043','#ff5722','#f4511e','#e64a19','#d84315','#bf360c','#ff6b6b','#ff7f7f','#fa8072','#e9967a','#f08080','#cd5c5c'],
+  'Mint Greens':['#e0f7fa','#b2ebf2','#80deea','#4dd0e1','#26c6da','#00bcd4','#00acc1','#0097a7','#00838f','#006064','#98ff98','#90ee90','#7fffd4','#40e0d0','#00ced1','#20b2aa'],
+  'Teal Teals':['#e0f2f1','#b2dfdb','#80cbc4','#4db6ac','#26a69a','#009688','#00897b','#00796b','#00695c','#004d40','#008080','#2e8b57','#3cb371','#20b2aa','#5f9ea0','#4682b4'],
+  'Deep Jewel Tones':['#1a237e','#283593','#311b92','#4a148c','#880e4f','#b71c1c','#e65100','#1b5e20','#004d40','#006064','#0d47a1','#1565c0','#6a1b9a','#ad1457','#c62828','#4e342e'],
+  'Neon Brights':['#ff0080','#ff00ff','#00ffff','#00ff00','#ffff00','#ff8000','#ff0000','#0080ff','#8000ff','#ff69b4','#39ff14','#ff6600','#ff1493','#00ff7f','#7fff00','#ff4500'],
+  'Warm Creams':['#fffaf0','#fdf5e6','#fff8dc','#faebd7','#ffebcd','#ffe4c4','#ffd59b','#ffc87c','#ffb84d','#ffa826','#faf6f0','#f5f0e8','#f0ebe0','#ebe4d8','#e6ddd0','#e0d5c0'],
+  'Cool Grays':['#fafafa','#f5f5f5','#eeeeee','#e0e0e0','#bdbdbd','#9e9e9e','#757575','#616161','#424242','#212121','#f8f9fa','#e9ecef','#dee2e6','#ced4da','#adb5bd','#6c757d'],
+  'Moody Darks':['#1a1a2e','#16213e','#0f3460','#1a1410','#2d2d2d','#1c1c1c','#0d0d0d','#2c2c54','#1b1b2f','#12001c','#2d1b69','#1a0a2e','#0a0a23','#150050','#3d0000','#1a0000'],
+  'Black and White':['#000000','#111111','#222222','#333333','#444444','#555555','#666666','#777777','#888888','#999999','#aaaaaa','#bbbbbb','#cccccc','#dddddd','#eeeeee','#ffffff'],
+  'Metallic Tones':['#c0c0c0','#d4af37','#b8860b','#cd7f32','#e5e4e2','#aaa9ad','#b9b0a2','#8a8a8a','#ffd700','#cfb53b','#daa520','#c4a000','#e8c870','#d4c060','#c0a850','#b09040']
+};
+
+function showColorFamily(family){
+  var grid=document.getElementById('colorGrid');
+  if(!grid)return;
+  var colors=colorFamilies[family]||[];
+  grid.innerHTML='<label class="flbl">'+family+' — tap any color to add to your palette</label><div class="color-grid" id="cgrid"></div>';
+  var cgrid=document.getElementById('cgrid');
+  colors.forEach(hex=>{
+    var sw=document.createElement('div');
+    sw.className='color-swatch';
+    sw.style.background=hex;
+    sw.title=hex;
+    sw.onclick=()=>addToPalette(hex);
+    cgrid.appendChild(sw);
+  });
+}
+
+function addToPalette(hex){
+  if(myPaletteColors.includes(hex)){toast('Already in palette');return;}
+  myPaletteColors.push(hex);
+  renderPalette();
+  toast('Added '+hex+' to palette');
+}
+
+function addCustomColor(){
+  var hex=document.getElementById('cbCustomHex').value.trim();
+  if(/^#[0-9A-Fa-f]{6}$/.test(hex)){addToPalette(hex);}
+  else toast('Enter a valid hex code like #ff6b6b');
+}
+
+function syncCustomColor(){
+  var hex=document.getElementById('cbCustomHex').value;
+  var picker=document.getElementById('cbCustomColor');
+  if(/^#[0-9A-Fa-f]{6}$/.test(hex))picker.value=hex;
+}
+
+function renderPalette(){
+  var container=document.getElementById('selectedColors');
+  var palette=document.getElementById('myPalette');
+  if(!container||!palette)return;
+  container.style.display=myPaletteColors.length?'block':'none';
+  palette.innerHTML='';
+  myPaletteColors.forEach((hex,i)=>{
+    var sw=document.createElement('div');
+    sw.style.cssText='position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:.15rem;cursor:pointer;';
+    sw.innerHTML='<div style="width:40px;height:40px;border-radius:7px;background:'+hex+';border:2px solid var(--border);"></div><span style="font-family:DM Mono,monospace;font-size:.52rem;color:var(--muted);">'+hex+'</span>';
+    sw.onclick=()=>{navigator.clipboard.writeText(hex).then(()=>toast('Copied '+hex));};
+    var rm=document.createElement('button');
+    rm.textContent='×';rm.style.cssText='position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:#e05c5c;color:#fff;border:none;border-radius:50%;font-size:.6rem;cursor:pointer;';
+    rm.onclick=(e)=>{e.stopPropagation();myPaletteColors.splice(i,1);renderPalette();};
+    sw.appendChild(rm);
+    palette.appendChild(sw);
+  });
+}
+
+function copyPaletteCodes(){
+  if(!myPaletteColors.length){toast('Add colors to your palette first');return;}
+  navigator.clipboard.writeText(myPaletteColors.join(', ')).then(()=>toast('All hex codes copied!'));
+}
+
+function clearPalette(){myPaletteColors=[];renderPalette();}
+
+// ═══ GRADIENT ═══
+function renderGrad(){
+  var type=gv('gradType')||'Linear';
+  var dir=gv('gradDir')||'Top to Bottom';
+  var c1=document.getElementById('grad1').value||'#f2c4ce';
+  var c2=document.getElementById('grad2').value||'#d4af6e';
+  var c3=document.getElementById('grad3').value||'#b2c9ad';
+  var preview=document.getElementById('gradPreview');
+  var css='';
+  var dirMap={'Top to Bottom':'to bottom','Left to Right':'to right','Diagonal ↘':'135deg','Diagonal ↗':'45deg'};
+  var d=dirMap[dir]||'135deg';
+  if(type==='Linear')css=`linear-gradient(${d}, ${c1}, ${c2}, ${c3})`;
+  else if(type==='Radial')css=`radial-gradient(circle, ${c1}, ${c2}, ${c3})`;
+  else css=`conic-gradient(${c1}, ${c2}, ${c3}, ${c1})`;
+  if(preview)preview.style.background=css;
+  var code=document.getElementById('gradCSS');
+  if(code)code.textContent='background: '+css+';';
+}
+
+function downloadGradient(){
+  var c=document.createElement('canvas');c.width=1080;c.height=1080;
+  var ctx=c.getContext('2d');
+  var c1=document.getElementById('grad1').value;
+  var c2=document.getElementById('grad2').value;
+  var c3=document.getElementById('grad3').value;
+  var grd=ctx.createLinearGradient(0,0,1080,1080);
+  grd.addColorStop(0,c1);grd.addColorStop(0.5,c2);grd.addColorStop(1,c3);
+  ctx.fillStyle=grd;ctx.fillRect(0,0,1080,1080);
+  c.toBlob(blob=>{
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');a.href=url;a.download='gradient.png';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    toast('Gradient downloaded!');
+  });
+}
+
+// Gradient presets
+function initGradPresets(){
+  var presets=[
+    ['#f2c4ce','#d4af6e','#b2c9ad'],
+    ['#667eea','#764ba2','#f093fb'],
+    ['#f7971e','#ffd200','#f9748f'],
+    ['#00f2fe','#4facfe','#a8edea'],
+    ['#1a1a2e','#16213e','#0f3460'],
+    ['#ee9ca7','#ffdde1','#f8b195'],
+    ['#43e97b','#38f9d7','#b2fefa'],
+    ['#d299c2','#fef9d7','#f6d365'],
+  ];
+  var cont=document.getElementById('gradPresets');
+  if(!cont)return;
+  presets.forEach(([c1,c2,c3])=>{
+    var div=document.createElement('div');
+    div.style.cssText='width:60px;height:30px;border-radius:6px;cursor:pointer;border:1px solid var(--border);transition:transform .15s;';
+    div.style.background='linear-gradient(135deg,'+c1+','+c2+','+c3+')';
+    div.onclick=()=>{
+      document.getElementById('grad1').value=c1;
+      document.getElementById('grad2').value=c2;
+      document.getElementById('grad3').value=c3;
+      renderGrad();
+    };
+    div.onmouseover=()=>div.style.transform='scale(1.1)';
+    div.onmouseout=()=>div.style.transform='scale(1)';
+    cont.appendChild(div);
+  });
+}
+
+// ═══ COLOR BLENDING ═══
+function renderBlend(){
+  var c1=document.getElementById('blend1').value||'#f2c4ce';
+  var c2=document.getElementById('blend2').value||'#7a9e76';
+  var steps=parseInt(gv('blendSteps'))||5;
+  var colors=blendColors(c1,c2,steps);
+  var result=document.getElementById('blendResult');
+  var codes=document.getElementById('blendHexCodes');
+  if(!result)return;
+  result.innerHTML='<div style="display:flex;border-radius:8px;overflow:hidden;height:50px;">';
+  colors.forEach(hex=>{
+    result.innerHTML+='<div style="flex:1;background:'+hex+';cursor:pointer;" title="'+hex+'" onclick="navigator.clipboard.writeText(\''+hex+'\').then(()=>toast(\'Copied '+hex+'\'))"></div>';
+  });
+  result.innerHTML+='</div>';
+  if(codes)codes.textContent=colors.join(' → ');
+}
+
+function blendColors(c1,c2,steps){
+  var r1=parseInt(c1.slice(1,3),16),g1=parseInt(c1.slice(3,5),16),b1=parseInt(c1.slice(5,7),16);
+  var r2=parseInt(c2.slice(1,3),16),g2=parseInt(c2.slice(3,5),16),b2=parseInt(c2.slice(5,7),16);
+  var result=[];
+  for(var i=0;i<steps;i++){
+    var t=i/(steps-1);
+    var r=Math.round(r1+(r2-r1)*t);
+    var g=Math.round(g1+(g2-g1)*t);
+    var b=Math.round(b1+(b2-b1)*t);
+    result.push('#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''));
+  }
+  return result;
+}
+
+function copyBlendCodes(){
+  var c1=document.getElementById('blend1').value;
+  var c2=document.getElementById('blend2').value;
+  var steps=parseInt(gv('blendSteps'))||5;
+  var colors=blendColors(c1,c2,steps);
+  navigator.clipboard.writeText(colors.join(', ')).then(()=>toast('All blend codes copied!'));
+}
+
+function addBlendToPalette(){
+  var c1=document.getElementById('blend1').value;
+  var c2=document.getElementById('blend2').value;
+  var steps=parseInt(gv('blendSteps'))||5;
+  blendColors(c1,c2,steps).forEach(hex=>addToPalette(hex));
+}
+
+// ═══ ANIMATIONS ═══
+var animFrame=null;
+function stopAnim(){if(animFrame)cancelAnimationFrame(animFrame);animFrame=null;var c=document.getElementById('animCanvas');if(c){var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#1a1410';ctx.fillRect(0,0,c.width,c.height);}}
+
+function playAnim(type){
+  stopAnim();
+  var canvas=document.getElementById('animCanvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var t=0;
+
+  var funcs={
+    wave:()=>{
+      ctx.fillStyle='#1a1410';ctx.fillRect(0,0,W,H);
+      for(var i=0;i<W;i++){
+        var y=H/2+Math.sin((i/W*4+t)*Math.PI*2)*40;
+        var hue=(i/W*60+t*30)%360;
+        ctx.fillStyle=`hsl(${hue},70%,60%)`;
+        ctx.fillRect(i,y,1,H-y);
+      }
+      t+=0.01;
+    },
+    particles:()=>{
+      ctx.fillStyle='rgba(26,20,16,0.15)';ctx.fillRect(0,0,W,H);
+      for(var i=0;i<8;i++){
+        var x=W/2+Math.cos(t*1.3+i*0.8)*120;
+        var y=H/2+Math.sin(t*1.1+i*0.7)*60;
+        ctx.beginPath();ctx.arc(x,y,3+Math.sin(t+i)*2,0,Math.PI*2);
+        ctx.fillStyle=`hsla(${40+i*15},80%,70%,0.9)`;ctx.fill();
+      }
+      t+=0.03;
+    },
+    text:()=>{
+      ctx.fillStyle='#1a1410';ctx.fillRect(0,0,W,H);
+      var text='Cre8ive Vib3s';
+      var chars=Math.floor(t*8);
+      ctx.font='bold 36px Cormorant Garamond, serif';
+      ctx.fillStyle='#d4af6e';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(text.slice(0,Math.min(chars,text.length)),W/2,H/2);
+      if(chars>text.length)t=0; else t+=0.05;
+    },
+    glitch:()=>{
+      ctx.fillStyle='#1a1410';ctx.fillRect(0,0,W,H);
+      ctx.font='bold 42px Impact';ctx.textAlign='center';ctx.textBaseline='middle';
+      var offset=Math.sin(t*10)*5;
+      ctx.fillStyle='rgba(255,0,80,0.7)';ctx.fillText('CREA8IVE',W/2+offset,H/2-5);
+      ctx.fillStyle='rgba(0,255,200,0.7)';ctx.fillText('CREA8IVE',W/2-offset,H/2+5);
+      ctx.fillStyle='#ffffff';ctx.fillText('CREA8IVE',W/2,H/2);
+      t+=0.08;
+    },
+    confetti:()=>{
+      ctx.fillStyle='rgba(26,20,16,0.1)';ctx.fillRect(0,0,W,H);
+      for(var i=0;i<12;i++){
+        var x=(i/12*W+t*50*((i%2)?1:-1))%W;
+        var y=(t*60+i*H/12)%H;
+        ctx.fillStyle=['#f2c4ce','#d4af6e','#b2c9ad','#fff','#c9956a'][i%5];
+        ctx.fillRect(x,y,8,8);
+      }
+      t+=0.02;
+    },
+    pulse:()=>{
+      ctx.fillStyle='#1a1410';ctx.fillRect(0,0,W,H);
+      var r=50+Math.sin(t*3)*20;
+      ctx.beginPath();ctx.arc(W/2,H/2,r,0,Math.PI*2);
+      ctx.fillStyle='rgba(212,175,110,0.3)';ctx.fill();
+      ctx.beginPath();ctx.arc(W/2,H/2,r-15,0,Math.PI*2);
+      ctx.fillStyle='rgba(212,175,110,0.6)';ctx.fill();
+      ctx.beginPath();ctx.arc(W/2,H/2,r-28,0,Math.PI*2);
+      ctx.fillStyle='#d4af6e';ctx.fill();
+      t+=0.05;
+    },
+    spin:()=>{
+      ctx.fillStyle='#1a1410';ctx.fillRect(0,0,W,H);
+      ctx.save();ctx.translate(W/2,H/2);ctx.rotate(t);
+      ctx.font='48px Cormorant Garamond, serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='#d4af6e';ctx.fillText('🪷',0,0);
+      ctx.restore();t+=0.05;
+    }
+  };
+
+  function loop(){
+    if(funcs[type])funcs[type]();
+    animFrame=requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+function genAnimCSS(){
+  var type=gv('animType')||'Fade In';
+  var dur=gv('animDur')||'0.6s (Medium)';
+  var d=dur.split('s')[0].trim().replace('0.','0.');
+  var css={
+    'Fade In':`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n.your-element { animation: fadeIn ${d}s ease-in-out; }`,
+    'Slide Up':`@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }\n.your-element { animation: slideUp ${d}s ease-out; }`,
+    'Slide In Left':`@keyframes slideInLeft { from { transform: translateX(-50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }\n.your-element { animation: slideInLeft ${d}s ease-out; }`,
+    'Scale Pop':`@keyframes scalePop { 0% { transform: scale(0.8); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }\n.your-element { animation: scalePop ${d}s ease-out; }`,
+    'Bounce':`@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }\n.your-element { animation: bounce ${d}s ease-in-out infinite; }`,
+    'Shake':`@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }\n.your-element { animation: shake ${d}s ease-in-out; }`,
+    'Spin Rotate':`@keyframes spinRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }\n.your-element { animation: spinRotate ${d}s linear infinite; }`,
+    'Pulse Glow':`@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,110,0.4); } 50% { box-shadow: 0 0 20px 10px rgba(212,175,110,0.1); } }\n.your-element { animation: pulseGlow ${d}s ease-in-out infinite; }`,
+    'Typewriter':`@keyframes typewriter { from { width: 0; } to { width: 100%; } }\n@keyframes blink { 50% { border-color: transparent; } }\n.your-element { overflow: hidden; border-right: 2px solid #d4af6e; white-space: nowrap; animation: typewriter ${d}s steps(20), blink 0.5s infinite; }`,
+    'Float Loop':`@keyframes floatLoop { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }\n.your-element { animation: floatLoop ${d}s ease-in-out infinite; }`
+  };
+  var out=document.getElementById('out-animcss');
+  var txt=document.getElementById('outtxt-animcss');
+  out.style.display='block';
+  txt.textContent=`ANIMATION: ${type}\n\n/* CSS Code — copy and paste into your stylesheet */\n\n${css[type]||'/* Animation code not found */'}\n\n/* HOW TO USE */\n1. Copy the CSS code above\n2. Paste into your website's CSS file\n3. Add class "your-element" to any HTML element\n4. The animation will play automatically\n\n/* VARIATIONS */\n/* Delay: animation-delay: 0.5s; */\n/* Repeat: animation-iteration-count: infinite; */\n/* Direction: animation-direction: alternate; */\n/* Fill: animation-fill-mode: forwards; */\n\n🪷 Need animations for a specific element or framework?`;
+}
+
+// ═══ GIF CREATOR ═══
+function genGIFGuide(){
+  var type=gv('gifType')||'Animated Loop';
+  var theme=gv('gifTheme')||'Floral';
+  var desc=document.getElementById('gifDesc').value||'A lotus flower animation';
+  var out=document.getElementById('out-gif');
+  var txt=document.getElementById('outtxt-gif');
+  out.style.display='block';
+  txt.textContent=`GIF CREATION GUIDE — ${type.toUpperCase()}\nTheme: ${theme}\n\nSTEP 1 — GENERATE YOUR FRAMES:\nGo to Image Studio → Image Generator\nCreate multiple variations of your scene with different states:\n• Frame 1: "${desc} — beginning state"\n• Frame 2: "${desc} — middle state"\n• Frame 3: "${desc} — end state"\nDownload each as a separate image.\n\nSTEP 2 — CREATE YOUR GIF:\nFREE OPTION 1 — Canva:\n1. Open Canva.com\n2. Click Create Design → Animated Social Media\n3. Upload your frames as images\n4. Set transitions between each frame\n5. Export as GIF (File → Download → GIF)\n\nFREE OPTION 2 — Ezgif.com:\n1. Go to ezgif.com/maker\n2. Upload all your frame images\n3. Set delay between frames (100ms for smooth, 500ms for slower)\n4. Click "Make GIF"\n5. Download your animated GIF\n\nFREE OPTION 3 — GIPHY Create:\n1. Go to giphy.com/create\n2. Upload your images or video\n3. Add text and effects\n4. Publish and download\n\nFREE OPTION 4 — LottieFiles:\n1. Go to lottiefiles.com\n2. Browse free animated icons\n3. Download as GIF or JSON\n4. Use as part of your brand animations\n\nOPTIMIZATION TIPS:\n• Keep GIFs under 5MB for fast loading\n• Use fewer colors for smaller file size\n• Loop count: 0 = infinite loop\n• Dithering: on for smoother color gradients\n• Always test before posting — some platforms convert GIFs to videos\n\nPLATFORM NOTES:\n• Instagram: Converts GIF to video — works fine\n• Pinterest: Supports animated GIFs natively\n• Email: Some clients block GIF animation — use MP4 instead\n• Website: GIF and WebP formats both work\n\n🪷 Need a more specific guide for your type of GIF?`;
+}
+
+// ═══ IMAGES via Pollinations ═══
+function genQuoteImage(){
+  var quote=getVal('quoteText')||'Build your dream calmly.';
+  var author=getVal('quoteAuthor')||'ZenSereniTee';
+  var style=gv('quoteStyle')||'Luxury Minimal';
+  var fmt=gv('quoteFmt')||'Square 1:1';
+  var dims={
+    'Square 1:1':[1080,1080],
+    'Portrait 4:5':[864,1080],
+    'Story 9:16':[608,1080]
+  };
+  var [w,h]=dims[fmt]||[1080,1080];
+  var styleMap={
+    'Luxury Minimal':'minimal elegant luxury aesthetic, blush and gold palette, serif font, white background, professional design',
+    'Bold Statement':'bold typography, high contrast, impactful design, dark background, powerful',
+    'Soft Aesthetic':'soft watercolor background, pastel colors, delicate flowers, dreamy aesthetic',
+    'Dark Elegant':'dark moody background, gold text, luxury editorial, sophisticated',
+    'Nature Inspired':'botanical elements, leaves and flowers, earthy natural colors, organic'
+  };
+  var prompt=`Quote graphic design: "${quote}" by ${author}. ${styleMap[style]||style}. Text-based design, typography art, ${w}x${h} social media post, clean composition`;
+  var out=document.getElementById('quoteImgOut');
+  var result=document.getElementById('quoteImgResult');
+  var acts=document.getElementById('quoteImgActs');
+  out.style.display='block';
+  showImg(polUrl(prompt,w,h),'quoteImgResult','quoteImgActs','quoteGenBtn');
+}
+
+function genBookmarkImage(){
+  var style=gv('bkmkStyle')||'Floral Elegant';
+  var text=getVal('bkmkText')||'She believed she could 🪷';
+  var prompt=`Bookmark design, vertical rectangle shape 2x7 inch, ${style} style, text: "${text}", print ready design, white background, beautiful decorative elements, professional quality`;
+  var out=document.getElementById('bkmkOut');
+  var result=document.getElementById('bkmkResult');
+  out.style.display='block';
+  showImg(polUrl(prompt,400,1000),'bkmkResult','bkmkActs','bkmkBtn');
+}
+
+function genPinImage(){
+  var type=gv('pinType')||'Standard Pin';
+  var niche=gv('pinNiche')||'Digital Business';
+  var desc=getVal('pinDesc')||'5 ways to build passive income';
+  var prompt=`Pinterest pin design, vertical 2:3 ratio, ${niche} niche, ${type}, "${desc}", bold text overlay, eye-catching, scroll-stopping, professional, 1000x1500 format, high quality`;
+  document.getElementById('pinOut').style.display='block';
+  showImg(polUrl(prompt,1000,1500),'pinResult','pinActs','pinBtn');
+  document.getElementById('pinCopy').textContent=`PIN DESCRIPTION (copy to Pinterest):\n\n${desc}\n\n${niche} tips for beginners. Save this pin for later!\n\n#${niche.replace(/\s/g,'')} #PinterestMarketing #SaveThisPin\n\nSEO KEYWORDS: ${niche.toLowerCase()}, ${desc.split(' ').slice(0,3).join(' ').toLowerCase()}, beginner guide`;
+}
+
+function genInfoImage(){
+  var type=gv('infoType')||'Steps';
+  var topic=getVal('infoTopic')||'10 steps to build a digital business';
+  var prompt=`Infographic design, ${type} format, topic: "${topic}", vertical scroll format, colorful icons, numbered steps, blush gold sage color palette, professional quality, Pinterest ready, 1000x2000`;
+  document.getElementById('infoOut').style.display='block';
+  showImg(polUrl(prompt,1000,2000),'infoResult','infoActs','infoBtnGen');
+}
+
+function genWallArt(){
+  var style=gv('wallStyle')||'Botanical Line Art';
+  var size=gv('wallSize')||'8x10 inch';
+  var desc=getVal('wallDesc')||style;
+  var prompt=`${style} wall art print, ${size}, ${desc}, high resolution, print quality, suitable for home decor, professional art print, 300dpi quality`;
+  document.getElementById('wallOut').style.display='block';
+  showImg(polUrl(prompt,1024,1280),'wallResult','wallActs','wallBtn');
+}
+
+function genStickerImage(){
+  var style=gv('stickerStyle')||'Die Cut White Border';
+  var cat=gv('stickerCat')||'Floral';
+  var desc=getVal('stickerDesc')||cat+' sticker';
+  var prompt=`${desc}, ${style}, ${cat} sticker design, white border, isolated on white background, flat illustration, commercial sticker design, transparent background sticker, print ready`;
+  document.getElementById('stickerOut').style.display='block';
+  showImg(polUrl(prompt,1024,1024),'stickerResult','stickerActs','stickerBtn');
+}
+
+// ═══ COLLAGE ═══
+var collageImages=[];
+function handleCollageUp(e){
+  Array.from(e.target.files).slice(0,6-collageImages.length).forEach(f=>{
+    var r=new FileReader();
+    r.onload=ev=>{
+      var img=new Image();
+      img.onload=()=>{collageImages.push(img);renderCollagePrevs();};
+      img.src=ev.target.result;
+    };
+    r.readAsDataURL(f);
+  });
+  e.target.value='';
+}
+function renderCollagePrevs(){
+  var c=document.getElementById('collagePrevs');
+  if(!c)return;
+  c.innerHTML='';
+  collageImages.forEach((img,i)=>{
+    var w=document.createElement('div');w.className='prevw';
+    var thumb=document.createElement('img');thumb.src=img.src;thumb.style.cssText='width:56px;height:56px;border-radius:7px;object-fit:cover;border:2px solid var(--border);';
+    var rm=document.createElement('button');rm.textContent='x';rm.style.cssText='position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:#e05c5c;color:#fff;border:none;border-radius:50%;font-size:.5rem;cursor:pointer;';
+    rm.onclick=(idx=>()=>{collageImages.splice(idx,1);renderCollagePrevs();})(i);
+    w.appendChild(thumb);w.appendChild(rm);c.appendChild(w);
+  });
+}
+
+function renderCollage(){
+  if(collageImages.length<2){toast('Upload at least 2 photos!');return;}
+  var canvas=document.getElementById('collageCanvas');
+  var layout=gv('collageLayout')||'2x2 Grid';
+  var gapColor={'White Gap':'#ffffff','No Gap':'transparent','Gold Gap':'#d4af6e','Black Gap':'#000000'}[gv('collageGap')||'White Gap'];
+  var gap=gv('collageGap')==='No Gap'?0:8;
+  var S=600;
+  canvas.width=S;canvas.height=S;
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle=gapColor;ctx.fillRect(0,0,S,S);
+
+  function drawImg(img,x,y,w,h){
+    var scale=Math.max(w/img.width,h/img.height);
+    var sw=img.width*scale,sh=img.height*scale;
+    var sx=(sw-w)/2,sy=(sh-h)/2;
+    ctx.drawImage(img,sx/scale,sy/scale,(w/scale),(h/scale),x,y,w,h);
+  }
+
+  var imgs=collageImages;
+  if(layout==='2x2 Grid'){
+    var cell=(S-gap*3)/2;
+    [[0,0],[1,0],[0,1],[1,1]].forEach(([col,row],i)=>{
+      if(imgs[i])drawImg(imgs[i],gap+col*(cell+gap),gap+row*(cell+gap),cell,cell);
+    });
+  } else if(layout==='3x2 Grid'){
+    var cw=(S-gap*4)/3,ch=(S-gap*3)/2;
+    for(var i=0;i<6;i++){
+      if(imgs[i])drawImg(imgs[i],gap+(i%3)*(cw+gap),gap+Math.floor(i/3)*(ch+gap),cw,ch);
+    }
+  } else if(layout==='Horizontal Strip'){
+    var cw2=(S-gap*(imgs.length+1))/Math.min(imgs.length,4);
+    imgs.slice(0,4).forEach((img,i)=>{drawImg(img,gap+i*(cw2+gap),gap,cw2,S-gap*2);});
+  } else {
+    var ch2=(S-gap*(imgs.length+1))/Math.min(imgs.length,4);
+    imgs.slice(0,4).forEach((img,i)=>{drawImg(img,gap,gap+i*(ch2+gap),S-gap*2,ch2);});
+  }
+
+  document.getElementById('collageOut').style.display='block';
+  toast('Collage created!');
+}
+
+function downloadCollage(){
+  var canvas=document.getElementById('collageCanvas');
+  canvas.toBlob(blob=>{
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');a.href=url;a.download='collage.png';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    toast('Collage downloaded!');
+  });
+}
+
+// ═══ QR CODE ═══
+function generateQR(){
+  var url=getVal('qrUrl')||'https://beacons.ai/';
+  var color=document.getElementById('qrColor').value||'#1a1410';
+  var bg=document.getElementById('qrBg').value||'#faf6f0';
+  var sizeStr=gv('qrSize')||'Medium (300px)';
+  var size=sizeStr.includes('200')?200:sizeStr.includes('400')?400:300;
+
+  var qrApiUrl=`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&color=${color.replace('#','')}&bgcolor=${bg.replace('#','')}`;
+  var out=document.getElementById('qrOut');
+  var display=document.getElementById('qrDisplay');
+  out.style.display='block';
+  display.innerHTML='<div class="ld"><span></span><span></span><span></span></div> Generating...';
+
+  var img=new Image();
+  img.style.cssText='border-radius:10px;display:block;border:4px solid '+bg+';';
+  img.onload=()=>{display.innerHTML='';display.appendChild(img);toast('QR Code ready!');};
+  img.onerror=()=>{display.innerHTML='<div style="color:var(--muted);font-size:.76rem;">Tap button again — checking connection</div>';};
+  img.src=qrApiUrl;
+}
+
+function downloadQR(){
+  var url=getVal('qrUrl')||'https://beacons.ai/';
+  var color=document.getElementById('qrColor').value||'#1a1410';
+  var bg=document.getElementById('qrBg').value||'#faf6f0';
+  var qrApiUrl=`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(url)}&color=${color.replace('#','')}&bgcolor=${bg.replace('#','')}`;
+  var a=document.createElement('a');a.href=qrApiUrl;a.download='qr-code.png';a.target='_blank';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast('QR Code downloaded!');
+}
+
+// ═══ LINK STRATEGY ═══
+function genLinkStrategy(){
+  var type=gv('linkType')||'Bio Link Page';
+  var details=getVal('linkDetails')||'my digital brand';
+  var out=document.getElementById('out-links');
+  var txt=document.getElementById('outtxt-links');
+  out.style.display='block';
+  txt.textContent=`LINK STRATEGY — ${type.toUpperCase()}\n\nRECOMMENDED PLATFORM: Beacons.ai (free, mobile-optimized)\nAlternatives: Stan Store (free), Linktree (free), Carrd.co\n\nYOUR BIO LINK PAGE STRUCTURE:\n\n[YOUR BRAND NAME + TAGLINE]\n[Profile photo or brand logo]\n\nPRIMARY LINK (Top — most important):\n🎁 FREE GIFT: Your Lead Magnet Here\n→ [link to your free guide opt-in]\n\nSECONDARY LINKS:\n💼 [Main Product Name] — $[Price]\n→ [link to your product page]\n\n📱 Follow on Instagram\n→ [Instagram link]\n\n📌 Follow on Pinterest\n→ [Pinterest link]\n\n👥 Join the Community\n→ [Facebook group link]\n\nTERTIARY LINKS (optional):\n📧 Work with Me\n📰 Read My Blog\n🎬 Watch My Videos\n\nBIO LINK TIPS:\n• Free lead magnet ALWAYS goes first — it captures emails\n• Limit to 5-7 links max — more links = fewer clicks each\n• Use emojis before each link for visual scanning\n• Update your main CTA monthly based on what you're promoting\n• Track clicks (Beacons and Stan Store both have free analytics)\n\nURL SHORTENING (for long ugly links):\n• Bitly (bitly.com) — free, track clicks, custom names\n• TinyURL (tinyurl.com) — instant, free, no account needed\n• Rebrandly — custom branded URLs, free tier\n\nSMART LINK STRATEGY:\n• Share one link everywhere: "All my links → beacons.ai/yourusername"\n• Never update 100 posts — update your Beacons page instead\n• Your bio link is your digital storefront — keep it clean and clear\n\n🪷 Need help building your actual Beacons page?`;
+}
+
+// Init
+window.addEventListener('load',()=>{
+  showColorFamily('Blush Pinks');
+  renderGrad();
+  initGradPresets();
+  renderBlend();
+  renderSplitText();
+  var t=sessionStorage.getItem('gotoPanel');
+  if(t){sessionStorage.removeItem('gotoPanel');go(t);}
+});
+</script>
+
+</body>
+</html>
