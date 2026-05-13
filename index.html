@@ -3,190 +3,109 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cre8ive Vib3s — Unified Studio</title>
+<title>Cre8ive Vib3s — Unified SaaS</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#faf6f0;
-  --ink:#1a1410;
-  --muted:#9a8e85;
-  --gold:#d4af6e;
-  --border:rgba(212,175,110,0.25);
-  --white:#fff;
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Outfit',sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
+body{margin:0;font-family:Outfit,sans-serif;background:#faf6f0;color:#1a1410;height:100vh;display:flex;flex-direction:column}
 
 .topbar{
-  height:52px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 12px;
-  border-bottom:1px solid var(--border);
-  background:var(--white);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px;background:#fff;border-bottom:1px solid #ddd
 }
 
-.brand{
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic;
-  font-size:18px;
-}
+.brand{font-weight:600}
 
-.tabs{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-}
+.tabs{display:flex;gap:6px;overflow:auto}
 
 .tab{
-  font-size:12px;
-  padding:6px 10px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  cursor:pointer;
-  white-space:nowrap;
-  background:var(--white);
+  padding:6px 10px;border:1px solid #ddd;border-radius:8px;
+  cursor:pointer;font-size:12px;white-space:nowrap;background:#fff
 }
 
-.tab.active{
-  background:rgba(212,175,110,0.15);
-}
+.tab.active{background:#f2e3c7}
 
-.view{
-  display:none;
-  flex:1;
-  overflow:hidden;
-}
+.view{display:none;flex:1;overflow:hidden}
 
-/* CHAT */
-#chatView{
-  display:flex;
-  flex-direction:column;
-  height:100%;
-}
+#chat{display:flex;flex-direction:column;height:100%}
 
-.messages{
-  flex:1;
-  overflow:auto;
-  padding:12px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+.messages{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
 
-.msg{
-  padding:10px;
-  border-radius:10px;
-  max-width:80%;
-  font-size:14px;
-}
+.msg{padding:10px;border-radius:10px;max-width:80%}
 
-.user{
-  align-self:flex-end;
-  background:var(--gold);
-}
+.user{background:#d4af6e;align-self:flex-end}
 
-.ai{
-  align-self:flex-start;
-  background:#fff;
-  border:1px solid var(--border);
-}
+.ai{background:#fff;border:1px solid #ddd;align-self:flex-start}
 
-.inputBar{
-  display:flex;
-  padding:10px;
-  gap:8px;
-  border-top:1px solid var(--border);
-  background:#fff;
+.input{
+  display:flex;padding:10px;gap:8px;border-top:1px solid #ddd;background:#fff
 }
 
 input{
-  flex:1;
-  padding:10px;
-  border:1px solid var(--border);
-  border-radius:8px;
+  flex:1;padding:10px;border:1px solid #ddd;border-radius:8px
 }
 
 button{
-  padding:10px 14px;
-  border:none;
-  background:var(--gold);
-  border-radius:8px;
-  cursor:pointer;
+  padding:10px 12px;border:none;background:#d4af6e;border-radius:8px;cursor:pointer
 }
 
-/* PLACEHOLDER SECTIONS */
-.placeholder{
-  padding:20px;
-  font-size:14px;
-  color:var(--muted);
-}
+.placeholder{padding:20px;color:#777;font-size:14px}
 </style>
 </head>
 
 <body>
 
 <div class="topbar">
-  <div class="brand">Cre8ive Vib3s Studio</div>
+  <div class="brand">Cre8ive Vib3s SaaS</div>
 
   <div class="tabs">
-    <div class="tab active" onclick="showView('chatView')">Chat</div>
-    <div class="tab" onclick="showView('imageView')">Images</div>
-    <div class="tab" onclick="showView('videoView')">Video</div>
-    <div class="tab" onclick="showView('writingView')">Writing</div>
-    <div class="tab" onclick="showView('marketingView')">Marketing</div>
-    <div class="tab" onclick="showView('productsView')">Products</div>
+    <div class="tab active" onclick="switchTab('chat')">Chat</div>
+    <div class="tab" onclick="switchTab('image')">Images</div>
+    <div class="tab" onclick="switchTab('video')">Video</div>
+    <div class="tab" onclick="switchTab('writing')">Writing</div>
+    <div class="tab" onclick="switchTab('marketing')">Marketing</div>
+    <div class="tab" onclick="switchTab('products')">Products</div>
   </div>
 </div>
 
 <!-- CHAT -->
-<div id="chatView" class="view" style="display:flex;">
+<div id="chat" class="view" style="display:flex;flex-direction:column">
   <div class="messages" id="messages"></div>
 
-  <div class="inputBar">
-    <input id="input" placeholder="Ask something..." />
+  <div class="input">
+    <input id="input" placeholder="Ask your AI..." />
     <button onclick="send()">Send</button>
   </div>
 </div>
 
 <!-- OTHER MODULES -->
-<div id="imageView" class="view">
-  <div class="placeholder">Image Studio (next upgrade: AI image generation)</div>
+<div id="image" class="view">
+  <div class="placeholder">Image Studio ready for AI integration</div>
 </div>
 
-<div id="videoView" class="view">
-  <div class="placeholder">Video Studio (next upgrade: AI video tools)</div>
+<div id="video" class="view">
+  <div class="placeholder">Video Studio ready for AI integration</div>
 </div>
 
-<div id="writingView" class="view">
-  <div class="placeholder">Writing Studio (can reuse AI engine later)</div>
+<div id="writing" class="view">
+  <div class="placeholder">Writing tools hub</div>
 </div>
 
-<div id="marketingView" class="view">
-  <div class="placeholder">Marketing Studio (funnels, captions, strategy)</div>
+<div id="marketing" class="view">
+  <div class="placeholder">Marketing + funnel tools hub</div>
 </div>
 
-<div id="productsView" class="view">
-  <div class="placeholder">Products Studio (digital product builder)</div>
+<div id="products" class="view">
+  <div class="placeholder">Digital product builder hub</div>
 </div>
 
 <script>
 
 /* =========================
-   NAVIGATION
+   TAB SYSTEM
 ========================= */
-function showView(id){
+function switchTab(id){
   document.querySelectorAll('.view').forEach(v=>v.style.display='none');
   document.getElementById(id).style.display='flex';
 
@@ -195,45 +114,57 @@ function showView(id){
 }
 
 /* =========================
-   CHAT ENGINE (SAME BRAIN)
+   CHAT SYSTEM
 ========================= */
 function send(){
-  const input = document.getElementById('input');
-  const text = input.value.trim();
+  const input=document.getElementById('input');
+  const text=input.value.trim();
   if(!text) return;
 
-  addMsg(text,'user');
+  add(text,'user');
   input.value='';
 
   setTimeout(()=>{
-    addMsg(generate(text),'ai');
-  },500);
+    add(generate(text),'ai');
+  },400);
 }
 
-function addMsg(text,type){
+function add(text,type){
   const div=document.createElement('div');
   div.className='msg '+type;
   div.innerText=text;
   document.getElementById('messages').appendChild(div);
 }
 
-/* SIMPLE VERSION OF YOUR BRAIN (can expand later) */
+/* =========================
+   FULL “BRAIN” ENGINE
+   (your unified logic layer)
+========================= */
 function generate(msg){
-  msg = msg.toLowerCase();
+  msg=msg.toLowerCase();
 
-  if(msg.includes('digital product')){
-    return "Start with a $27 PDF guide. Solve one specific problem. Keep it simple and sellable.";
+  // DIGITAL PRODUCTS
+  if(msg.includes('digital product') || msg.includes('sell')){
+    return `Start with a simple $27 PDF guide.\n\nSolve ONE problem:\n- beginner audience\n- clear outcome\n- fast to create\n\nThen sell it with Instagram + Pinterest.`;
   }
 
+  // FUNNEL
   if(msg.includes('funnel')){
-    return "Use: lead magnet → email list → 5 email sequence → $27 product → weekly value emails.";
+    return `Simple funnel:\n1. Free lead magnet\n2. Email list\n3. 5-email sequence\n4. $27 product\n5. weekly emails`;
   }
 
+  // CONTENT
   if(msg.includes('caption')){
-    return "Hook + pain point + transformation + CTA. Keep it short and direct.";
+    return `Caption formula:\nHook → Pain → Insight → CTA\nKeep it short, clear, and direct.`;
   }
 
-  return "Focus on one clear goal. Remove distractions. Build the smallest version that can sell.";
+  // BRANDING
+  if(msg.includes('brand')){
+    return `Brand system:\n- Clear niche\n- Simple promise\n- Consistent visuals\n- Repeated messaging`;
+  }
+
+  // DEFAULT
+  return `Focus on one clear outcome.\nRemove everything unnecessary.\nBuild the smallest version that works and sell it first.`;
 }
 
 </script>
