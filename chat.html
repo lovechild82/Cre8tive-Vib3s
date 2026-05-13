@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Creative Director — Cre8ive Vib3s</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{--blush:#f2c4ce;--gold:#d4af6e;--gold2:rgba(212,175,110,0.12);--sage:#b2c9ad;--cream:#faf6f0;--ink:#1a1410;--ink2:#3d342e;--muted:#9a8e85;--white:#fff;--border:rgba(212,175,110,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+a{text-decoration:none;color:inherit;}
+.topnav{height:52px;background:linear-gradient(135deg,#fdf8f3,#f5ede0);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 .8rem;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:.5rem;}
+.lotus{font-size:1.3rem;}
+.bn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;}
+.bn span{color:var(--gold);}
+.navlinks{display:flex;gap:.2rem;overflow-x:auto;}
+.nl{padding:.28rem .55rem;border-radius:6px;font-size:.68rem;border:1px solid transparent;}
+.nl.active{background:var(--gold2);}
+.app{display:flex;flex:1;overflow:hidden;}
+.sb{width:220px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.chat-area{flex:1;display:flex;flex-direction:column;}
+.messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem;}
+.msg-wrap{display:flex;gap:.5rem;}
+.msg-wrap.user{flex-direction:row-reverse;}
+.bubble{padding:.65rem .85rem;border-radius:12px;font-size:.8rem;line-height:1.7;}
+.bubble.ai{background:#fff;border:1px solid var(--border);}
+.bubble.user{background:var(--gold);}
+.input-area{padding:.7rem;border-top:1px solid var(--border);}
+textarea{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--border);}
+button{padding:.5rem 1rem;margin-top:.4rem;}
+</style>
+</head>
+
+<body>
+
+<div class="topnav">
+  <div class="logo">
+    🪷 <div class="bn">Cre8ive Vib3s <span>Studio</span></div>
+  </div>
+  <div class="navlinks">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl active" href="chat.html">Chat</a>
+    <a class="nl" href="image-studio.html">Images</a>
+    <a class="nl" href="video-studio.html">Video</a>
+  </div>
+</div>
+
+<div class="app">
+
+  <div class="sb">
+    <p style="padding:10px;font-size:12px;">AI Creative Director</p>
+  </div>
+
+  <div class="chat-area">
+
+    <div class="messages" id="messages"></div>
+
+    <div class="input-area">
+      <textarea id="input" placeholder="Ask something..."></textarea>
+      <button onclick="send()">Send</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function send(){
+  const input = document.getElementById('input');
+  const text = input.value.trim();
+  if(!text) return;
+
+  const msg = document.createElement('div');
+  msg.className = 'msg-wrap user';
+  msg.innerHTML = `<div class="bubble user">${text}</div>`;
+  document.getElementById('messages').appendChild(msg);
+
+  const reply = document.createElement('div');
+  reply.className = 'msg-wrap';
+  reply.innerHTML = `<div class="bubble ai">I received: ${text}</div>`;
+  document.getElementById('messages').appendChild(reply);
+
+  input.value = '';
+}
+</script>
+
+</body>
+</html>
