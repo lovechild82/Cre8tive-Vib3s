@@ -1,104 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cre8ive Vib3s — Unified SaaS</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Cre8ive Vib3s — AI SaaS</title>
 
 <style>
-body{margin:0;font-family:Outfit,sans-serif;background:#faf6f0;color:#1a1410;height:100vh;display:flex;flex-direction:column}
+body{margin:0;font-family:Arial;background:#faf6f0;height:100vh;display:flex;flex-direction:column}
 
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 12px;background:#fff;border-bottom:1px solid #ddd
-}
-
-.brand{font-weight:600}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#fff;border-bottom:1px solid #ddd}
 
 .tabs{display:flex;gap:6px;overflow:auto}
+.tab{padding:6px 10px;border:1px solid #ddd;border-radius:8px;cursor:pointer;font-size:12px;background:#fff}
+.tab.active{background:#f2d7a7}
 
-.tab{
-  padding:6px 10px;border:1px solid #ddd;border-radius:8px;
-  cursor:pointer;font-size:12px;white-space:nowrap;background:#fff
-}
+.view{display:none;flex:1;overflow:auto;padding:12px}
 
-.tab.active{background:#f2e3c7}
+#chatView{display:flex;flex-direction:column}
 
-.view{display:none;flex:1;overflow:hidden}
-
-#chat{display:flex;flex-direction:column;height:100%}
-
-.messages{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.messages{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:10px}
 
 .msg{padding:10px;border-radius:10px;max-width:80%}
-
 .user{background:#d4af6e;align-self:flex-end}
+.ai{background:#fff;border:1px solid #ddd}
 
-.ai{background:#fff;border:1px solid #ddd;align-self:flex-start}
+.input{display:flex;gap:8px;padding-top:10px}
+input{flex:1;padding:10px;border:1px solid #ddd;border-radius:8px}
+button{padding:10px 12px;border:none;background:#d4af6e;border-radius:8px;cursor:pointer}
 
-.input{
-  display:flex;padding:10px;gap:8px;border-top:1px solid #ddd;background:#fff
-}
+.card{background:#fff;border:1px solid #ddd;padding:10px;border-radius:10px;margin-bottom:10px}
 
-input{
-  flex:1;padding:10px;border:1px solid #ddd;border-radius:8px
-}
-
-button{
-  padding:10px 12px;border:none;background:#d4af6e;border-radius:8px;cursor:pointer
-}
-
-.placeholder{padding:20px;color:#777;font-size:14px}
+.title{font-weight:bold;margin-bottom:6px}
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-  <div class="brand">Cre8ive Vib3s SaaS</div>
+<div class="top">
+  <div><b>Cre8ive Vib3s AI</b></div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('chat')">Chat</div>
-    <div class="tab" onclick="switchTab('image')">Images</div>
-    <div class="tab" onclick="switchTab('video')">Video</div>
-    <div class="tab" onclick="switchTab('writing')">Writing</div>
-    <div class="tab" onclick="switchTab('marketing')">Marketing</div>
-    <div class="tab" onclick="switchTab('products')">Products</div>
+    <div class="tab active" onclick="switchTab('chatView')">Chat</div>
+    <div class="tab" onclick="switchTab('imageView')">Images</div>
+    <div class="tab" onclick="switchTab('videoView')">Video</div>
+    <div class="tab" onclick="switchTab('writeView')">Writing</div>
+    <div class="tab" onclick="switchTab('marketView')">Marketing</div>
+    <div class="tab" onclick="switchTab('productView')">Products</div>
   </div>
 </div>
 
 <!-- CHAT -->
-<div id="chat" class="view" style="display:flex;flex-direction:column">
+<div id="chatView" class="view" style="display:flex;flex-direction:column">
   <div class="messages" id="messages"></div>
 
   <div class="input">
-    <input id="input" placeholder="Ask your AI..." />
+    <input id="input" placeholder="Ask anything..." />
     <button onclick="send()">Send</button>
   </div>
 </div>
 
-<!-- OTHER MODULES -->
-<div id="image" class="view">
-  <div class="placeholder">Image Studio ready for AI integration</div>
-</div>
+<!-- IMAGE -->
+<div id="imageView" class="view"></div>
 
-<div id="video" class="view">
-  <div class="placeholder">Video Studio ready for AI integration</div>
-</div>
+<!-- VIDEO -->
+<div id="videoView" class="view"></div>
 
-<div id="writing" class="view">
-  <div class="placeholder">Writing tools hub</div>
-</div>
+<!-- WRITING -->
+<div id="writeView" class="view"></div>
 
-<div id="marketing" class="view">
-  <div class="placeholder">Marketing + funnel tools hub</div>
-</div>
+<!-- MARKETING -->
+<div id="marketView" class="view"></div>
 
-<div id="products" class="view">
-  <div class="placeholder">Digital product builder hub</div>
-</div>
+<!-- PRODUCTS -->
+<div id="productView" class="view"></div>
 
 <script>
 
@@ -107,14 +81,16 @@ button{
 ========================= */
 function switchTab(id){
   document.querySelectorAll('.view').forEach(v=>v.style.display='none');
-  document.getElementById(id).style.display='flex';
+  document.getElementById(id).style.display='block';
 
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   event.target.classList.add('active');
+
+  renderTab(id);
 }
 
 /* =========================
-   CHAT SYSTEM
+   CHAT ENGINE
 ========================= */
 function send(){
   const input=document.getElementById('input');
@@ -124,9 +100,11 @@ function send(){
   add(text,'user');
   input.value='';
 
+  const res = router(text,'chat');
+
   setTimeout(()=>{
-    add(generate(text),'ai');
-  },400);
+    add(res,'ai');
+  },300);
 }
 
 function add(text,type){
@@ -137,35 +115,84 @@ function add(text,type){
 }
 
 /* =========================
-   FULL “BRAIN” ENGINE
-   (your unified logic layer)
+   MULTI-TOOL BRAIN (ROUTER)
 ========================= */
-function generate(msg){
+function router(msg,mode){
   msg=msg.toLowerCase();
 
-  // DIGITAL PRODUCTS
-  if(msg.includes('digital product') || msg.includes('sell')){
-    return `Start with a simple $27 PDF guide.\n\nSolve ONE problem:\n- beginner audience\n- clear outcome\n- fast to create\n\nThen sell it with Instagram + Pinterest.`;
+  if(mode==='chat'){
+    if(msg.includes('start')||msg.includes('how')){
+      return "Start simple: pick one problem, build one digital product, sell it at $27.";
+    }
+    if(msg.includes('funnel')){
+      return "Lead magnet → Email list → 5 emails → $27 product → weekly emails.";
+    }
+    if(msg.includes('caption')){
+      return "Hook → Pain → Insight → CTA. Keep it short and clear.";
+    }
+    return "Focus on one goal. Remove everything else. Execute consistently.";
   }
 
-  // FUNNEL
-  if(msg.includes('funnel')){
-    return `Simple funnel:\n1. Free lead magnet\n2. Email list\n3. 5-email sequence\n4. $27 product\n5. weekly emails`;
+  if(mode==='image'){
+    return `IMAGE PROMPT:\nClean aesthetic product shot, soft lighting, minimal branding, high quality, commercial style`;
   }
 
-  // CONTENT
-  if(msg.includes('caption')){
-    return `Caption formula:\nHook → Pain → Insight → CTA\nKeep it short, clear, and direct.`;
+  if(mode==='video'){
+    return `VIDEO SCRIPT:\nHook (3 sec)\nProblem\nSolution\nCall to action`;
   }
 
-  // BRANDING
-  if(msg.includes('brand')){
-    return `Brand system:\n- Clear niche\n- Simple promise\n- Consistent visuals\n- Repeated messaging`;
+  if(mode==='write'){
+    return `WRITING STRUCTURE:\nHook → Story → Value → CTA\nKeep sentences simple and direct.`;
   }
 
-  // DEFAULT
-  return `Focus on one clear outcome.\nRemove everything unnecessary.\nBuild the smallest version that works and sell it first.`;
+  if(mode==='market'){
+    return `MARKETING FUNNEL:\n1. Content\n2. Lead magnet\n3. Email sequence\n4. Offer\n5. Retarget`;
+  }
+
+  if(mode==='product'){
+    return `PRODUCT IDEA:\nCreate a $27 digital guide solving one specific beginner problem.`;
+  }
+
+  return msg;
 }
+
+/* =========================
+   TAB RENDERING (KEY FIX)
+========================= */
+function renderTab(id){
+
+  const el=document.getElementById(id);
+
+  if(id==='imageView'){
+    el.innerHTML = card("Image Generator","Type a concept → get prompt: " + router("","image"));
+  }
+
+  if(id==='videoView'){
+    el.innerHTML = card("Video Generator", router("","video"));
+  }
+
+  if(id==='writeView'){
+    el.innerHTML = card("Writing Tool", router("","write"));
+  }
+
+  if(id==='marketView'){
+    el.innerHTML = card("Marketing System", router("","market"));
+  }
+
+  if(id==='productView'){
+    el.innerHTML = card("Product Builder", router("","product"));
+  }
+}
+
+/* =========================
+   UI CARD
+========================= */
+function card(title,content){
+  return `<div class="card"><div class="title">${title}</div><div>${content}</div></div>`;
+}
+
+/* init default tab */
+renderTab('chatView');
 
 </script>
 
