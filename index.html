@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cre8ive Vib3s — AI SaaS</title>
+<title>Cre8ive Vib3s — Functional SaaS</title>
 
 <style>
 body{margin:0;font-family:Arial;background:#faf6f0;height:100vh;display:flex;flex-direction:column}
 
-.top{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#fff;border-bottom:1px solid #ddd}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#fff;border-bottom:1px solid #ddd;flex-wrap:wrap}
 
 .tabs{display:flex;gap:6px;overflow:auto}
 .tab{padding:6px 10px;border:1px solid #ddd;border-radius:8px;cursor:pointer;font-size:12px;background:#fff}
@@ -16,183 +16,197 @@ body{margin:0;font-family:Arial;background:#faf6f0;height:100vh;display:flex;fle
 
 .view{display:none;flex:1;overflow:auto;padding:12px}
 
-#chatView{display:flex;flex-direction:column}
-
-.messages{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:10px}
-
-.msg{padding:10px;border-radius:10px;max-width:80%}
-.user{background:#d4af6e;align-self:flex-end}
-.ai{background:#fff;border:1px solid #ddd}
-
-.input{display:flex;gap:8px;padding-top:10px}
-input{flex:1;padding:10px;border:1px solid #ddd;border-radius:8px}
-button{padding:10px 12px;border:none;background:#d4af6e;border-radius:8px;cursor:pointer}
-
 .card{background:#fff;border:1px solid #ddd;padding:10px;border-radius:10px;margin-bottom:10px}
-
 .title{font-weight:bold;margin-bottom:6px}
+
+input,textarea{
+width:100%;padding:10px;margin-top:8px;
+border:1px solid #ddd;border-radius:8px;
+font-family:Arial;
+}
+
+button{
+padding:10px;border:none;background:#d4af6e;border-radius:8px;cursor:pointer;margin-top:8px;
+}
+
+.output{white-space:pre-wrap;margin-top:10px}
 </style>
 </head>
 
 <body>
 
 <div class="top">
-  <div><b>Cre8ive Vib3s AI</b></div>
+  <div><b>Cre8ive Vib3s SaaS</b></div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('chatView')">Chat</div>
-    <div class="tab" onclick="switchTab('imageView')">Images</div>
-    <div class="tab" onclick="switchTab('videoView')">Video</div>
-    <div class="tab" onclick="switchTab('writeView')">Writing</div>
-    <div class="tab" onclick="switchTab('marketView')">Marketing</div>
-    <div class="tab" onclick="switchTab('productView')">Products</div>
+    <div class="tab active" onclick="switchTab('chat')">Chat</div>
+    <div class="tab" onclick="switchTab('image')">Images</div>
+    <div class="tab" onclick="switchTab('video')">Video</div>
+    <div class="tab" onclick="switchTab('write')">Writing</div>
+    <div class="tab" onclick="switchTab('market')">Marketing</div>
+    <div class="tab" onclick="switchTab('product')">Products</div>
   </div>
 </div>
 
 <!-- CHAT -->
-<div id="chatView" class="view" style="display:flex;flex-direction:column">
-  <div class="messages" id="messages"></div>
+<div id="chat" class="view" style="display:flex;flex-direction:column">
+  <div id="chatBox" style="flex:1;overflow:auto"></div>
 
-  <div class="input">
-    <input id="input" placeholder="Ask anything..." />
-    <button onclick="send()">Send</button>
-  </div>
+  <input id="chatInput" placeholder="Ask AI..." />
+  <button onclick="runChat()">Send</button>
 </div>
 
 <!-- IMAGE -->
-<div id="imageView" class="view"></div>
+<div id="image" class="view">
+  <div class="card">
+    <div class="title">Image Generator</div>
+    <input id="imgInput" placeholder="Describe image idea..." />
+    <button onclick="genImage()">Generate</button>
+    <div class="output" id="imgOut"></div>
+  </div>
+</div>
 
 <!-- VIDEO -->
-<div id="videoView" class="view"></div>
+<div id="video" class="view">
+  <div class="card">
+    <div class="title">Video Script Generator</div>
+    <input id="vidInput" placeholder="Video topic..." />
+    <button onclick="genVideo()">Generate</button>
+    <div class="output" id="vidOut"></div>
+  </div>
+</div>
 
 <!-- WRITING -->
-<div id="writeView" class="view"></div>
+<div id="write" class="view">
+  <div class="card">
+    <div class="title">Writing Assistant</div>
+    <textarea id="writeInput" placeholder="What do you want to write?"></textarea>
+    <button onclick="genWrite()">Generate</button>
+    <div class="output" id="writeOut"></div>
+  </div>
+</div>
 
 <!-- MARKETING -->
-<div id="marketView" class="view"></div>
+<div id="market" class="view">
+  <div class="card">
+    <div class="title">Marketing Funnel Builder</div>
+    <input id="mInput" placeholder="Business idea..." />
+    <button onclick="genMarket()">Generate</button>
+    <div class="output" id="mOut"></div>
+  </div>
+</div>
 
 <!-- PRODUCTS -->
-<div id="productView" class="view"></div>
+<div id="product" class="view">
+  <div class="card">
+    <div class="title">Product Idea Generator</div>
+    <input id="pInput" placeholder="Niche or audience..." />
+    <button onclick="genProduct()">Generate</button>
+    <div class="output" id="pOut"></div>
+  </div>
+</div>
 
 <script>
 
-/* =========================
-   TAB SYSTEM
-========================= */
+/* ======================
+TAB SWITCH
+====================== */
 function switchTab(id){
   document.querySelectorAll('.view').forEach(v=>v.style.display='none');
   document.getElementById(id).style.display='block';
 
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   event.target.classList.add('active');
-
-  renderTab(id);
 }
 
-/* =========================
-   CHAT ENGINE
-========================= */
-function send(){
-  const input=document.getElementById('input');
-  const text=input.value.trim();
+/* ======================
+SHARED BRAIN
+====================== */
+function brain(input,type){
+  input=input.toLowerCase();
+
+  if(type==="chat"){
+    return "Focus on one clear goal. Build one offer. Sell it at $27 first.";
+  }
+
+  if(type==="image"){
+    return `Prompt:\nMinimal aesthetic ${input}, soft lighting, high detail, commercial style, clean background`;
+  }
+
+  if(type==="video"){
+    return `Script:\nHook (0-3s)\nProblem\nSolution\nCTA\nTopic: ${input}`;
+  }
+
+  if(type==="write"){
+    return `Structure:\nHook → Value → Breakdown → CTA\nTopic: ${input}`;
+  }
+
+  if(type==="market"){
+    return `Funnel:\n1. Content\n2. Lead magnet\n3. Email sequence\n4. $27 offer\nTopic: ${input}`;
+  }
+
+  if(type==="product"){
+    return `Product Idea:\nCreate a $27 digital guide about "${input}" solving beginner pain points.`;
+  }
+
+  return input;
+}
+
+/* ======================
+CHAT
+====================== */
+function runChat(){
+  const inp=document.getElementById('chatInput');
+  const box=document.getElementById('chatBox');
+
+  const text=inp.value;
   if(!text) return;
 
-  add(text,'user');
-  input.value='';
+  box.innerHTML += `<div><b>You:</b> ${text}</div>`;
+  box.innerHTML += `<div><b>AI:</b> ${brain(text,"chat")}</div>`;
 
-  const res = router(text,'chat');
-
-  setTimeout(()=>{
-    add(res,'ai');
-  },300);
+  inp.value='';
 }
 
-function add(text,type){
-  const div=document.createElement('div');
-  div.className='msg '+type;
-  div.innerText=text;
-  document.getElementById('messages').appendChild(div);
+/* ======================
+IMAGE
+====================== */
+function genImage(){
+  const v=document.getElementById('imgInput').value;
+  document.getElementById('imgOut').innerText = brain(v,"image");
 }
 
-/* =========================
-   MULTI-TOOL BRAIN (ROUTER)
-========================= */
-function router(msg,mode){
-  msg=msg.toLowerCase();
-
-  if(mode==='chat'){
-    if(msg.includes('start')||msg.includes('how')){
-      return "Start simple: pick one problem, build one digital product, sell it at $27.";
-    }
-    if(msg.includes('funnel')){
-      return "Lead magnet → Email list → 5 emails → $27 product → weekly emails.";
-    }
-    if(msg.includes('caption')){
-      return "Hook → Pain → Insight → CTA. Keep it short and clear.";
-    }
-    return "Focus on one goal. Remove everything else. Execute consistently.";
-  }
-
-  if(mode==='image'){
-    return `IMAGE PROMPT:\nClean aesthetic product shot, soft lighting, minimal branding, high quality, commercial style`;
-  }
-
-  if(mode==='video'){
-    return `VIDEO SCRIPT:\nHook (3 sec)\nProblem\nSolution\nCall to action`;
-  }
-
-  if(mode==='write'){
-    return `WRITING STRUCTURE:\nHook → Story → Value → CTA\nKeep sentences simple and direct.`;
-  }
-
-  if(mode==='market'){
-    return `MARKETING FUNNEL:\n1. Content\n2. Lead magnet\n3. Email sequence\n4. Offer\n5. Retarget`;
-  }
-
-  if(mode==='product'){
-    return `PRODUCT IDEA:\nCreate a $27 digital guide solving one specific beginner problem.`;
-  }
-
-  return msg;
+/* ======================
+VIDEO
+====================== */
+function genVideo(){
+  const v=document.getElementById('vidInput').value;
+  document.getElementById('vidOut').innerText = brain(v,"video");
 }
 
-/* =========================
-   TAB RENDERING (KEY FIX)
-========================= */
-function renderTab(id){
-
-  const el=document.getElementById(id);
-
-  if(id==='imageView'){
-    el.innerHTML = card("Image Generator","Type a concept → get prompt: " + router("","image"));
-  }
-
-  if(id==='videoView'){
-    el.innerHTML = card("Video Generator", router("","video"));
-  }
-
-  if(id==='writeView'){
-    el.innerHTML = card("Writing Tool", router("","write"));
-  }
-
-  if(id==='marketView'){
-    el.innerHTML = card("Marketing System", router("","market"));
-  }
-
-  if(id==='productView'){
-    el.innerHTML = card("Product Builder", router("","product"));
-  }
+/* ======================
+WRITING
+====================== */
+function genWrite(){
+  const v=document.getElementById('writeInput').value;
+  document.getElementById('writeOut').innerText = brain(v,"write");
 }
 
-/* =========================
-   UI CARD
-========================= */
-function card(title,content){
-  return `<div class="card"><div class="title">${title}</div><div>${content}</div></div>`;
+/* ======================
+MARKETING
+====================== */
+function genMarket(){
+  const v=document.getElementById('mInput').value;
+  document.getElementById('mOut').innerText = brain(v,"market");
 }
 
-/* init default tab */
-renderTab('chatView');
+/* ======================
+PRODUCTS
+====================== */
+function genProduct(){
+  const v=document.getElementById('pInput').value;
+  document.getElementById('pOut').innerText = brain(v,"product");
+}
 
 </script>
 
