@@ -23,6 +23,8 @@
 </div>
 
 <script>
+
+/* YOUR LIVE BACKEND */
 const API_URL = "https://cre8tive-vib3s-clean.onrender.com/api/chat";
 
 function add(role, text){
@@ -34,6 +36,7 @@ function add(role, text){
 async function send(){
   const input = document.getElementById("input");
   const text = input.value;
+
   if(!text) return;
 
   add("You", text);
@@ -53,12 +56,15 @@ async function send(){
     });
 
     const data = await res.json();
-    add("AI", data.reply || "No response from server");
+
+    add("AI", data.reply || "No response");
 
   } catch (err) {
-    add("AI", "Connection error");
+    console.error(err);
+    add("AI", "Connection error (check backend)");
   }
 }
+
 </script>
 
 </body>
