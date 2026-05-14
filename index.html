@@ -7,73 +7,42 @@
 
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
       font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
     }
 
     .app {
-      max-width: 900px;
-      margin: 40px auto;
+      max-width: 800px;
+      margin: auto;
       background: white;
-      border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      margin-top: 0;
+      border-radius: 10px;
     }
 
     #chat {
-      height: 500px;
+      height: 450px;
       overflow-y: auto;
       border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
+      padding: 10px;
+      margin-bottom: 10px;
       background: #fafafa;
-      margin-bottom: 15px;
     }
 
-    .message {
-      margin-bottom: 15px;
-      line-height: 1.5;
-    }
-
-    .user {
-      font-weight: bold;
-    }
-
-    .ai {
-      color: #333;
-    }
-
-    .input-row {
+    .row {
       display: flex;
       gap: 10px;
     }
 
     input {
       flex: 1;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      padding: 10px;
     }
 
     button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      background: black;
-      color: white;
+      padding: 10px 15px;
       cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      opacity: 0.9;
     }
   </style>
 </head>
@@ -81,81 +50,55 @@
 <body>
 
 <div class="app">
-  <h1>Cre8tive Vib3s AI</h1>
+  <h2>Cre8tive Vib3s Chat</h2>
 
   <div id="chat"></div>
 
-  <div class="input-row">
-    <input
-      id="input"
-      type="text"
-      placeholder="Ask anything..."
-      onkeydown="if(event.key==='Enter') sendMessage()"
-    />
-
+  <div class="row">
+    <input id="input" placeholder="Type a message..." />
     <button onclick="sendMessage()">Send</button>
   </div>
 </div>
 
 <script>
-const API_URL = "https://cre8tive-vib3s-1.onrender.com/api/chat";
+const API_URL = "https://YOUR-RENDER-URL.onrender.com/api/chat";
 
-const chat = document.getElementById("chat");
+const chatBox = document.getElementById("chat");
 const input = document.getElementById("input");
 
-function addMessage(type, text) {
+function addMessage(role, text) {
   const div = document.createElement("div");
-  div.className = "message";
-
-  if (type === "user") {
-    div.innerHTML = `<span class="user">You:</span> ${text}`;
-  } else {
-    div.innerHTML = `<span class="ai">AI:</span> ${text}`;
-  }
-
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+  div.innerHTML = `<b>${role}:</b> ${text}`;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 async function sendMessage() {
   const text = input.value.trim();
-
   if (!text) return;
 
-  addMessage("user", text);
-
+  addMessage("You", text);
   input.value = "";
 
   try {
-
-    const response = await fetch(API_URL, {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         messages: [
-          {
-            role: "user",
-            content: text
-          }
+          { role: "user", content: text }
         ]
       })
     });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    console.log("SERVER RESPONSE:", data);
+    addMessage("AI", data.reply || "No response from server");
 
-    if (data.reply) {
-      addMessage("ai", data.reply);
-    } else {
-      addMessage("ai", "No response returned from server.");
-    }
-
-  } catch (error) {
-    console.error(error);
-    addMessage("ai", "Connection error.");
+  } catch (err) {
+    addMessage("AI", "Connection error");
   }
 }
 </script>
