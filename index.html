@@ -1,213 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cre8ive Vib3s — Functional SaaS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cre8tive Vib3s</title>
 
-<style>
-body{margin:0;font-family:Arial;background:#faf6f0;height:100vh;display:flex;flex-direction:column}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
 
-.top{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#fff;border-bottom:1px solid #ddd;flex-wrap:wrap}
+    #app {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
 
-.tabs{display:flex;gap:6px;overflow:auto}
-.tab{padding:6px 10px;border:1px solid #ddd;border-radius:8px;cursor:pointer;font-size:12px;background:#fff}
-.tab.active{background:#f2d7a7}
+    #chat {
+      height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
 
-.view{display:none;flex:1;overflow:auto;padding:12px}
+    input {
+      width: 75%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
 
-.card{background:#fff;border:1px solid #ddd;padding:10px;border-radius:10px;margin-bottom:10px}
-.title{font-weight:bold;margin-bottom:6px}
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #333;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-input,textarea{
-width:100%;padding:10px;margin-top:8px;
-border:1px solid #ddd;border-radius:8px;
-font-family:Arial;
-}
-
-button{
-padding:10px;border:none;background:#d4af6e;border-radius:8px;cursor:pointer;margin-top:8px;
-}
-
-.output{white-space:pre-wrap;margin-top:10px}
-</style>
+    button:hover {
+      background: #555;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="top">
-  <div><b>Cre8ive Vib3s SaaS</b></div>
+<div id="app">
 
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('chat')">Chat</div>
-    <div class="tab" onclick="switchTab('image')">Images</div>
-    <div class="tab" onclick="switchTab('video')">Video</div>
-    <div class="tab" onclick="switchTab('write')">Writing</div>
-    <div class="tab" onclick="switchTab('market')">Marketing</div>
-    <div class="tab" onclick="switchTab('product')">Products</div>
-  </div>
-</div>
+  <h2>Cre8tive Vib3s Chat</h2>
 
-<!-- CHAT -->
-<div id="chat" class="view" style="display:flex;flex-direction:column">
-  <div id="chatBox" style="flex:1;overflow:auto"></div>
+  <div id="chat"></div>
 
-  <input id="chatInput" placeholder="Ask AI..." />
-  <button onclick="runChat()">Send</button>
-</div>
+  <input id="input" placeholder="Type your message..." />
+  <button onclick="sendMessage()">Send</button>
 
-<!-- IMAGE -->
-<div id="image" class="view">
-  <div class="card">
-    <div class="title">Image Generator</div>
-    <input id="imgInput" placeholder="Describe image idea..." />
-    <button onclick="genImage()">Generate</button>
-    <div class="output" id="imgOut"></div>
-  </div>
-</div>
-
-<!-- VIDEO -->
-<div id="video" class="view">
-  <div class="card">
-    <div class="title">Video Script Generator</div>
-    <input id="vidInput" placeholder="Video topic..." />
-    <button onclick="genVideo()">Generate</button>
-    <div class="output" id="vidOut"></div>
-  </div>
-</div>
-
-<!-- WRITING -->
-<div id="write" class="view">
-  <div class="card">
-    <div class="title">Writing Assistant</div>
-    <textarea id="writeInput" placeholder="What do you want to write?"></textarea>
-    <button onclick="genWrite()">Generate</button>
-    <div class="output" id="writeOut"></div>
-  </div>
-</div>
-
-<!-- MARKETING -->
-<div id="market" class="view">
-  <div class="card">
-    <div class="title">Marketing Funnel Builder</div>
-    <input id="mInput" placeholder="Business idea..." />
-    <button onclick="genMarket()">Generate</button>
-    <div class="output" id="mOut"></div>
-  </div>
-</div>
-
-<!-- PRODUCTS -->
-<div id="product" class="view">
-  <div class="card">
-    <div class="title">Product Idea Generator</div>
-    <input id="pInput" placeholder="Niche or audience..." />
-    <button onclick="genProduct()">Generate</button>
-    <div class="output" id="pOut"></div>
-  </div>
 </div>
 
 <script>
+const API_URL = "https://cre8tive-vib3s-1.onrender.com/api/chat";
 
-/* ======================
-TAB SWITCH
-====================== */
-function switchTab(id){
-  document.querySelectorAll('.view').forEach(v=>v.style.display='none');
-  document.getElementById(id).style.display='block';
+async function sendMessage() {
+  const input = document.getElementById("input");
+  const chatBox = document.getElementById("chat");
 
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-}
+  const userText = input.value.trim();
+  if (!userText) return;
 
-/* ======================
-SHARED BRAIN
-====================== */
-function brain(input,type){
-  input=input.toLowerCase();
+  input.value = "";
 
-  if(type==="chat"){
-    return "Focus on one clear goal. Build one offer. Sell it at $27 first.";
+  chatBox.innerHTML += `<div><b>You:</b> ${userText}</div>`;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        messages: [
+          { role: "user", content: userText }
+        ]
+      })
+    });
+
+    const data = await res.json();
+
+    chatBox.innerHTML += `<div><b>AI:</b> ${data.reply || "No response from server."}</div>`;
+
+  } catch (err) {
+    chatBox.innerHTML += `<div><b>AI:</b> Connection error.</div>`;
   }
-
-  if(type==="image"){
-    return `Prompt:\nMinimal aesthetic ${input}, soft lighting, high detail, commercial style, clean background`;
-  }
-
-  if(type==="video"){
-    return `Script:\nHook (0-3s)\nProblem\nSolution\nCTA\nTopic: ${input}`;
-  }
-
-  if(type==="write"){
-    return `Structure:\nHook → Value → Breakdown → CTA\nTopic: ${input}`;
-  }
-
-  if(type==="market"){
-    return `Funnel:\n1. Content\n2. Lead magnet\n3. Email sequence\n4. $27 offer\nTopic: ${input}`;
-  }
-
-  if(type==="product"){
-    return `Product Idea:\nCreate a $27 digital guide about "${input}" solving beginner pain points.`;
-  }
-
-  return input;
 }
-
-/* ======================
-CHAT
-====================== */
-function runChat(){
-  const inp=document.getElementById('chatInput');
-  const box=document.getElementById('chatBox');
-
-  const text=inp.value;
-  if(!text) return;
-
-  box.innerHTML += `<div><b>You:</b> ${text}</div>`;
-  box.innerHTML += `<div><b>AI:</b> ${brain(text,"chat")}</div>`;
-
-  inp.value='';
-}
-
-/* ======================
-IMAGE
-====================== */
-function genImage(){
-  const v=document.getElementById('imgInput').value;
-  document.getElementById('imgOut').innerText = brain(v,"image");
-}
-
-/* ======================
-VIDEO
-====================== */
-function genVideo(){
-  const v=document.getElementById('vidInput').value;
-  document.getElementById('vidOut').innerText = brain(v,"video");
-}
-
-/* ======================
-WRITING
-====================== */
-function genWrite(){
-  const v=document.getElementById('writeInput').value;
-  document.getElementById('writeOut').innerText = brain(v,"write");
-}
-
-/* ======================
-MARKETING
-====================== */
-function genMarket(){
-  const v=document.getElementById('mInput').value;
-  document.getElementById('mOut').innerText = brain(v,"market");
-}
-
-/* ======================
-PRODUCTS
-====================== */
-function genProduct(){
-  const v=document.getElementById('pInput').value;
-  document.getElementById('pOut').innerText = brain(v,"product");
-}
-
 </script>
 
 </body>
