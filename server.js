@@ -7,13 +7,14 @@ dotenv.config();
 
 const app = express();
 
-/* FIX: allow all origins (prevents Vercel connection error) */
+/* Allow frontend requests */
 app.use(cors({
   origin: "*"
 }));
 
 app.use(express.json());
 
+/* OpenAI client */
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -28,12 +29,14 @@ app.post("/api/chat", async (req, res) => {
   try {
     const { messages } = req.body;
 
-    if (!messages) {
-      return res.status(400).json({ reply: "No messages provided" });
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({
+        reply: "Invalid request format"
+      });
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
       messages
     });
 
@@ -42,13 +45,15 @@ app.post("/api/chat", async (req, res) => {
     });
 
   } catch (err) {
-    console.error("Server error:", err);
+    console.error("OpenAI error:", err);
+
     res.status(500).json({
       reply: "Server error"
     });
   }
 });
 
+/* Start server */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
